@@ -5,7 +5,7 @@
         INSERT INTO `orders`(`ono`,`gid`,`otime`) VALUES (#{ono},#{gid},#{otime})
     </insert>
     <update id="update">
-        update  `orders` SET `ono`=#{ono},`gid`=#{gid},`otime`=#{otime}
+        update  `orders` SET `ono`=#{ono},`gid`=#{gid},`otime`=#{otime} where `oid`=#{oid}
     </update>
     <delete id="delete">
         DELETE FROM `orders` WHERE `oid`=#{oid}

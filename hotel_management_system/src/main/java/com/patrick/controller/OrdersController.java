@@ -4,7 +4,9 @@ import com.patrick.bean.Orders;
 import com.patrick.bean.RespBean;
 import com.patrick.bean.Room;
 import com.patrick.service.OrdersService;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,15 +19,15 @@ public class OrdersController {
     private OrdersService ordersService;
 
     @PostMapping
-    public RespBean insert(Orders orders){
+    public RespBean insert(@RequestBody @Validated Orders orders){
         if (ordersService.insert(orders)) {
             return RespBean.ok("添加成功");
         }
         return RespBean.error("添加失败");
     }
 
-    @DeleteMapping
-    public RespBean delete(Integer oid){
+    @DeleteMapping("{oid}")
+    public RespBean delete(@PathVariable("oid") Integer oid){
         if (ordersService.delete(oid)) {
             return RespBean.ok("删除成功");
         }
@@ -33,7 +35,7 @@ public class OrdersController {
     }
 
     @PutMapping
-    public RespBean update(Orders orders){
+    public RespBean update(@RequestBody @Validated Orders orders){
         if (ordersService.update(orders)) {
             return RespBean.ok("修改成功");
         }else {
@@ -45,5 +47,14 @@ public class OrdersController {
     public RespBean select(){
         List<Orders> ordersList = ordersService.selectAll();
         return RespBean.ok("",ordersList);
+    }
+    @GetMapping("/selectById/{oid}")
+    public RespBean selectById(@PathVariable("oid") Integer oid){
+        Orders orders = ordersService.selectById(oid);
+        if(orders != null){
+            return RespBean.ok("",orders);
+        }else {
+            return RespBean.error("没有找到该订单");
+        }
     }
 }

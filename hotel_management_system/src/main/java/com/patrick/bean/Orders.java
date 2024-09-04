@@ -20,7 +20,7 @@ public class Orders {
     private Integer ono;
 
     //下单时间
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date otime;
 
     //下单人员
