@@ -24,10 +24,11 @@ public class Orders {
     private Date otime;
 
     //下单人员
-    private Integer gid;
+    private Guest guest;
 
     //房间号
     private Room[] rids;
+
 
     //是否已入住
     private Integer ostate;

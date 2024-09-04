@@ -13,7 +13,12 @@
     <delete id="delete">
         UPDATE `room` SET `rstate`= 3 WHERE `rid`=#{rid}
     </delete>
-    <select id="selectAll" resultType="room">
+
+    <resultMap id="roomMap" type="room">
+        <id column="rid" property="rid"/>
+        <collection property="guests" column="rid" ofType="guest" select="com.patrick.mapper.GuestMapper.selectByRid" />
+    </resultMap>
+    <select id="selectAll" resultMap="roomMap">
         SELECT * FROM `room` ORDER BY `rstate` ASC
     </select>
     <select id="selectByRno" resultType="room">

@@ -26,5 +26,8 @@ public interface GuestMapper {
     //根据ID查询住客
     Guest selectById(Integer gid);
 
+    //根据房间ID查询住客
+    Guest selectByRid(Integer rid);
+
     //根据身份证查询
 }
