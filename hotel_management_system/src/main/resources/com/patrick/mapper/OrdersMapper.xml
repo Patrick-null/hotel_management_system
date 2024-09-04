@@ -8,7 +8,7 @@
         update  `orders` SET `ono`=#{ono},`gid`=#{gid},`otime`=#{otime} where `oid`=#{oid}
     </update>
     <delete id="delete">
-        DELETE FROM `orders` WHERE `oid`=#{oid}
+        update  `orders` SET `ostate`="1" where `oid`=#{oid}
     </delete>
     <select id="selectAll" resultType="orders">
         select * from `orders`

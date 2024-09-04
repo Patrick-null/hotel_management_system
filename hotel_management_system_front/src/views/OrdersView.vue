@@ -24,9 +24,10 @@
           <el-table-column fixed="right" label="操作">
             <template #default="scope">
               <el-button size="small" type="success" @click="ordersUpdShow(scope.row.oid)">修改</el-button>
-              <el-popconfirm confirm-button-text="删除" cancel-button-text="取消" title="你确认要删除吗?" width="200px">
+              <el-popconfirm confirm-button-text="使用" cancel-button-text="取消" title="你确认要使用吗?"
+              @confirm="deleteByOid(scope.row.oid)" width="200px">
                 <template #reference>
-                  <el-button size="small" type="danger">删除</el-button>
+                  <el-button size="small" type="danger">使用</el-button>
                 </template>
               </el-popconfirm>
             </template>
@@ -112,6 +113,37 @@ const spareRoomList = ref([])
 
 //所有订单的集合
 const ordersList = ref([])
+
+//删除订单
+function deleteByOid(oid){
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  ordersApi.delete(oid)
+    .then(resp => {
+      loading.close()
+      //判断是否成功
+      if (resp.code == 10000) {
+        //弹出消息
+        ElMessage({
+          message: resp.msg,
+          type: 'success',
+          duration: 1200
+        })
+        //刷新表格
+        selectAll()
+      } else {
+        ElMessage({
+          message: resp.msg,
+          type: 'error',
+          duration: 1200
+        });
+      }
+
+    })
+}
 
 
 //修改订单
