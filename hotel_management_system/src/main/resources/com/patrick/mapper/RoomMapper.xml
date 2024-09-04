@@ -21,6 +21,8 @@
     <select id="selectAll" resultMap="roomMap">
         SELECT * FROM `room` ORDER BY `rstate` ASC
     </select>
+
+
     <select id="selectByRno" resultType="room">
         SELECT * FROM `room` WHERE `rno` = #{rno}
     </select>

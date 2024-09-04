@@ -20,6 +20,8 @@ public class GuestServiceImpl implements GuestService {
     private GuestMapper guestMapper;
     @Autowired
     private RoomMapper roomMapper;
+
+    //添加住客
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean insert(Guest guest) {
@@ -28,13 +30,16 @@ public class GuestServiceImpl implements GuestService {
         return guestMapper.insert(guest)==1;
     }
 
+    //删除住客
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean delete(Integer gid) {
+        //将房间设为空闲
         roomMapper.updateRstate(0,selectById(gid).getRid());
         return guestMapper.delete(gid)==1;
     }
 
+    //修改住客
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean update(Guest guest) {
@@ -47,6 +52,8 @@ public class GuestServiceImpl implements GuestService {
         return guestMapper.update(guest)==1;
     }
 
+
+    //查询所有住客
     @Override
     public PageInfo<Guest> selectAll() {
         //导包
@@ -59,11 +66,13 @@ public class GuestServiceImpl implements GuestService {
         return guestPageInfo;
     }
 
+    //根据姓名查询住客
     @Override
     public List<Guest> selectByName(String gname) {
         return guestMapper.selectByName(gname);
     }
 
+    //根据id查询住客
     @Override
     public Guest selectById(Integer gid) {
         return guestMapper.selectById(gid);

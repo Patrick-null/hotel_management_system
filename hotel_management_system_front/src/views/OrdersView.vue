@@ -70,7 +70,7 @@
   <el-dialog v-model="ordersUpdShowWin" title="修改订单" width="500">
     <el-form>
       <el-form-item label="订单号" label-width="20%">
-        <el-input v-model="ordersUpd.ono" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="ordersUpd.ono" disabled autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="下单人" label-width="20%">
         <el-input v-model="ordersUpd.gid" autocomplete="off" style="width: 300px;" />

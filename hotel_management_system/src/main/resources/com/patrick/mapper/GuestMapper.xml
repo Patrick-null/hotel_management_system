@@ -39,6 +39,6 @@
         SELECT * FROM `guest` WHERE `gid`=#{gid}
     </select>
     <select id="selectByRid" resultMap="guestMap">
-        SELECT * FROM `guest` WHERE `rid`=#{rid}
+        SELECT * FROM `guest` WHERE `rid`=#{rid} AND `gstate`="1"
     </select>
 </mapper>
