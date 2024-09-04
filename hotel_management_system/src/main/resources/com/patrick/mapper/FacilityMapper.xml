@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.patrick.mapper.FacilityMapper">
+    <insert id="insert">
+        insert into `facility`(`fname`,`fnum`,`fvalue`) VALUES (#{fname},#{fnum},#{fvalue})
+    </insert>
+    <update id="updata">
+        update `facility` set `fname`=#{fname},`fnum`=#{fnum},`fvalue`=#{fvalue} where `fid`=#{fid}
+    </update>
+    <delete id="delete">
+        delete from `facility` where `fid`=#{fid}
+    </delete>
+    <select id="selectAll" resultType="facility">
+        select * from `facility`
+    </select>
+</mapper>
