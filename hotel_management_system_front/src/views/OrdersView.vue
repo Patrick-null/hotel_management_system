@@ -323,8 +323,7 @@ function insert() {
   //将下单人的gno存到
   ordersAdd.value.gno = ordersAdd.value.guest.gno;
 
-  //计算订单金额
-  let money = ordersAdd.value.guest. 
+
 
   //将多人添加到房间中
   ordersAdd.value.guests = guestList;

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.patrick.mapper.OrdersMapper">
     <insert id="insert">
-        INSERT INTO `orders`(`ono`,`gno`,`otime`) VALUES (#{ono},#{gno},#{otime})
+        INSERT INTO `orders`(`ono`,`gno`,`otime`,`moneys`) VALUES (#{ono},#{gno},#{otime},#{moneys})
     </insert>
     <update id="update">
         update  `orders` SET `ono`=#{ono},`gid`=#{gid},`otime`=#{otime} where `oid`=#{oid}

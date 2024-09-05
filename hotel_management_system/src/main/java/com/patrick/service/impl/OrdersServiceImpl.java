@@ -2,6 +2,7 @@ package com.patrick.service.impl;
 
 import com.patrick.bean.Guest;
 import com.patrick.bean.Orders;
+import com.patrick.bean.Room;
 import com.patrick.mapper.GuestMapper;
 import com.patrick.mapper.OrdersMapper;
 import com.patrick.mapper.RoomMapper;
@@ -10,7 +11,12 @@ import com.patrick.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,12 +32,33 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Boolean insert(Orders orders) {
+        //记录有多少人
+        int count=0;
         //获取orders中的住客信息
         for (Guest guest : orders.getGuests()){
             guestService.insert(guest);
+            count++;
         }
         guestService.insert(orders.getGuest());
+        count++;
+        //获取房间金额
+            //获取房间
+        Integer rid = orders.getGuest().getRid();
+        Room room = roomMapper.selectById(rid);
+        BigDecimal rprice = room.getRprice();
+        BigDecimal moneys = new BigDecimal(count).multiply(rprice);
 
+        //获取时间
+        Date gend = orders.getGuest().getGend();
+        Date gstart = orders.getGuest().getGstart();
+        LocalDate ldg = gstart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate lde = gend.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+
+        long day = ChronoUnit.DAYS.between(ldg, lde);
+        System.out.println(new BigDecimal(day).multiply(moneys));
+
+        orders.setMoneys(new BigDecimal(day).multiply(moneys));
         return ordersMapper.insert(orders)==1;
     }
 

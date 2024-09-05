@@ -32,4 +32,7 @@ public interface RoomMapper {
 
     //根据状态查询房间
     List<Room> selectByState(Integer rstate);
+
+
+
 }
