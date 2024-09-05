@@ -13,6 +13,7 @@
           <el-table-column prop="oid" label="ID" />
           <el-table-column prop="ono" label="订单编号" />
           <el-table-column prop="guest.gname" label="下单人" />
+          <el-table-column prop="moneys" label="订单金额" />
           <el-table-column prop="otime" label="下单时间" show-overflow-tooltip />
           <el-table-column label="状态">
             <template #default="scope">
@@ -170,6 +171,7 @@ const ordersAdd = ref({
   ono: '',
   gno: '',
   otime: '',
+  moneys:'',
   guest: {},
   guests: [{}]
 })
@@ -320,7 +322,9 @@ function insert() {
   ordersAdd.value.otime = nowDate(time); ordersAdd.value.on
   //将下单人的gno存到
   ordersAdd.value.gno = ordersAdd.value.guest.gno;
-  console.log("213");
+
+  //计算订单金额
+  let money = ordersAdd.value.guest. 
 
   //将多人添加到房间中
   ordersAdd.value.guests = guestList;
@@ -408,6 +412,8 @@ function selectAll() {
   ordersApi.selectAll()
     .then(resp => {
       ordersList.value = resp.data
+      console.log(resp.data);
+      
     })
 }
 selectAll();
