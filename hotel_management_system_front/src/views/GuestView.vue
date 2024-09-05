@@ -10,13 +10,13 @@
         </el-form>
 
         <el-table :data="guestList.list" border style="width: 100%">
-          <el-table-column fixed prop="gid" label="ID" width="40" />
-          <el-table-column fixed prop="gname" label="姓名" width="70" />
-          <el-table-column fixed prop="ggender" label="性别" width="70" />
-          <el-table-column prop="gno" label="身份证号" width="140" show-overflow-tooltip />
-          <el-table-column prop="gphone" label="手机号" width="100" show-overflow-tooltip />
-          <el-table-column prop="gstart" label="入住时间" width="115" show-overflow-tooltip />
-          <el-table-column prop="gend" label="离店时间" width="115" show-overflow-tooltip />
+          <el-table-column  prop="gid" label="ID" width="40" />
+          <el-table-column  prop="gname" label="姓名" width="70px" />
+          <el-table-column  prop="ggender" label="性别" width="60px" />
+          <el-table-column prop="gno" label="身份证号" width="90px" show-overflow-tooltip />
+          <el-table-column prop="gphone" label="手机号" width="80" show-overflow-tooltip />
+          <el-table-column prop="gstart" label="入住时间" width="110px" show-overflow-tooltip />
+          <el-table-column prop="gend" label="离店时间" width="110px" show-overflow-tooltip />
           <el-table-column label="状态" width="90">
             <template #default="scope">
               <el-tag v-if="scope.row.gstate == 0" type="primary" effect="dark">未入住</el-tag>
@@ -26,8 +26,8 @@
           </el-table-column>
           <el-table-column prop="room.rno" label="房间号" width="70" />
 
-          <el-table-column prop="room.rtype" label="房间类型" width="90" />
-          <el-table-column fixed="right" label="操作">
+          <el-table-column prop="room.rtype" label="房间类型" width="100" />
+          <el-table-column fixed="right" label="操作" width="140">
             <template #default="scope">
               <el-button size="small" type="success" @click="guestUpdShow(scope.row.gid)">修改</el-button>
               <el-popconfirm confirm-button-text="删除" cancel-button-text="取消" title="你确认要删除吗?" width="200px"
@@ -64,14 +64,15 @@
         <el-input v-model="guestAdd.gphone" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="入住时间" label-width="20%">
-        <el-input v-model="guestAdd.gstart" autocomplete="off" style="width: 300px;" />
+        <el-date-picker v-model="guestAdd.gstart" type="date" placeholder="入住时间" :size="size" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="离店时间" label-width="20%">
-        <el-input v-model="guestAdd.gend" autocomplete="off" style="width: 300px;" />
+        <el-date-picker v-model="guestAdd.gend" type="date" placeholder="离店时间" :size="size" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="房间" label-width="20%">
         <el-select v-model="guestAdd.rid" placeholder="" style="width: 300px">
-          <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype" :value="item.rid" />
+          <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype"
+            :value="item.rid" />
         </el-select>
       </el-form-item>
 
@@ -105,15 +106,16 @@
         <el-input v-model="guestUpd.gphone" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="入住时间" label-width="20%">
-        <el-input v-model="guestUpd.gstart" autocomplete="off" style="width: 300px;" />
+        <el-date-picker v-model="guestUpd.gstart" type="date" placeholder="入住时间" :size="size" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="离店时间" label-width="20%">
-        <el-input v-model="guestUpd.gend" autocomplete="off" style="width: 300px;" />
+        <el-date-picker v-model="guestUpd.gend" type="date" placeholder="离店时间" :size="size" style="width: 300px;" />
       </el-form-item>
 
       <el-form-item label="房间" label-width="20%">
-        <el-select v-model="guestUpd.rid" :placeholder="guestUpd.room.rtype" style="width: 300px">
-          <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype" :value="item.rid" />
+        <el-select :placeholder="guestUpd.room.rtype"  v-model="guestUpd.rid" style="width: 300px">
+          <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype"
+            :value="item.rid" />
         </el-select>
       </el-form-item>
 
@@ -298,8 +300,8 @@ function selectAll() {
   guestApi.selectAll()
     .then(resp => {
       guestList.value = resp.data
-      
-      
+
+
 
     })
 }

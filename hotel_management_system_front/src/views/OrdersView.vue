@@ -3,7 +3,7 @@
     <el-col :span="24">
       <el-card>
         <el-form :inline="true" class="demo-form-inline">
-          <el-button type="success" style="margin-bottom: 10px;" @click="ordersAddShowWin = true">添加</el-button>
+          <el-button type="success" style="margin-bottom: 10px;" @click="ordersAddShow">添加</el-button>
           <el-form-item label="搜索框" style="float: right;">
             <el-input placeholder="请输入需要搜索的姓名" clearable />
           </el-form-item>
@@ -25,7 +25,7 @@
             <template #default="scope">
               <el-button size="small" type="success" @click="ordersUpdShow(scope.row.oid)">修改</el-button>
               <el-popconfirm confirm-button-text="使用" cancel-button-text="取消" title="你确认要使用吗?"
-              @confirm="deleteByOid(scope.row.oid)" width="200px">
+                @confirm="deleteByOid(scope.row.oid)" width="200px">
                 <template #reference>
                   <el-button size="small" type="danger">使用</el-button>
                 </template>
@@ -44,16 +44,41 @@
   <el-dialog v-model="ordersAddShowWin" title="添加订单" width="500">
     <el-form>
       <el-form-item label="订单号" label-width="20%">
-        <el-input v-model="ordersAdd.ono" autocomplete="off" style="width: 300px;" />
+        <el-input disabled v-model="orderNumber" autocomplete="off" style="width: 300px;" />
       </el-form-item>
-      <el-form-item label="下单人" label-width="20%">
-        <el-input v-model="ordersAdd.gid" autocomplete="off" style="width: 300px;" />
+      <el-form-item label="姓名" label-width="20%">
+        <el-input v-model="ordersAdd.guest.gname" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="身份证号" label-width="20%">
+        <el-input v-model="ordersAdd.guest.gno" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="联系方式" label-width="20%">
+        <el-input v-model="ordersAdd.guest.gphone" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="住房时间" label-width="20%">
+        <el-date-picker v-model="ordersAdd.guest.gstart" type="date" placeholder="入店时间" style="width: 140px;" />
+        <el-icon style="margin-left: 3px; margin-right: 3px;">
+          <Switch />
+        </el-icon>
+        <el-date-picker v-model="ordersAdd.guest.gend" type="date" placeholder="离店时间" style="width: 140px;" />
       </el-form-item>
       <el-form-item label="订单房间" label-width="20%">
-        <el-input v-model="ordersAdd.rno" autocomplete="off" style="width: 300px;" />
+        <el-select v-model="ordersAdd.guest.rid" placeholder="" style="width: 300px">
+          <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype"
+            :value="item.rid" />
+        </el-select>
       </el-form-item>
       <el-form-item label="订单人员" label-width="20%">
-        <el-input v-model="ordersAdd.gid" autocomplete="off" style="width: 300px;" />
+        <div class="flex gap-2">
+          <el-tag v-for="tag in ordersAdd.room.guests" :key="tag" closable :disable-transitions="false">
+            {{ tag }}
+          </el-tag>
+          <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="w-20" size="small"
+            @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
+          <el-button v-else class="button-new-tag" size="small" @click="showInputGuest">
+            + New Guest
+          </el-button>
+        </div>
       </el-form-item>
 
     </el-form>
@@ -76,9 +101,9 @@
         <el-input v-model="ordersUpd.gid" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="下单时间" label-width="20%">
-        <el-date-picker  type="datetime" disabled :placeholder="ordersUpd.otime" style="width: 300px;" />
+        <el-date-picker type="datetime" disabled :placeholder="ordersUpd.otime" style="width: 300px;" />
       </el-form-item>
-      
+
       <el-form-item label="订单人员" label-width="20%">
         <el-input v-model="ordersUpd.gid" autocomplete="off" style="width: 300px;" />
       </el-form-item>
@@ -96,12 +121,30 @@
 
 <script setup>
 import ordersApi from '@/api/ordersApi'
+import guestApi from '@/api/guestApi'
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 
+//订单编号
+let orderNumber = 1001
 //新增订单实体
-const ordersAdd = ref({})
+const ordersAdd = ref({
+  ono: '',
+  guest: {
+    gname: '',
+    gno: '',
+    gphone: '',
+    gstart: '',
+    gend: '',
+    rid: ''
+  },
+    room:{
+      rno:'',
+      rtype:'',
+      guests:ref([])
+    }
+})
 //显示添加订单窗口标识
 const ordersAddShowWin = ref(false)
 //修改订单实体
@@ -114,8 +157,10 @@ const spareRoomList = ref([])
 //所有订单的集合
 const ordersList = ref([])
 
+
+
 //删除订单
-function deleteByOid(oid){
+function deleteByOid(oid) {
   const loading = ElLoading.service({
     lock: true,
     text: 'Loading',
@@ -204,8 +249,8 @@ function insert() {
   })
   //自动获取下单时间 存储到orders实体中
   ordersAdd.value.otime = nowDate(time);
-  console.log(ordersAdd.value);
-
+  ordersAdd.value.ono = orderNumber;
+  orderNumber++;
   ordersApi.insert(ordersAdd.value)
     .then(resp => {
       loading.close()
@@ -238,6 +283,20 @@ function insert() {
 }
 
 
+//显示增加窗口
+function ordersAddShow() {
+  //获取所有空闲房间
+  selectRoom(0)
+  //显示新增窗口
+  ordersAddShowWin.value = true;
+}
+
+//显示增加住房人员窗口
+function showInputGuest(){
+  
+}
+
+
 //获取时间
 let getTime = new Date().getTime(); //获取到当前时间戳
 let time = new Date(getTime); //创建一个日期对象
@@ -251,6 +310,15 @@ function nowDate(time) {
   return (
     year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second
   )
+}
+
+
+//查询所有空闲房间
+function selectRoom(rstate) {
+  guestApi.selectByStateSpareRoom(rstate)
+    .then(resp => {
+      spareRoomList.value = resp.data
+    })
 }
 
 

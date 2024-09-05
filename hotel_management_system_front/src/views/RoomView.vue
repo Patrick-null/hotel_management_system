@@ -10,8 +10,8 @@
         </el-form>
 
         <el-table :data="roomList" border style="width: 100%">
-          <el-table-column prop="rid" label="ID" />
-          <el-table-column prop="rno" label="房间号" />
+          <el-table-column prop="rid" label="ID" width="50px" />
+          <el-table-column prop="rno" label="房间号" width="80px" />
           <el-table-column prop="rtype" label="房间类型" />
           <el-table-column prop="rprice" label="房间价格" show-overflow-tooltip />
           <el-table-column label="状态">
@@ -22,20 +22,33 @@
               <el-tag v-else-if="scope.row.rstate == 3" type="danger" effect="dark">未开放</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="" label="房间设施" />
-          <el-table-column  label="房间人员">
-          <template #default="scope">
-            <el-popover placement="right" :width="400" trigger="click">
-              <template #reference>
-                <el-button style="margin-right: 16px">Click to activate</el-button>
-              </template>
-              <el-table :data="scope.row.guests">
-                <el-table-column width="150" property="gname" label="姓名" />
-                <el-table-column width="100" property="gno" label="身份证号" />
-                <el-table-column width="300" property="gphone" label="联系方式" />
-              </el-table>
-            </el-popover>
-          </template>
+          <el-table-column label="房间设施">
+            <template #default="scope">
+              <el-popover placement="right" :width="400" trigger="click">
+                <template #reference>
+                  <el-button style="margin-right: 16px">查看房间设施</el-button>
+                </template>
+                <el-table :data="scope.row.guests">
+                  <el-table-column width="150" property="gname" label="设施名称" />
+                  <el-table-column width="100" property="gno" label="设施数量" />
+                  <el-table-column width="300" property="gphone" label="设施价值" />
+                </el-table>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column label="房间人员">
+            <template #default="scope">
+              <el-popover placement="right" :width="400" trigger="click">
+                <template #reference>
+                  <el-button style="margin-right: 16px">查看房间人员</el-button>
+                </template>
+                <el-table :data="scope.row.guests">
+                  <el-table-column width="150" property="gname" label="姓名" />
+                  <el-table-column width="100" property="gno" label="身份证号" />
+                  <el-table-column width="300" property="gphone" label="联系方式" />
+                </el-table>
+              </el-popover>
+            </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作">
             <template #default="scope">
