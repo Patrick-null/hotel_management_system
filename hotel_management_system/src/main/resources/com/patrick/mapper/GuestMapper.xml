@@ -13,6 +13,11 @@
                            `gend`=#{gend},
                            `rid`=#{rid} WHERE `gid`=#{gid}
     </update>
+    <update id="updateGstate">
+        UPDATE `guest` SET `gstate`= #{gstate} WHERE `gno`=#{gno}
+    </update>
+
+
     <delete id="delete">
         UPDATE `guest` SET `gstate`="2" WHERE `gid`=#{gid}
     </delete>

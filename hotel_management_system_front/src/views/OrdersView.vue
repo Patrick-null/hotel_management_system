@@ -47,32 +47,43 @@
         <el-input v-model="ordersAdd.ono" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="姓名" label-width="20%">
-        <el-input v-model="ordersAdd.guest.gname" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="guestBuy.gname" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="性别" label-width="20%">
-        <el-radio-group v-model="ordersAdd.guest.ggender">
+        <el-radio-group v-model="guestBuy.ggender">
           <el-radio-button label="男" value="男" />
           <el-radio-button label="女" value="女" />
         </el-radio-group>
       </el-form-item>
       <el-form-item label="身份证号" label-width="20%">
-        <el-input v-model="ordersAdd.guest.gno" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="guestBuy.gno" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="联系方式" label-width="20%">
-        <el-input v-model="ordersAdd.guest.gphone" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="guestBuy.gphone" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="住房时间" label-width="20%">
-        <el-date-picker v-model="ordersAdd.guest.gstart" type="date" placeholder="入店时间" style="width: 140px;" />
+        <el-date-picker v-model="guestBuy.gstart" type="date" placeholder="入店时间" style="width: 140px;" />
         <el-icon style="margin-left: 3px; margin-right: 3px;">
           <Switch />
         </el-icon>
-        <el-date-picker v-model="ordersAdd.guest.gend" type="date" placeholder="离店时间" style="width: 140px;" />
+        <el-date-picker v-model="guestBuy.gend" type="date" placeholder="离店时间" style="width: 140px;" />
       </el-form-item>
       <el-form-item label="订单房间" label-width="20%">
-        <el-select v-model="ordersAdd.guest.rid" placeholder="" style="width: 300px">
+        <el-select v-model="guestBuy.rid" placeholder="" style="width: 300px">
           <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype"
             :value="item.rid" />
         </el-select>
+      </el-form-item>
+
+      <el-form-item label="订单人员" label-width="20%">
+        <div class="flex gap-2">
+          <el-tag v-for="guest in guestList" :key="guest" closable >
+            {{ guest }}
+          </el-tag>
+          <el-button class="button-new-tag" size="small" @click="guestAddShowWin = true">
+            + New Guest
+          </el-button>
+        </div>
       </el-form-item>
 
     </el-form>
@@ -84,6 +95,36 @@
     </template>
   </el-dialog>
   <!-- 新增窗口结束 -->
+
+  <!-- 新增多人窗口开始 -->
+  <el-dialog v-model="guestAddShowWin" title="添加会员" width="500">
+        <el-form>
+
+            <el-form-item label="姓名" label-width="20%">
+                <el-input v-model="guestOne.gname" autocomplete="off" style="width: 300px;" />
+            </el-form-item>
+            <el-form-item label="性别" label-width="20%">
+                <el-radio-group v-model="guestOne.ggender">
+                    <el-radio-button label="男" value="男" />
+                    <el-radio-button label="女" value="女" />
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item label="身份证号" label-width="20%">
+                <el-input v-model="guestOne.gno" autocomplete="off" style="width: 300px;" />
+            </el-form-item>
+            <el-form-item label="联系方式" label-width="20%">
+                <el-input v-model="guestOne.gphone" autocomplete="off" style="width: 300px;" />
+            </el-form-item>
+
+        </el-form>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="guestAddShowWin = false">取消</el-button>
+                <el-button type="primary" @click="insertOne">确认</el-button>
+            </div>
+        </template>
+    </el-dialog>
+    <!-- 新增多人窗口结束 -->
 
 
 
@@ -127,19 +168,35 @@ const orderNumber = ref()
 //新增订单实体
 const ordersAdd = ref({
   ono: '',
-  gno:'',
-  otime:'',
-  guest: {
+  gno: '',
+  otime: '',
+  guest: {},
+  guests: [{}]
+})
+
+//下单人
+const guestBuy = ref({
     gname: '',
     gno: '',
-    ggender:'',
+    ggender: '',
     gphone: '',
     gstart: '',
     gend: '',
     rid: ''
-  },
-  guests:[{}]
-})
+  })
+//房间内多个人员
+let guestList = []
+
+//房间内的单个人员
+const guestOne = ref({
+    gname: '',
+    gno: '',
+    ggender: '',
+    gphone: '',
+    gstart: '',
+    gend: '',
+    rid: ''
+  })
 
 //显示添加订单窗口标识
 const ordersAddShowWin = ref(false)
@@ -155,6 +212,19 @@ const spareRoomList = ref([])
 //所有订单的集合
 const ordersList = ref([])
 
+//添加住客
+function insertOne(){
+  guestOne.value.gstart=guestBuy.value.gstart
+  guestOne.value.gend=guestBuy.value.gend
+  guestOne.value.rid=guestBuy.value.rid
+  guestList.push(guestOne.value)
+
+  //数据清空
+  guestOne.value={}
+  //关闭页面
+  guestAddShowWin.value=false
+
+}
 
 
 //删除订单
@@ -245,15 +315,17 @@ function insert() {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
+  ordersAdd.value.guest = guestBuy.value
   //自动获取下单时间 存储到orders实体中
   ordersAdd.value.otime = nowDate(time); ordersAdd.value.on
   //将下单人的gno存到
-  ordersAdd.value.gno=ordersAdd.value.guest.gno;
+  ordersAdd.value.gno = ordersAdd.value.guest.gno;
   console.log("213");
 
-  //将搜索到房间添加到添加订单中
+  //将多人添加到房间中
+  ordersAdd.value.guests = guestList;
+  //guestList.length=0
 
-  
   console.log(ordersAdd.value);
 
   ordersApi.insert(ordersAdd.value)
@@ -272,7 +344,9 @@ function insert() {
         ordersAddShowWin.value = false
 
         //清空数据
-        ordersAdd.value = ""
+        ordersAdd.value = ''
+        guestBuy.value=''
+
 
         //刷新表格
         selectAll()
