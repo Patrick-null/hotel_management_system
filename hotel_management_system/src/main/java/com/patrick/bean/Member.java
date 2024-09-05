@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * 会员表
  */
@@ -17,4 +19,6 @@ public class Member {
     private String mgender;
     private String mno;
     private String mphone;
+    private Date mstart;
+    private Date mend;
 }

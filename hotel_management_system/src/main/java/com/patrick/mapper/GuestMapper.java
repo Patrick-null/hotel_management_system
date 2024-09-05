@@ -30,4 +30,5 @@ public interface GuestMapper {
     Guest selectByRid(Integer rid);
 
     //根据身份证查询
+    Guest selectByNo(Integer gno);
 }

@@ -6,6 +6,7 @@ import EmployeeView from '@/views/EmployeeView.vue'
 import IndexView from '@/views/IndexView.vue'
 import DeptView from '@/views/DeptView.vue'
 import RoomView from '@/views/RoomView.vue'
+import MemberView from '@/views/MemberView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,9 @@ const router = createRouter({
         },{
           path:'/room',
           component:RoomView
+        },{
+          path:'/member',
+          component:MemberView
         }
       ]
     },

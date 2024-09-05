@@ -1,7 +1,9 @@
 package com.patrick.service.impl;
 
+import com.patrick.bean.Guest;
 import com.patrick.bean.Orders;
 import com.patrick.mapper.OrdersMapper;
+import com.patrick.service.GuestService;
 import com.patrick.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,17 @@ import java.util.List;
 public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private OrdersMapper ordersMapper;
+    @Autowired
+    private GuestService guestService;
 
     @Override
     public Boolean insert(Orders orders) {
+        //获取orders中的住客信息
+        //for (Guest guest : orders.getGuests()){
+        //    guestService.insert(guest);
+        //}
+        guestService.insert(orders.getGuest());
+
         return ordersMapper.insert(orders)==1;
     }
 

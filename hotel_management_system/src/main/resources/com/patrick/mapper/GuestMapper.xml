@@ -41,4 +41,7 @@
     <select id="selectByRid" resultMap="guestMap">
         SELECT * FROM `guest` WHERE `rid`=#{rid} AND `gstate`="1"
     </select>
+    <select id="selectByNo" resultType="guest">
+        SELECT * FROM `guest` WHERE `gno`=#{gno}
+    </select>
 </mapper>

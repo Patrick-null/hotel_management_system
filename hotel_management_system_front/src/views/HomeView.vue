@@ -41,6 +41,12 @@
               </el-icon>
               <span>订单管理</span>
             </el-menu-item>
+            <el-menu-item index="/member">
+              <el-icon>
+                <location />
+              </el-icon>
+              <span>用户界面</span>
+            </el-menu-item>
           </el-menu>
         </el-aside>
         <el-container>

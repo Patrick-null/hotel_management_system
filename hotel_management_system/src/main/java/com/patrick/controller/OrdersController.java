@@ -20,6 +20,8 @@ public class OrdersController {
 
     @PostMapping
     public RespBean insert(@RequestBody @Validated Orders orders){
+        System.out.println("================================");
+        System.out.println(orders);
         if (ordersService.insert(orders)) {
             return RespBean.ok("添加成功");
         }
