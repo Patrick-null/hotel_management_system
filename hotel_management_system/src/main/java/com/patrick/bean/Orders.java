@@ -27,7 +27,7 @@ public class Orders {
     private Guest guest;
 
     //房间号
-    private Room[] rids;
+    private Room room;
 
 
     //是否已入住
