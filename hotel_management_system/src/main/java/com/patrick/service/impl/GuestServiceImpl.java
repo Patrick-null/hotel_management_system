@@ -3,6 +3,7 @@ package com.patrick.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Guest;
+import com.patrick.excetion.MyException;
 import com.patrick.mapper.GuestMapper;
 import com.patrick.mapper.RoomMapper;
 import com.patrick.service.GuestService;
@@ -26,7 +27,6 @@ public class GuestServiceImpl implements GuestService {
     @Transactional(rollbackFor = Exception.class)
     public Boolean insert(Guest guest) {
         roomMapper.updateRstate(1,guest.getRid());
-
         return guestMapper.insert(guest)==1;
     }
 
@@ -55,12 +55,12 @@ public class GuestServiceImpl implements GuestService {
 
     //查询所有住客
     @Override
-    public PageInfo<Guest> selectAll() {
+    public PageInfo<Guest> selectAll(Integer pageNum,String flag) {
         //导包
         //设置分页信息
-        PageHelper.startPage(1,5);
+        PageHelper.startPage(pageNum,8);
         //查询
-        List<Guest> guestList = guestMapper.selectAll();
+        List<Guest> guestList = guestMapper.selectAll(flag);
         //创建封装查询结果
         PageInfo<Guest> guestPageInfo = new PageInfo<>(guestList);
         return guestPageInfo;

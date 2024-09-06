@@ -18,7 +18,7 @@ public interface GuestService {
     Boolean update(Guest guest);
 
     //查询所有住客
-    PageInfo<Guest> selectAll();
+    PageInfo<Guest> selectAll(Integer pageNum,String flag);
 
     //根据姓名查询住客
     List<Guest> selectByName(String gname);

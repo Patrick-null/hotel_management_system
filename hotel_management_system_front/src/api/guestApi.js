@@ -14,8 +14,13 @@ const guestApi={
         return service.put('/admin/guest',guest)
     },
     //查询所有住客
-    selectAll(){
-        return service.get('/admin/guest/selectAll')
+    selectAll(pageNum,flag){
+        return service.get('/admin/guest/selectAll',{
+            params: {
+                pageNum,
+                flag
+            }
+          })
     },
     //根据ID查询住客
     selectById(gid){

@@ -48,8 +48,8 @@ public class GuestController {
     }
 
     @GetMapping("/selectAll")
-    public RespBean selectAll(){
-        PageInfo<Guest> guestList = guestService.selectAll();
+    public RespBean selectAll(Integer pageNum,String flag){
+        PageInfo<Guest> guestList = guestService.selectAll(pageNum,flag);
         return RespBean.ok("",guestList);
     }
 

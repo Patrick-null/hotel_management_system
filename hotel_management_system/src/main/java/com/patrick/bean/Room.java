@@ -20,6 +20,9 @@ public class Room {
     //房间号
     private Integer rno;
 
+    //房间照片
+    private String ravatar;
+
     //房间类型
     private String rtype;
 

@@ -31,7 +31,7 @@ public class GuestTest {
 
     @Test
     public void test02(){
-        System.out.println(guestService.selectAll());
+        System.out.println(guestService.selectAll(1,"t"));
     }
 
     @Test

@@ -12,14 +12,19 @@
         <el-table :data="roomList" border style="width: 100%">
           <el-table-column prop="rid" label="ID" width="50px" />
           <el-table-column prop="rno" label="房间号" width="80px" />
-          <el-table-column prop="rtype" label="房间类型" />
-          <el-table-column prop="rprice" label="房间价格" show-overflow-tooltip />
-          <el-table-column label="状态">
+          <el-table-column prop="ravatar" label="房间照片" width="90px">
+            <template #default="scope">
+              <el-avatar shape="square" :size="50" :src="'http://localhost:8080/upload/' + scope.row.ravatar" />
+            </template>
+          </el-table-column>
+          <el-table-column prop="rtype" label="房间类型"  width="100px"/>
+          <el-table-column prop="rprice" label="价格" show-overflow-tooltip  width="75px"/>
+          <el-table-column label="状态"  width="75px">
             <template #default="scope">
               <el-tag v-if="scope.row.rstate == 0" type="success" effect="dark">空闲</el-tag>
               <el-tag v-else-if="scope.row.rstate == 1" type="primary" effect="dark">已预订</el-tag>
               <el-tag v-else-if="scope.row.rstate == 2" type="info" effect="dark">已入住</el-tag>
-              <el-tag v-else-if="scope.row.rstate == 3" type="danger" effect="dark">未开放</el-tag>
+              <el-tag v-else="scope.row.rstate == 3" type="danger" effect="dark">未开放</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="房间设施">
@@ -73,11 +78,21 @@
       <el-form-item label="房间号" label-width="20%">
         <el-input v-model="roomAdd.rno" autocomplete="off" style="width: 300px;" />
       </el-form-item>
+
       <el-form-item label="房间类型" label-width="20%">
         <el-input v-model="roomAdd.rtype" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="房间价格" label-width="20%">
         <el-input v-model="roomAdd.rprice" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="头像" label-width="20%">
+        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic"
+          :show-file-list="false" :on-success="handleAvatarSuccessAdd" :before-upload="beforeAvatarUploadUpd">
+          <img v-if="imageUrlAdd" :src="imageUrlAdd" class="avatar" />
+          <el-icon v-else class="avatar-uploader-icon">
+            <Plus />
+          </el-icon>
+        </el-upload>
       </el-form-item>
 
     </el-form>
@@ -103,6 +118,15 @@
       <el-form-item label="房间价格" label-width="20%">
         <el-input v-model="roomUpd.rprice" autocomplete="off" style="width: 300px;" />
       </el-form-item>
+      <el-form-item label="房间照片" label-width="20%">
+        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic"
+          :show-file-list="false" :on-success="handleAvatarSuccessUpd" :before-upload="beforeAvatarUploadUpd">
+          <img v-if="imageUrlUpd" :src="imageUrlUpd" class="avatar" />
+          <el-icon v-else class="avatar-uploader-icon">
+            <Plus />
+          </el-icon>
+        </el-upload>
+      </el-form-item>
 
     </el-form>
     <template #footer>
@@ -126,11 +150,11 @@ import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 
 
-//新增住客实体
+//新增房间实体
 const roomAdd = ref({})
 //显示添加房间窗口标识
 const roomAddShowWin = ref(false)
-//修改住客实体
+//修改房间实体
 const roomUpd = ref({})
 //修改住客窗口标识
 const roomUpdShowWin = ref(false)
@@ -140,6 +164,95 @@ const spareRoomList = ref([])
 //所有房间的集合
 const roomList = ref([])
 
+//新增上传头像的地址
+const imageUrlAdd = ref("")
+
+//修改上传头像的地址
+const imageUrlUpd = ref("")
+
+
+//新增上传头像的前的函数
+function beforeAvatarUploadAdd(rawFile) {
+  if (rawFile.type !== 'image/jpeg') {
+    ElMessage.error('图片仅支持jpg格式!')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('图片不能大于2MB!')
+    return false
+  }
+  return true
+}
+
+//新增上传之后的函数
+function handleAvatarSuccessAdd(resp, uploadFile) {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  console.log(resp)
+  loading.close()
+  if (resp.code == 10000) {
+    ElMessage.success({
+      message: resp.msg,
+      type: 'success',
+      duration: 1200
+    })
+    imageUrlAdd.value = "http://localhost:8080/upload/" + resp.data;
+    roomAdd.value.ravatar = resp.data
+
+
+  } else {
+    ElMessage.error({
+      message: resp.msg,
+      type: 'success',
+      duration: 1200
+    })
+  }
+
+}
+
+
+//修改上传头像的前的函数
+function beforeAvatarUploadUpd(rawFile) {
+  if (rawFile.type !== 'image/jpeg') {
+    ElMessage.error('图片仅支持jpg格式!')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('图片不能大于2MB!')
+    return false
+  }
+  return true
+}
+
+//修改上传之后的函数
+function handleAvatarSuccessUpd(resp, uploadFile) {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  console.log(resp)
+  loading.close()
+  if (resp.code == 10000) {
+    ElMessage.success({
+      message: resp.msg,
+      type: 'success',
+      duration: 1200
+    })
+    imageUrlUpd.value = "http://localhost:8080/upload/" + resp.data;
+    roomUpd.value.ravatar = resp.data
+
+
+  } else {
+    ElMessage.error({
+      message: resp.msg,
+      type: 'success',
+      duration: 1200
+    })
+  }
+
+}
 
 //删除客人信息
 function deleteByRid(rid) {
@@ -179,6 +292,8 @@ function roomUpdShow(rid) {
   roomApi.selectById(rid)
     .then(resp => {
       roomUpd.value = resp.data;
+
+      imageUrlUpd.value = `http://localhost:8080/upload/${roomUpd.value.ravatar}`
 
     })
 
@@ -247,6 +362,8 @@ function insert() {
 
         //清空数据
         roomAdd.value = ""
+        //清空数据
+        imageUrlAdd.value = ""
 
         //刷新表格
         selectAll()
@@ -272,4 +389,21 @@ function selectAll() {
 selectAll();
 </script>
 
-<style></style>
+<style scoped>
+.avatar-uploader,
+.avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+    border: 1px dotted #dcdfe6;
+    border-radius: 5px;
+}
+
+.el-icon.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    text-align: center;
+}
+</style>

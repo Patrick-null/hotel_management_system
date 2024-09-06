@@ -5,14 +5,14 @@
         <el-form :inline="true" class="demo-form-inline">
           <el-button type="success" style="margin-bottom: 10px;" @click="guestAddShow">添加</el-button>
           <el-form-item label="搜索框" style="float: right;">
-            <el-input placeholder="请输入需要搜索的姓名" clearable />
+            <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)"/>
           </el-form-item>
         </el-form>
 
         <el-table :data="guestList.list" border style="width: 100%">
-          <el-table-column  prop="gid" label="ID" width="40" />
-          <el-table-column  prop="gname" label="姓名" width="70px" />
-          <el-table-column  prop="ggender" label="性别" width="60px" />
+          <el-table-column prop="gid" label="ID" width="40" />
+          <el-table-column prop="gname" label="姓名" width="70px" />
+          <el-table-column prop="ggender" label="性别" width="60px" />
           <el-table-column prop="gno" label="身份证号" width="90px" show-overflow-tooltip />
           <el-table-column prop="gphone" label="手机号" width="80" show-overflow-tooltip />
           <el-table-column prop="gstart" label="入住时间" width="110px" show-overflow-tooltip />
@@ -39,9 +39,14 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-row class="row-bg" justify="center" style="margin-top: 20px;">
+      <el-pagination background layout="prev, pager, next" :total="guestList.total"
+        :page-size="guestList.pageSize" @change="selectAll" />
+    </el-row>
+
       </el-card>
     </el-col>
-
+    
   </el-row>
 
 
@@ -113,7 +118,7 @@
       </el-form-item>
 
       <el-form-item label="房间" label-width="20%">
-        <el-select :placeholder="guestUpd.room.rtype"  v-model="guestUpd.rid" style="width: 300px">
+        <el-select :placeholder="guestUpd.room.rtype" v-model="guestUpd.rid" style="width: 300px">
           <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype"
             :value="item.rid" />
         </el-select>
@@ -140,6 +145,9 @@ import { ElLoading } from 'element-plus'
 
 //所有住客信息
 const guestList = ref([])
+
+//搜索的实体
+const flag = ref('')
 
 //新增住客实体
 const guestAdd = ref({})
@@ -296,16 +304,18 @@ function guestAddShow() {
   guestAddShowWin.value = true;
 }
 
-function selectAll() {
-  guestApi.selectAll()
+function selectAll(pageNum) {
+  guestApi.selectAll(pageNum, flag.value)
     .then(resp => {
+      console.log(resp);
+      
       guestList.value = resp.data
 
 
 
     })
 }
-selectAll();
+selectAll(1);
 </script>
 
 <style></style>

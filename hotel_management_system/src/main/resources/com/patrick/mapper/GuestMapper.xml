@@ -32,8 +32,8 @@
     <select id="selectAll" resultMap="guestMap">
         SELECT * FROM `guest`
         <where>
-            <if test="gname!=null">
-                `gname` LIKE concat('%',#{game},'%')
+            <if test="flag!=null">
+                `gname` LIKE concat('%',#{flag},'%')
             </if>
         </where>
     </select>

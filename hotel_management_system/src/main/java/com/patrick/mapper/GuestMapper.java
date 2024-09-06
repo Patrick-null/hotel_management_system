@@ -22,7 +22,7 @@ public interface GuestMapper {
     void updateGstate(@Param("gstate") Integer gstate, @Param("gno") String gno);
 
     //查询所有住客
-    List<Guest> selectAll();
+    List<Guest> selectAll(String flag);
 
     //根据姓名查询住客
     List<Guest> selectByName(String gname);
