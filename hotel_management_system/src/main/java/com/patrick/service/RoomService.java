@@ -1,5 +1,6 @@
 package com.patrick.service;
 
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Room;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
@@ -16,7 +17,7 @@ public interface RoomService {
     Boolean update(Room room);
 
     //查询所有房间/根据房间类型
-    List<Room> selectAll(String rtype);
+    PageInfo<Room> selectAll(Integer pageNum, String flag);
 
     //根据房间号查询房间
     Room selectByRno(Integer rno);

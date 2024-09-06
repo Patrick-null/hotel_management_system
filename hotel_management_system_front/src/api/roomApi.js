@@ -14,8 +14,13 @@ const roomApi={
         return service.put('/admin/room',room)
     },
     //查询所有
-    selectAll(){
-        return service.get('/admin/room/selectAll')
+    selectAll(pageNum,flag){
+        return service.get('/admin/room/selectAll',{
+            params: {
+                pageNum,
+                flag
+            }
+          })
     },
     //根据ID查询
     selectById(rid){

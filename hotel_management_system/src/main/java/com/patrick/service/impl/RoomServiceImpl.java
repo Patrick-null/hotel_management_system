@@ -1,5 +1,7 @@
 package com.patrick.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Room;
 import com.patrick.mapper.RoomMapper;
 import com.patrick.service.RoomService;
@@ -28,8 +30,16 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> selectAll(String rtype) {
-        return roomMapper.selectAll(rtype);
+    public PageInfo<Room> selectAll(Integer pageNum,String flag) {
+        //导包
+        //设置分页信息
+        PageHelper.startPage(pageNum,6);
+        //查询
+        List<Room> roomList = roomMapper.selectAll(flag);
+        //创建封装查询结果
+        PageInfo<Room> roomListPageInfo = new PageInfo<>(roomList);
+        return roomListPageInfo;
+
     }
 
     @Override

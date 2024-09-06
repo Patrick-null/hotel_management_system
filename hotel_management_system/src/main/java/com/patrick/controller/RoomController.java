@@ -1,5 +1,6 @@
 package com.patrick.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.RespBean;
 import com.patrick.bean.Room;
 import com.patrick.service.RoomService;
@@ -42,8 +43,8 @@ public class RoomController {
     }
 
     @GetMapping("/selectAll")
-    public RespBean selectAll(String rtype){
-        List<Room> roomList = roomService.selectAll(rtype);
+    public RespBean selectAll(Integer pageNum,String flag){
+        PageInfo<Room> roomList = roomService.selectAll(pageNum,flag);
         return RespBean.ok("",roomList);
     }
 

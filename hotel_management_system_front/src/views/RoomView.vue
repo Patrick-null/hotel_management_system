@@ -5,11 +5,11 @@
         <el-form :inline="true" class="demo-form-inline">
           <el-button type="success" style="margin-bottom: 10px;" @click="roomAddShowWin = true">添加</el-button>
           <el-form-item label="搜索框" style="float: right;">
-            <el-input placeholder="请输入需要搜索的姓名" clearable />
+            <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)" />
           </el-form-item>
         </el-form>
 
-        <el-table :data="roomList" border style="width: 100%">
+        <el-table :data="roomList.list" border style="width: 100%">
           <el-table-column prop="rid" label="ID" width="50px" />
           <el-table-column prop="rno" label="房间号" width="80px" />
           <el-table-column prop="ravatar" label="房间照片" width="90px">
@@ -17,9 +17,9 @@
               <el-avatar shape="square" :size="50" :src="'http://localhost:8080/upload/' + scope.row.ravatar" />
             </template>
           </el-table-column>
-          <el-table-column prop="rtype" label="房间类型"  width="100px"/>
-          <el-table-column prop="rprice" label="价格" show-overflow-tooltip  width="75px"/>
-          <el-table-column label="状态"  width="75px">
+          <el-table-column prop="rtype" label="房间类型" width="100px" />
+          <el-table-column prop="rprice" label="价格" show-overflow-tooltip width="75px" />
+          <el-table-column label="状态" width="75px">
             <template #default="scope">
               <el-tag v-if="scope.row.rstate == 0" type="success" effect="dark">空闲</el-tag>
               <el-tag v-else-if="scope.row.rstate == 1" type="primary" effect="dark">已预订</el-tag>
@@ -67,6 +67,11 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-row class="row-bg" justify="center" style="margin-top: 20px;">
+          <el-pagination background layout="prev, pager, next" :total="roomList.total" :page-size="roomList.pageSize"
+            @change="selectAll" />
+        </el-row>
+
       </el-card>
     </el-col>
 
@@ -162,7 +167,13 @@ const roomUpdShowWin = ref(false)
 const spareRoomList = ref([])
 
 //所有房间的集合
-const roomList = ref([])
+const roomList = ref({
+  total: 0,
+  pageSize: 0
+})
+
+//搜索
+const flag = ref("")
 
 //新增上传头像的地址
 const imageUrlAdd = ref("")
@@ -379,31 +390,31 @@ function insert() {
 }
 
 //查询所有房间
-function selectAll() {
-  roomApi.selectAll()
+function selectAll(pageNum) {
+  roomApi.selectAll(pageNum, flag.value)
     .then(resp => {
       roomList.value = resp.data;
-      console.log(roomList.value);
+      console.log(roomList.value.list);
     })
 }
-selectAll();
+selectAll(1);
 </script>
 
 <style scoped>
 .avatar-uploader,
 .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-    border: 1px dotted #dcdfe6;
-    border-radius: 5px;
+  width: 178px;
+  height: 178px;
+  display: block;
+  border: 1px dotted #dcdfe6;
+  border-radius: 5px;
 }
 
 .el-icon.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    text-align: center;
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
 }
 </style>

@@ -19,7 +19,13 @@
         <collection property="guests" column="rid" ofType="guest" select="com.patrick.mapper.GuestMapper.selectByRid" />
     </resultMap>
     <select id="selectAll" resultMap="roomMap">
-        SELECT * FROM `room` ORDER BY `rstate` ASC
+        SELECT * FROM `room`
+        <where>
+            <if test="flag!=null">
+                `rtype` LIKE concat('%',#{flag},'%')
+            </if>
+        </where>
+                 ORDER BY `rstate` ASC
     </select>
 
 
