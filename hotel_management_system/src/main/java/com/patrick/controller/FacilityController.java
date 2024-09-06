@@ -2,6 +2,7 @@ package com.patrick.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Facility;
+import com.patrick.bean.Guest;
 import com.patrick.bean.RespBean;
 import com.patrick.service.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,4 +50,27 @@ public class FacilityController {
         PageInfo<Facility> facilityList = facilityService.selectAll(pageNum,flag);
         return RespBean.ok("",facilityList);
     }
+
+    @GetMapping("/selectAllT")
+    public RespBean selectAll(){
+        List<Facility> facilityList = facilityService.selectAll();
+        Facility[] facilities = (Facility[]) facilityList.toArray(new Facility[0]);
+
+        return RespBean.ok("",facilities);
+    }
+
+    @GetMapping("/selectById/{fid}")
+    public RespBean selectById(@PathVariable("fid") Integer fid){
+        Facility facility = facilityService.selectById(fid);
+        return RespBean.ok("修改成功",facility);
+    }
+
+    //将选择的设施添加到房间
+    @PostMapping("/insertFacilityAndRoom")
+    public RespBean insertFacilityAndRoom(@RequestBody @Validated List<Facility> facilitys, Integer rid){
+        facilitys.forEach(System.out::println);
+        System.out.println(rid);
+        return RespBean.ok("");
+    }
+
 }

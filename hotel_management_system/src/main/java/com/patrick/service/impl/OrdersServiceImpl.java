@@ -90,7 +90,7 @@ public class OrdersServiceImpl implements OrdersService {
     public PageInfo<Orders> selectAll(Integer pageNum,String flag) {
         //导包
         //设置分页信息
-        PageHelper.startPage(pageNum,8);
+        PageHelper.startPage(pageNum,5);
         //查询
         List<Orders> ordersList = ordersMapper.selectAll(flag);
         //创建封装查询结果

@@ -18,4 +18,8 @@
             </if>
         </where>
     </select>
+    <select id="selectById" resultType="facility">
+        select * from `facility` where `fid`=#{fid}
+    </select>
+
 </mapper>

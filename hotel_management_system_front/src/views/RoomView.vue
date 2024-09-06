@@ -13,13 +13,15 @@
               </el-form>
 
             </el-header>
-            <el-main style="height: 430px;">
+            <el-main style="height: 420px;">
               <el-table :data="roomList.list" border style="width: 100%">
                 <el-table-column prop="rid" label="ID" width="50px" />
                 <el-table-column prop="rno" label="房间号" width="80px" />
-                <el-table-column prop="ravatar" label="房间照片" width="90px">
+                <el-table-column prop="ravatar" label="房间照片" width="100px">
                   <template #default="scope">
-                    <el-avatar shape="square" :size="50" :src="'http://localhost:8080/upload/' + scope.row.ravatar" />
+
+                    <el-image style="width: 60px; height: 43px"
+                      :src="'http://localhost:8080/upload/' + scope.row.ravatar" contain />
                   </template>
                 </el-table-column>
                 <el-table-column prop="rtype" label="房间类型" width="100px" />
@@ -36,7 +38,7 @@
                 <el-table-column label="房间设施">
                   <template #default="scope">
                     <el-button type="primary" style="margin-left: 16px"
-                      @click="facilityAddShow(scope.row.facilityList)">房间设施</el-button>
+                      @click="facilityAddShow(scope.row.facilityList,scope.row.rid)">房间设施</el-button>
                   </template>
                 </el-table-column>
 
@@ -76,15 +78,57 @@
             </el-footer>
           </el-container>
         </div>
-
-
-
       </el-card>
     </el-col>
 
   </el-row>
 
-  <!-- 抽屉开始 -->
+  <!-- 新增抽屉开始 -->
+  <el-drawer v-model="drawer" direction="ltr" size="50%">
+    <template #header>
+      <h4>房间设施</h4>
+    </template>
+    <template #default>
+      <div>
+        
+          <el-card v-for="facility in facilityAllList" style="max-width: 480px">
+            
+              <div class="common-layout">
+                <el-container>
+                  <el-aside width="100px">
+                    <el-image style="width: 100px; height: 100px"
+                      :src="'http://localhost:8080/upload/' + facility.favatar" fit />
+                  </el-aside>
+                  <el-main>
+                    <el-descriptions direction="vertical" colum="1">
+                      <el-descriptions-item label="名称">{{ facility.fname }}</el-descriptions-item>
+                      <el-descriptions-item label="数量">{{ facility.fnum }}</el-descriptions-item>
+                      <el-descriptions-item label="价值">{{ facility.fvalue }}</el-descriptions-item>
+                    </el-descriptions>
+                  </el-main>
+                  <el-main>
+                    <el-checkbox-group v-model="facilityYes.value" size="large" >
+                      <el-checkbox-button :key="facility.fid" :value="facility" >
+                        选中
+                      </el-checkbox-button>
+                    </el-checkbox-group>
+                  </el-main>
+                </el-container>
+              </div>
+          </el-card>
+        
+      </div>
+    </template>
+
+    <template #footer>
+      <div style="flex: auto">
+        <el-button type="primary" @click="insertFacility()">添加设施</el-button>
+      </div>
+    </template>
+  </el-drawer>
+  <!-- 新增抽屉结束 -->
+
+  <!-- 查看抽屉开始 -->
   <el-drawer v-model="drawer2">
     <template #header>
       <h4>房间设施</h4>
@@ -95,16 +139,17 @@
           <div class="common-layout">
             <el-container>
               <el-aside width="100px">
-                 <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + facility.favatar" :fit="fit" />
-                </el-aside>
+                <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + facility.favatar"
+                  fit />
+              </el-aside>
               <el-main>
                 <el-descriptions direction="vertical" colum="1">
-                  <el-descriptions-item label="名称">{{facility.fname}}</el-descriptions-item>
-                  <el-descriptions-item label="数量">{{facility.fnum}}</el-descriptions-item>
-                  <el-descriptions-item label="价值">{{facility.fvalue}}</el-descriptions-item>
+                  <el-descriptions-item label="名称">{{ facility.fname }}</el-descriptions-item>
+                  <el-descriptions-item label="数量">{{ facility.fnum }}</el-descriptions-item>
+                  <el-descriptions-item label="价值">{{ facility.fvalue }}</el-descriptions-item>
                 </el-descriptions>
               </el-main>
-              
+
             </el-container>
           </div>
 
@@ -113,14 +158,16 @@
       </div>
     </template>
 
-    <template #footer>
+    <template #footer #default="scope">
       <div style="flex: auto">
-        <el-button type="primary" @click="confirmClick">添加设施</el-button>
+        <el-button type="primary" @click="facilityDialogShow()">添加设施</el-button>
+        
       </div>
     </template>
 
   </el-drawer>
 
+  <!-- 查看抽屉结束 -->
 
   <!-- 新增窗口开始 -->
   <el-dialog v-model="roomAddShowWin" title="添加房间" width="500">
@@ -137,7 +184,7 @@
       </el-form-item>
       <el-form-item label="头像" label-width="20%">
         <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic"
-          :show-file-list="false" :on-success="handleAvatarSuccessAdd" :before-upload="beforeAvatarUploadUpd">
+          :show-file-list="false" :on-success="handleAvatarSuccessAdd" :before-upload="beforeAvatarUploadAdd">
           <img v-if="imageUrlAdd" :src="imageUrlAdd" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
             <Plus />
@@ -198,11 +245,15 @@ import roomApi from '@/api/roomApi'
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
+import facilityApi from '@/api/facilityApi';
 
 
 
-//设施抽屉
+//查看设施抽屉
 const drawer2 = ref(false)
+//新增设施抽屉
+const drawer = ref(false)
+
 
 //新增房间实体
 const roomAdd = ref({})
@@ -223,6 +274,13 @@ const roomList = ref({
 
 //特定房间内设施列表
 const facilityList = ref({})
+//所有设施集合
+const facilityAllList = ref([])
+
+//选中设施实体
+const facilityYes = ref([])
+//需要添加设施的房间号
+const facilityRoom = ref('');
 
 //搜索
 const flag = ref("")
@@ -233,12 +291,36 @@ const imageUrlAdd = ref("")
 //修改上传头像的地址
 const imageUrlUpd = ref("")
 
-//获取显示抽屉并将获取特定房间内的设施
-function facilityAddShow(facility) {
-  facilityList.value = facility
-  console.log(facilityList.value);
 
+
+//获取显示抽屉并将获取特定房间内的设施
+function facilityAddShow(facility,rid) {
+  facilityList.value = facility
+  facilityRoom.value=rid
   drawer2.value = true
+}
+
+//获取所有设施
+function facilityAll() {
+  
+}
+
+//获取所有设施，并显示添加设施抽屉
+function facilityDialogShow() {
+  facilityApi.selectAllTwo()
+    .then(resp => {
+      facilityAllList.value = resp.data
+    })
+  //显示添加设施抽屉
+  drawer.value = true;
+}
+
+//上传添加的设施
+function insertFacility(){
+  facilityApi.insertFacilityAndRoom(facilityYes.value,facilityRoom.value)
+    .then(resp => {
+
+    })
 }
 
 
@@ -346,7 +428,7 @@ function deleteByRid(rid) {
         })
 
         //刷新表格
-        selectAll()
+        selectAll(1)
       } else {
         ElMessage({
           message: resp.msg,
@@ -398,7 +480,7 @@ function update() {
 
 
         //刷新表格
-        selectAll()
+        selectAll(1)
       } else {
         ElMessage({
           message: resp.msg,
@@ -438,7 +520,7 @@ function insert() {
         imageUrlAdd.value = ""
 
         //刷新表格
-        selectAll()
+        selectAll(1)
       } else {
         ElMessage({
           message: resp.msg,

@@ -17,6 +17,8 @@ public interface FacilityMapper {
     //查询所有设施
     List<Facility> selectAll(String flag);
 
-    //查询根据
+
+    //根据ID查询
+    Facility selectById(Integer fid);
 
 }

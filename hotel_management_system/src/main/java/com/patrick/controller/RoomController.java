@@ -64,4 +64,6 @@ public class RoomController {
         List<Room> roomList = roomService.selectByState(rstate);
         return RespBean.ok("",roomList);
     }
+
+
 }

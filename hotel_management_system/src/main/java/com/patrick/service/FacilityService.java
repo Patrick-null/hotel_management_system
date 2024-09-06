@@ -17,4 +17,9 @@ public interface FacilityService {
 
     //查询所有设施
     PageInfo<Facility> selectAll(Integer pageNum,String flag);
+    //查询所有设施
+    List<Facility> selectAll();
+
+    //根据ID查询设施
+    Facility selectById(Integer fid);
 }

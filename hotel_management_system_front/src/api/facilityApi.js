@@ -22,9 +22,21 @@ const facilityApi={
             }
           })
     },
+    //查询所有
+    selectAllTwo(){
+        return service.get('/admin/facility/selectAllT')
+    },
     //根据ID查询
     selectById(fid){
         return service.get(`/admin/facility/selectById/${fid}`)
+    },//把获取到的设施添加到房间
+    insertFacilityAndRoom(facilitys,fid){
+        return service.post('/admin/facility/insertFacilityAndRoom',{
+            params: {
+                facilitys,
+                fid
+            }
+          })
     }
 }
 
