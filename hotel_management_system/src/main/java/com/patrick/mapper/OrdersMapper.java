@@ -17,7 +17,7 @@ public interface OrdersMapper {
     int update(Orders orders);
 
     //查询所有订单
-    List<Orders> selectAll();
+    List<Orders> selectAll(String flag);
 
     //根据订单号查询订单
     Orders selectByOno(Integer ono);
@@ -25,4 +25,6 @@ public interface OrdersMapper {
 
     //根据ID查询订单
     Orders selectById(Integer oid);
+
+
 }

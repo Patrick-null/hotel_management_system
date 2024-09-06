@@ -19,6 +19,12 @@
     </resultMap>
     <select id="selectAll" resultMap="ordersMap">
         select * from `orders`
+                <where>
+                    <if test="flag!=null">
+                        `gno` LIKE concat('%',#{flag},'%')
+                            or  `ono` LIKE concat('%',#{flag},'%')
+                    </if>
+            </where>
     </select>
     <select id="selectByOno" resultType="orders">
         select * from `orders` where ono = #{ono}
@@ -26,4 +32,5 @@
     <select id="selectById" resultType="orders">
         select * from `orders` where oid=#{oid}
     </select>
+
 </mapper>

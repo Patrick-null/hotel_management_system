@@ -1,8 +1,11 @@
 package com.patrick.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Guest;
 import com.patrick.bean.Orders;
 import com.patrick.bean.Room;
+import com.patrick.excetion.MyException;
 import com.patrick.mapper.GuestMapper;
 import com.patrick.mapper.OrdersMapper;
 import com.patrick.mapper.RoomMapper;
@@ -46,7 +49,7 @@ public class OrdersServiceImpl implements OrdersService {
         Integer rid = orders.getGuest().getRid();
         Room room = roomMapper.selectById(rid);
         BigDecimal rprice = room.getRprice();
-        BigDecimal moneys = new BigDecimal(count).multiply(rprice);
+        BigDecimal moneys = rprice;
 
         //获取时间
         Date gend = orders.getGuest().getGend();
@@ -76,13 +79,24 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public Boolean update(Orders orders) {
+    public Boolean update(Orders orders) throws MyException {
+        if(ordersMapper.selectById(orders.getOid()).getOstate()==1){
+            throw new MyException("订单已完成不能修改");
+        }
         return ordersMapper.update(orders)==1;
     }
 
     @Override
-    public List<Orders> selectAll() {
-        return ordersMapper.selectAll();
+    public PageInfo<Orders> selectAll(Integer pageNum,String flag) {
+        //导包
+        //设置分页信息
+        PageHelper.startPage(pageNum,8);
+        //查询
+        List<Orders> ordersList = ordersMapper.selectAll(flag);
+        //创建封装查询结果
+        PageInfo<Orders> ordersListPageInfo = new PageInfo<>(ordersList);
+
+        return ordersListPageInfo;
     }
 
     @Override

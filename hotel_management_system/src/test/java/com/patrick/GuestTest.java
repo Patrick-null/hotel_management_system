@@ -36,11 +36,11 @@ public class GuestTest {
 
     @Test
     public void test03(){
-        System.out.println(ordersService.selectAll());
+        System.out.println(ordersService.selectAll(1,"1"));
     }
 
     @Test
     public void test04(){
-        System.out.println(ordersMapper.selectAll());
+        System.out.println(ordersMapper.selectAll("1"));
     }
 }

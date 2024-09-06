@@ -33,7 +33,7 @@ public class RoomServiceImpl implements RoomService {
     public PageInfo<Room> selectAll(Integer pageNum,String flag) {
         //导包
         //设置分页信息
-        PageHelper.startPage(pageNum,6);
+        PageHelper.startPage(pageNum,5);
         //查询
         List<Room> roomList = roomMapper.selectAll(flag);
         //创建封装查询结果

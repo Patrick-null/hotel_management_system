@@ -1,8 +1,10 @@
 package com.patrick.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Orders;
 import com.patrick.bean.RespBean;
 import com.patrick.bean.Room;
+import com.patrick.excetion.MyException;
 import com.patrick.service.OrdersService;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class OrdersController {
     }
 
     @PutMapping
-    public RespBean update(@RequestBody @Validated Orders orders){
+    public RespBean update(@RequestBody @Validated Orders orders) throws MyException {
         if (ordersService.update(orders)) {
             return RespBean.ok("修改成功");
         }else {
@@ -46,8 +48,8 @@ public class OrdersController {
     }
 
     @GetMapping("/selectAll")
-    public RespBean select(){
-        List<Orders> ordersList = ordersService.selectAll();
+    public RespBean select(Integer pageNum,String flag){
+        PageInfo<Orders> ordersList = ordersService.selectAll(pageNum,flag);
         return RespBean.ok("",ordersList);
     }
     @GetMapping("/selectById/{oid}")

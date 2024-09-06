@@ -1,39 +1,58 @@
 <template>
   <el-row>
     <el-col :span="24">
-      <el-card>
-        <el-form :inline="true" class="demo-form-inline">
-          <el-button type="success" style="margin-bottom: 10px;" @click="ordersAddShow">添加</el-button>
-          <el-form-item label="搜索框" style="float: right;">
-            <el-input placeholder="请输入需要搜索的姓名" clearable />
-          </el-form-item>
-        </el-form>
+      <el-card style="height: 550px;">
+        <div class="common-layout">
+          <el-container>
+            <el-header style="height: 30px;">
+              <el-form :inline="true" class="demo-form-inline">
+                <el-button type="success" style="margin-bottom: 10px;" @click="ordersAddShow">添加</el-button>
+                <el-form-item label="搜索框" style="float: right;">
+                  <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)" />
+                </el-form-item>
+              </el-form>
+            </el-header>
+            <el-main style="height: 430px;">
+              <el-table :data="ordersList.list" border style="width: 100%">
+                <el-table-column prop="oid" label="ID" width="40px"/>
+                <el-table-column prop="ono" label="订单编号" />
+                <el-table-column prop="guest.gname" label="下单人" />
+                <el-table-column prop="moneys" label="订单金额" />
+                <el-table-column prop="otime" label="下单时间" show-overflow-tooltip />
+                <el-table-column label="状态">
+                  <template #default="scope">
+                    <el-tag v-if="scope.row.ostate == 0" type="success" effect="dark">订单未使用</el-tag>
+                    <el-tag v-else-if="scope.row.ostate == 1" type="primary" effect="dark">订单完成</el-tag>
+                  </template>
+                </el-table-column>
 
-        <el-table :data="ordersList" border style="width: 100%">
-          <el-table-column prop="oid" label="ID" />
-          <el-table-column prop="ono" label="订单编号" />
-          <el-table-column prop="guest.gname" label="下单人" />
-          <el-table-column prop="moneys" label="订单金额" />
-          <el-table-column prop="otime" label="下单时间" show-overflow-tooltip />
-          <el-table-column label="状态">
-            <template #default="scope">
-              <el-tag v-if="scope.row.ostate == 0" type="success" effect="dark">订单未使用</el-tag>
-              <el-tag v-else-if="scope.row.ostate == 1" type="primary" effect="dark">订单完成</el-tag>
-            </template>
-          </el-table-column>
+                <el-table-column fixed="right" label="操作">
+                  <template #default="scope">
+                    <el-button size="small" type="success" @click="ordersUpdShow(scope.row.oid)">修改</el-button>
+                    <el-popconfirm confirm-button-text="使用" cancel-button-text="取消" title="你确认要使用吗?"
+                      @confirm="deleteByOid(scope.row.oid)" width="200px">
+                      <template #reference>
+                        <el-button size="small" type="danger">使用</el-button>
+                      </template>
+                    </el-popconfirm>
+                  </template>
+                </el-table-column>
 
-          <el-table-column fixed="right" label="操作">
-            <template #default="scope">
-              <el-button size="small" type="success" @click="ordersUpdShow(scope.row.oid)">修改</el-button>
-              <el-popconfirm confirm-button-text="使用" cancel-button-text="取消" title="你确认要使用吗?"
-                @confirm="deleteByOid(scope.row.oid)" width="200px">
-                <template #reference>
-                  <el-button size="small" type="danger">使用</el-button>
-                </template>
-              </el-popconfirm>
-            </template>
-          </el-table-column>
-        </el-table>
+
+              </el-table>
+            </el-main>
+            <el-footer>
+              <el-row class="row-bg" justify="center" style="margin-top: 20px;">
+                <el-pagination background layout="prev, pager, next" :total="ordersList.total"
+                  :page-size="ordersList.pageSize" @change="selectAll" />
+              </el-row>
+            </el-footer>
+          </el-container>
+        </div>
+
+
+
+
       </el-card>
     </el-col>
 
@@ -78,11 +97,11 @@
 
       <el-form-item label="订单人员" label-width="20%">
         <div class="flex gap-2">
-          <el-tag v-for="guest in guestList" :key="guest" closable >
-            {{ guest }}
+          <el-tag v-for="guest in guestList" :key="guest" closable>
+            {{ guest.gname }}
           </el-tag>
           <el-button class="button-new-tag" size="small" @click="guestAddShowWin = true">
-            + New Guest
+            添加住户
           </el-button>
         </div>
       </el-form-item>
@@ -99,33 +118,33 @@
 
   <!-- 新增多人窗口开始 -->
   <el-dialog v-model="guestAddShowWin" title="添加会员" width="500">
-        <el-form>
+    <el-form>
 
-            <el-form-item label="姓名" label-width="20%">
-                <el-input v-model="guestOne.gname" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <el-form-item label="性别" label-width="20%">
-                <el-radio-group v-model="guestOne.ggender">
-                    <el-radio-button label="男" value="男" />
-                    <el-radio-button label="女" value="女" />
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="身份证号" label-width="20%">
-                <el-input v-model="guestOne.gno" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <el-form-item label="联系方式" label-width="20%">
-                <el-input v-model="guestOne.gphone" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
+      <el-form-item label="姓名" label-width="20%">
+        <el-input v-model="guestOne.gname" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="性别" label-width="20%">
+        <el-radio-group v-model="guestOne.ggender">
+          <el-radio-button label="男" value="男" />
+          <el-radio-button label="女" value="女" />
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="身份证号" label-width="20%">
+        <el-input v-model="guestOne.gno" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="联系方式" label-width="20%">
+        <el-input v-model="guestOne.gphone" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
 
-        </el-form>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="guestAddShowWin = false">取消</el-button>
-                <el-button type="primary" @click="insertOne">确认</el-button>
-            </div>
-        </template>
-    </el-dialog>
-    <!-- 新增多人窗口结束 -->
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="guestAddShowWin = false">取消</el-button>
+        <el-button type="primary" @click="insertOne">确认</el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!-- 新增多人窗口结束 -->
 
 
 
@@ -171,34 +190,34 @@ const ordersAdd = ref({
   ono: '',
   gno: '',
   otime: '',
-  moneys:'',
+  moneys: '',
   guest: {},
   guests: [{}]
 })
 
 //下单人
 const guestBuy = ref({
-    gname: '',
-    gno: '',
-    ggender: '',
-    gphone: '',
-    gstart: '',
-    gend: '',
-    rid: ''
-  })
+  gname: '',
+  gno: '',
+  ggender: '',
+  gphone: '',
+  gstart: '',
+  gend: '',
+  rid: ''
+})
 //房间内多个人员
 let guestList = []
 
 //房间内的单个人员
 const guestOne = ref({
-    gname: '',
-    gno: '',
-    ggender: '',
-    gphone: '',
-    gstart: '',
-    gend: '',
-    rid: ''
-  })
+  gname: '',
+  gno: '',
+  ggender: '',
+  gphone: '',
+  gstart: '',
+  gend: '',
+  rid: ''
+})
 
 //显示添加订单窗口标识
 const ordersAddShowWin = ref(false)
@@ -212,19 +231,26 @@ const ordersUpdShowWin = ref(false)
 const spareRoomList = ref([])
 
 //所有订单的集合
-const ordersList = ref([])
+const ordersList = ref({
+  total: 0,
+  pageSize: 0
+})
+
+//搜索
+const flag = ref('')
+
 
 //添加住客
-function insertOne(){
-  guestOne.value.gstart=guestBuy.value.gstart
-  guestOne.value.gend=guestBuy.value.gend
-  guestOne.value.rid=guestBuy.value.rid
+function insertOne() {
+  guestOne.value.gstart = guestBuy.value.gstart
+  guestOne.value.gend = guestBuy.value.gend
+  guestOne.value.rid = guestBuy.value.rid
   guestList.push(guestOne.value)
 
   //数据清空
-  guestOne.value={}
+  guestOne.value = {}
   //关闭页面
-  guestAddShowWin.value=false
+  guestAddShowWin.value = false
 
 }
 
@@ -348,7 +374,7 @@ function insert() {
 
         //清空数据
         ordersAdd.value = ''
-        guestBuy.value=''
+        guestBuy.value = ''
 
 
         //刷新表格
@@ -407,15 +433,13 @@ function selectRoom(rstate) {
 
 
 //查询所有订单
-function selectAll() {
-  ordersApi.selectAll()
+function selectAll(pageNum) {
+  ordersApi.selectAll(pageNum, flag.value)
     .then(resp => {
       ordersList.value = resp.data
-      console.log(resp.data);
-      
     })
 }
-selectAll();
+selectAll(1);
 </script>
 
 <style></style>

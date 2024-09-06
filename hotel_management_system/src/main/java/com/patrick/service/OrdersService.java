@@ -1,6 +1,8 @@
 package com.patrick.service;
 
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Orders;
+import com.patrick.excetion.MyException;
 
 import java.util.List;
 
@@ -12,10 +14,10 @@ public interface OrdersService {
     Boolean delete(Integer oid);
 
     //修改订单
-    Boolean update(Orders orders);
+    Boolean update(Orders orders) throws MyException;
 
     //查询所有订单
-    List<Orders> selectAll();
+    PageInfo<Orders> selectAll(Integer pageNum, String flag);
 
     //根据订单号查询订单
     Orders selectByOno(Integer ono);

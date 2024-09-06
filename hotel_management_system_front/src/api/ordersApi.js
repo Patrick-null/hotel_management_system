@@ -14,8 +14,13 @@ const ordersApi={
         return service.put('/admin/orders',orders)
     },
     //查询所有
-    selectAll(){
-        return service.get('/admin/orders/selectAll')
+    selectAll(pageNum,flag){
+        return service.get('/admin/orders/selectAll',{
+            params: {
+                pageNum,
+                flag
+            }
+          })
     },
     //根据ID查询
     selectById(oid){

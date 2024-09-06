@@ -1,52 +1,66 @@
 <template>
   <el-row>
     <el-col :span="24">
-      <el-card>
-        <el-form :inline="true" class="demo-form-inline">
-          <el-button type="success" style="margin-bottom: 10px;" @click="guestAddShow">添加</el-button>
-          <el-form-item label="搜索框" style="float: right;">
-            <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)"/>
-          </el-form-item>
-        </el-form>
+      <el-card style="height: 550px;">
+        <div class="common-layout">
+          <el-container>
+            <el-header style="height: 30px;">
+              <el-form :inline="true" class="demo-form-inline">
+                <el-button type="success"  @click="guestAddShow">添加</el-button>
+                <el-form-item label="搜索框" style="float: right;">
+                  <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)" />
+                </el-form-item>
+              </el-form>
+            </el-header>
+            <el-main style="height: 430px;">
+              <el-table :data="guestList.list" border style="width: 100%">
+                <el-table-column prop="gid" label="ID" width="50" />
+                <el-table-column prop="gname" label="姓名" width="70px" />
+                <el-table-column prop="ggender" label="性别" width="60px" />
+                <el-table-column prop="gno" label="身份证号" width="90px" show-overflow-tooltip />
+                <el-table-column prop="gphone" label="手机号" width="80" show-overflow-tooltip />
+                <el-table-column prop="gstart" label="入住时间" width="110px" show-overflow-tooltip />
+                <el-table-column prop="gend" label="离店时间" width="110px" show-overflow-tooltip />
+                <el-table-column label="状态" width="90">
+                  <template #default="scope">
+                    <el-tag v-if="scope.row.gstate == 0" type="primary" effect="dark">未入住</el-tag>
+                    <el-tag v-else-if="scope.row.gstate == 1" type="success" effect="dark">已入住</el-tag>
+                    <el-tag v-else type="info" effect="dark">已离店</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="room.rno" label="房间号" width="70" />
 
-        <el-table :data="guestList.list" border style="width: 100%">
-          <el-table-column prop="gid" label="ID" width="40" />
-          <el-table-column prop="gname" label="姓名" width="70px" />
-          <el-table-column prop="ggender" label="性别" width="60px" />
-          <el-table-column prop="gno" label="身份证号" width="90px" show-overflow-tooltip />
-          <el-table-column prop="gphone" label="手机号" width="80" show-overflow-tooltip />
-          <el-table-column prop="gstart" label="入住时间" width="110px" show-overflow-tooltip />
-          <el-table-column prop="gend" label="离店时间" width="110px" show-overflow-tooltip />
-          <el-table-column label="状态" width="90">
-            <template #default="scope">
-              <el-tag v-if="scope.row.gstate == 0" type="primary" effect="dark">未入住</el-tag>
-              <el-tag v-else-if="scope.row.gstate == 1" type="success" effect="dark">已入住</el-tag>
-              <el-tag v-else type="info" effect="dark">已离店</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="room.rno" label="房间号" width="70" />
+                <el-table-column prop="room.rtype" label="房间类型" width="100" />
+                <el-table-column fixed="right" label="操作" width="140">
+                  <template #default="scope">
+                    <el-button size="small" type="success" @click="guestUpdShow(scope.row.gid)">修改</el-button>
+                    <el-popconfirm confirm-button-text="删除" cancel-button-text="取消" title="你确认要删除吗?" width="200px"
+                      @confirm="deleteByGid(scope.row.gid)">
+                      <template #reference>
+                        <el-button size="small" type="danger">删除</el-button>
+                      </template>
+                    </el-popconfirm>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-main>
 
-          <el-table-column prop="room.rtype" label="房间类型" width="100" />
-          <el-table-column fixed="right" label="操作" width="140">
-            <template #default="scope">
-              <el-button size="small" type="success" @click="guestUpdShow(scope.row.gid)">修改</el-button>
-              <el-popconfirm confirm-button-text="删除" cancel-button-text="取消" title="你确认要删除吗?" width="200px"
-                @confirm="deleteByGid(scope.row.gid)">
-                <template #reference>
-                  <el-button size="small" type="danger">删除</el-button>
-                </template>
-              </el-popconfirm>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-row class="row-bg" justify="center" style="margin-top: 20px;">
-      <el-pagination background layout="prev, pager, next" :total="guestList.total"
-        :page-size="guestList.pageSize" @change="selectAll" />
-    </el-row>
+            <el-footer>
+              <el-row class="row-bg" justify="center" style="margin-top: 20px;">
+                <el-pagination background layout="prev, pager, next" :total="guestList.total"
+                  :page-size="guestList.pageSize" @change="selectAll" />
+              </el-row>
+            </el-footer>
+          </el-container>
+        </div>
+
+
+
+
 
       </el-card>
     </el-col>
-    
+
   </el-row>
 
 
@@ -308,7 +322,7 @@ function selectAll(pageNum) {
   guestApi.selectAll(pageNum, flag.value)
     .then(resp => {
       console.log(resp);
-      
+
       guestList.value = resp.data
 
 
