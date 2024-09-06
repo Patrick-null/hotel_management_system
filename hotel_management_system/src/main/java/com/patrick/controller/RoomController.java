@@ -45,6 +45,7 @@ public class RoomController {
     @GetMapping("/selectAll")
     public RespBean selectAll(Integer pageNum,String flag){
         PageInfo<Room> roomList = roomService.selectAll(pageNum,flag);
+        roomList.getList().stream().forEach(System.out::println);
         return RespBean.ok("",roomList);
     }
 

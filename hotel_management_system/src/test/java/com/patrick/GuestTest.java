@@ -3,6 +3,7 @@ package com.patrick;
 
 import com.patrick.bean.Guest;
 import com.patrick.mapper.OrdersMapper;
+import com.patrick.mapper.RoomMapper;
 import com.patrick.service.GuestService;
 import com.patrick.service.OrdersService;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,13 @@ public class GuestTest {
     private OrdersService ordersService;
     @Autowired
     private OrdersMapper ordersMapper;
+    @Autowired
+    private RoomMapper roomMapper;
+
+    @Test
+    public void test05(){
+        roomMapper.selectAll("").stream().forEach(System.out::println);
+    }
     @Test
     public void test01(){
         Guest aa = new Guest();

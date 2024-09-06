@@ -32,27 +32,21 @@
                     <el-tag v-else="scope.row.rstate == 3" type="danger" effect="dark">未开放</el-tag>
                   </template>
                 </el-table-column>
+
                 <el-table-column label="房间设施">
                   <template #default="scope">
-                    <el-popover placement="right" :width="400" trigger="click">
-                      <template #reference>
-                        <el-button style="margin-right: 16px">房间设施</el-button>
-                      </template>
-                      <el-table :data="scope.row.guests">
-                        <el-table-column width="150" property="gname" label="设施名称" />
-                        <el-table-column width="100" property="gno" label="设施数量" />
-                        <el-table-column width="300" property="gphone" label="设施价值" />
-                      </el-table>
-                    </el-popover>
+                    <el-button type="primary" style="margin-left: 16px"
+                      @click="facilityAddShow(scope.row.facilityList)">房间设施</el-button>
                   </template>
                 </el-table-column>
+
                 <el-table-column label="房间人员">
                   <template #default="scope">
                     <el-popover placement="right" width="320px" trigger="hover">
                       <template #reference>
                         <el-button style="margin-right: 16px">房间人员</el-button>
                       </template>
-                      <el-table :data="scope.row.guests">
+                      <el-table :data="scope.row.guestList">
                         <el-table-column width="70px" property="gname" label="姓名" />
                         <el-table-column width="100px" property="gno" label="身份证号" />
                         <el-table-column width="120px" property="gphone" label="联系方式" />
@@ -89,6 +83,44 @@
     </el-col>
 
   </el-row>
+
+  <!-- 抽屉开始 -->
+  <el-drawer v-model="drawer2">
+    <template #header>
+      <h4>房间设施</h4>
+    </template>
+    <template #default>
+      <div>
+        <el-card v-for="facility in facilityList" style="max-width: 480px">
+          <div class="common-layout">
+            <el-container>
+              <el-aside width="100px">
+                 <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + facility.favatar" :fit="fit" />
+                </el-aside>
+              <el-main>
+                <el-descriptions direction="vertical" colum="1">
+                  <el-descriptions-item label="名称">{{facility.fname}}</el-descriptions-item>
+                  <el-descriptions-item label="数量">{{facility.fnum}}</el-descriptions-item>
+                  <el-descriptions-item label="价值">{{facility.fvalue}}</el-descriptions-item>
+                </el-descriptions>
+              </el-main>
+              
+            </el-container>
+          </div>
+
+
+        </el-card>
+      </div>
+    </template>
+
+    <template #footer>
+      <div style="flex: auto">
+        <el-button type="primary" @click="confirmClick">添加设施</el-button>
+      </div>
+    </template>
+
+  </el-drawer>
+
 
   <!-- 新增窗口开始 -->
   <el-dialog v-model="roomAddShowWin" title="添加房间" width="500">
@@ -168,6 +200,10 @@ import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 
 
+
+//设施抽屉
+const drawer2 = ref(false)
+
 //新增房间实体
 const roomAdd = ref({})
 //显示添加房间窗口标识
@@ -185,6 +221,9 @@ const roomList = ref({
   pageSize: 0
 })
 
+//特定房间内设施列表
+const facilityList = ref({})
+
 //搜索
 const flag = ref("")
 
@@ -193,6 +232,15 @@ const imageUrlAdd = ref("")
 
 //修改上传头像的地址
 const imageUrlUpd = ref("")
+
+//获取显示抽屉并将获取特定房间内的设施
+function facilityAddShow(facility) {
+  facilityList.value = facility
+  console.log(facilityList.value);
+
+  drawer2.value = true
+}
+
 
 
 //新增上传头像的前的函数

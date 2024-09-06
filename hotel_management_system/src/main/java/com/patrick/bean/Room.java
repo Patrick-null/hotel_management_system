@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 房间
@@ -33,5 +34,8 @@ public class Room {
     private Integer rstate;
 
     //房间人员
-    private Guest[] guests;
+    private List<Guest> guestList;
+
+    //房间设施
+    private List<Facility> facilityList;
 }

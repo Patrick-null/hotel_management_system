@@ -16,7 +16,9 @@
 
     <resultMap id="roomMap" type="room">
         <id column="rid" property="rid"/>
-        <collection property="guests" column="rid" ofType="guest" select="com.patrick.mapper.GuestMapper.selectByRid" />
+        <result column="rid" property="rid"/>
+        <collection property="guestList" column="rid" ofType="guest" select="com.patrick.mapper.GuestMapper.selectByRid" />
+        <collection property="facilityList" column="rid" ofType="facility" select="com.patrick.mapper.RoomMapper.selectByRoomFac" />
     </resultMap>
     <select id="selectAll" resultMap="roomMap">
         SELECT * FROM `room`
@@ -37,5 +39,17 @@
     </select>
     <select id="selectByState" resultType="room">
         SELECT * FROM `room` WHERE `rstate` = #{rstate}
+    </select>
+
+<!--    获取房间信息-->
+    <select id="selectByRoomFac" resultType="Facility">
+        SELECT
+            f.fid, f.fname, f.fnum,f.fvalue, f.favatar
+        FROM
+            facility f
+                JOIN
+            room_facility rf ON f.fid = rf.fid
+        WHERE
+            rf.rid = #{rid}
     </select>
 </mapper>

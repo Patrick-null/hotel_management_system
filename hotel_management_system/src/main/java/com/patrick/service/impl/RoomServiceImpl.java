@@ -36,6 +36,8 @@ public class RoomServiceImpl implements RoomService {
         PageHelper.startPage(pageNum,5);
         //查询
         List<Room> roomList = roomMapper.selectAll(flag);
+        System.out.println("service--------");
+        roomList.stream().forEach(System.out::println);
         //创建封装查询结果
         PageInfo<Room> roomListPageInfo = new PageInfo<>(roomList);
         return roomListPageInfo;
