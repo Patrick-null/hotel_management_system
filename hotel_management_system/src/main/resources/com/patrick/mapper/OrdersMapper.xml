@@ -29,7 +29,9 @@
     <select id="selectByOno" resultType="orders">
         select * from `orders` where ono = #{ono}
     </select>
-    <select id="selectById" resultType="orders">
+
+
+    <select id="selectById" resultMap="ordersMap">
         select * from `orders` where oid=#{oid}
     </select>
 

@@ -1,5 +1,6 @@
 package com.patrick.service;
 
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Facility;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public interface FacilityService {
     Boolean updata(Facility facility);
 
     //查询所有设施
-    List<Facility> selectAll();
+    PageInfo<Facility> selectAll(Integer pageNum,String flag);
 }

@@ -23,7 +23,7 @@
                 <el-table-column prop="gend" label="离店时间" width="110px" show-overflow-tooltip />
                 <el-table-column label="状态" width="90">
                   <template #default="scope">
-                    <el-tag v-if="scope.row.gstate == 0" type="primary" effect="dark">未入住</el-tag>
+                    <el-tag v-if="scope.row.gstate == 0" type="primary" effect="dark">已预约</el-tag>
                     <el-tag v-else-if="scope.row.gstate == 1" type="success" effect="dark">已入住</el-tag>
                     <el-tag v-else type="info" effect="dark">已离店</el-tag>
                   </template>

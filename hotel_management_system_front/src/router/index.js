@@ -7,6 +7,7 @@ import IndexView from '@/views/IndexView.vue'
 import DeptView from '@/views/DeptView.vue'
 import RoomView from '@/views/RoomView.vue'
 import MemberView from '@/views/MemberView.vue'
+import FacilityView from '@/views/FacilityView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,9 @@ const router = createRouter({
         },{
           path:'/member',
           component:MemberView
+        },{
+          path:'/facility',
+          component:FacilityView
         }
       ]
     },

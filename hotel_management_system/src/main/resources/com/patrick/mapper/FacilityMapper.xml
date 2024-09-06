@@ -2,15 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.patrick.mapper.FacilityMapper">
     <insert id="insert">
-        insert into `facility`(`fname`,`fnum`,`fvalue`) VALUES (#{fname},#{fnum},#{fvalue})
+        insert into `facility`(`fname`,`fnum`,`fvalue`,`favatar`) VALUES (#{fname},#{fnum},#{fvalue},#{favatar})
     </insert>
     <update id="updata">
-        update `facility` set `fname`=#{fname},`fnum`=#{fnum},`fvalue`=#{fvalue} where `fid`=#{fid}
+        update `facility` set `fname`=#{fname},`fnum`=#{fnum},`fvalue`=#{fvalue},`favatar`=#{favatar} where `fid`=#{fid}
     </update>
     <delete id="delete">
         delete from `facility` where `fid`=#{fid}
     </delete>
     <select id="selectAll" resultType="facility">
         select * from `facility`
+        <where>
+            <if test="flag!=null">
+                `fname` LIKE concat('%',#{flag},'%')
+            </if>
+        </where>
     </select>
 </mapper>

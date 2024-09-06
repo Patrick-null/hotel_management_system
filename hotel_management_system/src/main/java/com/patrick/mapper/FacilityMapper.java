@@ -15,7 +15,7 @@ public interface FacilityMapper {
     int updata(Facility facility);
 
     //查询所有设施
-    List<Facility> selectAll();
+    List<Facility> selectAll(String flag);
 
     //查询根据
 

@@ -24,4 +24,7 @@ public class Facility {
 
     //设施价值
     private BigDecimal fvalue;
+
+    //设施图片
+    private String favatar;
 }

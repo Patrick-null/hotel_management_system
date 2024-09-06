@@ -33,6 +33,7 @@
               <el-menu-item-group title="第二模块">
                 <el-menu-item index="/guest">宾客管理</el-menu-item>
                 <el-menu-item index="/room">房间管理</el-menu-item>
+                <el-menu-item index="/facility">房间设施</el-menu-item>
               </el-menu-item-group>
             </el-sub-menu>
             <el-menu-item index="/orders">

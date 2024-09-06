@@ -97,7 +97,7 @@
 
       <el-form-item label="订单人员" label-width="20%">
         <div class="flex gap-2">
-          <el-tag v-for="guest in guestList" :key="guest" closable>
+          <el-tag v-for="guest in guestListAddDy" :key="guest" closable>
             {{ guest.gname }}
           </el-tag>
           <el-button class="button-new-tag" size="small" @click="guestAddShowWin = true">
@@ -155,7 +155,7 @@
         <el-input v-model="ordersUpd.ono" disabled autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="下单人" label-width="20%">
-        <el-input v-model="ordersUpd.gid" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="ordersUpd.guest.gname" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="下单时间" label-width="20%">
         <el-date-picker type="datetime" disabled :placeholder="ordersUpd.otime" style="width: 300px;" />
@@ -205,8 +205,11 @@ const guestBuy = ref({
   gend: '',
   rid: ''
 })
-//房间内多个人员
-let guestList = []
+//房间内多个人员 - 静态
+let guestListAdd = []
+
+//房间内多个人员 - 动态
+const guestListAddDy = ref([])
 
 //房间内的单个人员
 const guestOne = ref({
@@ -224,7 +227,14 @@ const ordersAddShowWin = ref(false)
 //显示添加住客窗口标识
 const guestAddShowWin = ref(false)
 //修改订单实体
-const ordersUpd = ref({})
+const ordersUpd = ref({
+  ono: '',
+  gno: '',
+  otime: '',
+  moneys: '',
+  guest: {},
+  guests: [{}]
+})
 //修改订单窗口标识
 const ordersUpdShowWin = ref(false)
 //所有空余客房信息
@@ -245,7 +255,10 @@ function insertOne() {
   guestOne.value.gstart = guestBuy.value.gstart
   guestOne.value.gend = guestBuy.value.gend
   guestOne.value.rid = guestBuy.value.rid
-  guestList.push(guestOne.value)
+  guestListAdd.push(guestOne.value)
+  guestListAddDy.value = guestListAdd
+  console.log(guestListAddDy.value);
+  
 
   //数据清空
   guestOne.value = {}
@@ -331,6 +344,8 @@ function ordersUpdShow(oid) {
     .then(resp => {
       ordersUpd.value = resp.data
       console.log(resp);
+      console.log(ordersUpd.value);
+      
     })
   //显示窗口
   ordersUpdShowWin.value = true
@@ -352,10 +367,10 @@ function insert() {
 
 
   //将多人添加到房间中
-  ordersAdd.value.guests = guestList;
-  //guestList.length=0
+  ordersAdd.value.guests = guestListAdd;
+  guestListAdd.length=0
 
-  console.log(ordersAdd.value);
+  
 
   ordersApi.insert(ordersAdd.value)
     .then(resp => {
