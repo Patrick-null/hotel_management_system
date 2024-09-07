@@ -17,6 +17,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      redirect:'/index',
       children:[
         {
           path:'/guest',
@@ -48,12 +49,25 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component:LoginView
-   
-   
-      
+      component:LoginView     
     }
   ]
+})
+
+//导航守卫
+router.beforeEach((to,from)=>{
+  //to - 要访问的位置
+  //from - 起始位置
+  if(to.path = '/login'){
+    return true;
+  }else{
+    //判断是否sessionStorage中是否有token
+    if(!sessionStorage.getItem('token')){
+      return '/login'
+    }else{
+      return true;
+    }
+  }
 })
 
 export default router

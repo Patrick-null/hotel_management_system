@@ -1,5 +1,8 @@
 package com.patrick.service;
 
+import com.patrick.bean.Admin;
+import com.patrick.excetion.MyException;
+
 public interface AdminService {
-    Boolean login(String username,String password);
+    Admin login(String username, String password) throws MyException;
 }

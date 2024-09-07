@@ -12,7 +12,7 @@
                 </el-form-item>
               </el-form>
             </el-header>
-            <el-main style="height: 430px;">
+            <el-main style="height: 445px;">
               <el-table :data="guestList.list" border style="width: 100%">
                 <el-table-column prop="gid" label="ID" width="50" />
                 <el-table-column prop="gname" label="姓名" width="70px" />
@@ -324,8 +324,6 @@ function selectAll(pageNum) {
       console.log(resp);
 
       guestList.value = resp.data
-
-
 
     })
 }
