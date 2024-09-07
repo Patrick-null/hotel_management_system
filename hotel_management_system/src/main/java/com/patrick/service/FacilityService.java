@@ -22,4 +22,7 @@ public interface FacilityService {
 
     //根据ID查询设施
     Facility selectById(Integer fid);
+
+    //添加多个设施到房间
+    Boolean insertFacilityAndRoom(Integer[] fids,Integer rid);
 }

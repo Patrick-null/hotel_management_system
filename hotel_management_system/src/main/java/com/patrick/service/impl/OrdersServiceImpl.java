@@ -13,6 +13,7 @@ import com.patrick.service.GuestService;
 import com.patrick.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,13 +35,20 @@ public class OrdersServiceImpl implements OrdersService {
     private RoomMapper roomMapper;
 
     @Override
-    public Boolean insert(Orders orders) {
+    public Boolean insert(@Validated Orders orders) throws MyException {
         //记录有多少人
         int count=0;
         //获取orders中的住客信息
         for (Guest guest : orders.getGuests()){
             guestService.insert(guest);
             count++;
+        }
+        if(orders.getGuest().getGname()==null||
+                orders.getGuest().getGno()==null||
+                orders.getGuest().getGgender()==null||
+                orders.getGuest().getGphone()==null||
+                orders.getGuest().getRid()==null){
+            throw new MyException("请填写完整数据");
         }
         guestService.insert(orders.getGuest());
         count++;
@@ -79,7 +87,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public Boolean update(Orders orders) throws MyException {
+    public Boolean update(@Validated Orders orders) throws MyException {
         if(ordersMapper.selectById(orders.getOid()).getOstate()==1){
             throw new MyException("订单已完成不能修改");
         }

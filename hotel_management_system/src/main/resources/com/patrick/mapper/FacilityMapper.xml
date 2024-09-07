@@ -4,11 +4,21 @@
     <insert id="insert">
         insert into `facility`(`fname`,`fnum`,`fvalue`,`favatar`) VALUES (#{fname},#{fnum},#{fvalue},#{favatar})
     </insert>
+
+    <insert id="insertFacilityAndRoom">
+        insert into  `room_facility`(`rid`,`fid`) values (#{rid},#{fid})
+    </insert>
+
     <update id="updata">
         update `facility` set `fname`=#{fname},`fnum`=#{fnum},`fvalue`=#{fvalue},`favatar`=#{favatar} where `fid`=#{fid}
     </update>
+
     <delete id="delete">
         delete from `facility` where `fid`=#{fid}
+    </delete>
+
+    <delete id="deleteAllRoom">
+        delete from `room_facility` where `rid`=#{rid}
     </delete>
     <select id="selectAll" resultType="facility">
         select * from `facility`

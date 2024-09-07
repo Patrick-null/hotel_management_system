@@ -14,7 +14,7 @@
             </el-header>
             <el-main style="height: 430px;">
               <el-table :data="ordersList.list" border style="width: 100%">
-                <el-table-column prop="oid" label="ID" width="40px"/>
+                <el-table-column prop="oid" label="ID" width="40px" />
                 <el-table-column prop="ono" label="订单编号" />
                 <el-table-column prop="guest.gname" label="下单人" />
                 <el-table-column prop="moneys" label="订单金额" />
@@ -97,10 +97,11 @@
 
       <el-form-item label="订单人员" label-width="20%">
         <div class="flex gap-2">
+
           <el-tag v-for="guest in guestListAddDy" :key="guest" closable>
             {{ guest.gname }}
           </el-tag>
-          <el-button class="button-new-tag" size="small" @click="guestAddShowWin = true">
+          <el-button class="button-new-tag" size="small" @click="then(guestBuy.rid)">
             添加住户
           </el-button>
         </div>
@@ -118,8 +119,7 @@
 
   <!-- 新增多人窗口开始 -->
   <el-dialog v-model="guestAddShowWin" title="添加会员" width="500">
-    <el-form>
-
+    <el-form @submit.guestOne="submit">
       <el-form-item label="姓名" label-width="20%">
         <el-input v-model="guestOne.gname" autocomplete="off" style="width: 300px;" />
       </el-form-item>
@@ -182,6 +182,7 @@ import guestApi from '@/api/guestApi'
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
+import roomApi from '@/api/roomApi';
 
 //订单编号
 const orderNumber = ref()
@@ -249,21 +250,69 @@ const ordersList = ref({
 //搜索
 const flag = ref('')
 
+//判断人数是否超过房间人数
+const sum = ref()
+
+//判断是否超过房间人数
+function then(rid) {
+
+  roomApi.selectById(rid)
+    .then(resp => {
+      if (resp.data.rtype == '单人间') {
+
+        ElMessage.error("房间已满")
+
+      } else if (resp.data.rtype == '双人间') {
+        if (guestListAddDy.value.length < 1) {
+          guestAddShowWin.value = true;
+        } else {
+          ElMessage.error("房间已满")
+        }
+      } else if (resp.data.rtype == '豪华套房') {
+        if (guestListAddDy.value.length < 3) {
+          guestAddShowWin.value = true;
+        } else {
+          ElMessage.error("房间已满")
+        }
+      } else if (resp.data.rtype == '标准间') {
+        if (guestListAddDy.value.length < 2) {
+          guestAddShowWin.value = true;
+        } else {
+          ElMessage.error("房间已满")
+        }
+      } else if (resp.data.rtype == '总统套房') {
+        if (guestListAddDy.value.length < 3) {
+          guestAddShowWin.value = true;
+        } else {
+          ElMessage.error("房间已满")
+        }
+      }
+
+
+
+    })
+
+}
+
 
 //添加住客
 function insertOne() {
   guestOne.value.gstart = guestBuy.value.gstart
   guestOne.value.gend = guestBuy.value.gend
   guestOne.value.rid = guestBuy.value.rid
+
+  
   guestListAdd.push(guestOne.value)
   guestListAddDy.value = guestListAdd
   console.log(guestListAddDy.value);
-  
+
 
   //数据清空
   guestOne.value = {}
   //关闭页面
   guestAddShowWin.value = false
+
+
 
 }
 
@@ -345,7 +394,7 @@ function ordersUpdShow(oid) {
       ordersUpd.value = resp.data
       console.log(resp);
       console.log(ordersUpd.value);
-      
+
     })
   //显示窗口
   ordersUpdShowWin.value = true
@@ -368,9 +417,9 @@ function insert() {
 
   //将多人添加到房间中
   ordersAdd.value.guests = guestListAdd;
-  guestListAdd.length=0
+  guestListAdd.length = 0
 
-  
+
 
   ordersApi.insert(ordersAdd.value)
     .then(resp => {

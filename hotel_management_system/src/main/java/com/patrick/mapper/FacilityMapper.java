@@ -1,6 +1,7 @@
 package com.patrick.mapper;
 
 import com.patrick.bean.Facility;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,5 +21,11 @@ public interface FacilityMapper {
 
     //根据ID查询
     Facility selectById(Integer fid);
+
+    //添加设施到相应的房间
+    Integer insertFacilityAndRoom(@Param("fid")Integer fid,@Param("rid") Integer rid);
+
+    //删除该房间的所有设施
+    int deleteAllRoom(Integer rid);
 
 }

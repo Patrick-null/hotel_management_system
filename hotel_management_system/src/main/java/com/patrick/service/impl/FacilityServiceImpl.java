@@ -56,4 +56,18 @@ public class FacilityServiceImpl implements FacilityService {
     public Facility selectById(Integer fid) {
         return facilityMapper.selectById(fid);
     }
+
+    @Override
+    public Boolean insertFacilityAndRoom(Integer[] fids, Integer rid) {
+        //删除之前选的
+        facilityMapper.deleteAllRoom(rid);
+
+        //添加刚添加的
+        int count=0;
+        for (Integer fid:fids){
+            facilityMapper.insertFacilityAndRoom(fid,rid);
+            count++;
+        }
+        return fids.length == count;
+    }
 }

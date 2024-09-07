@@ -15,15 +15,14 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@Validated
 @RequestMapping("/admin/orders")
 public class OrdersController {
     @Autowired
     private OrdersService ordersService;
 
     @PostMapping
-    public RespBean insert(@RequestBody @Validated Orders orders){
-        System.out.println("================================");
-        System.out.println(orders);
+    public RespBean insert(@RequestBody @Validated Orders orders) throws MyException {
         if (ordersService.insert(orders)) {
             return RespBean.ok("添加成功");
         }

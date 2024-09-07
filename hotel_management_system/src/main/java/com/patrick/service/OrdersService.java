@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrdersService {
     //添加订单
-    Boolean insert(Orders orders);
+    Boolean insert(Orders orders) throws MyException;
 
     //删除订单
     Boolean delete(Integer oid);

@@ -84,7 +84,7 @@
   </el-row>
 
   <!-- 新增抽屉开始 -->
-  <el-drawer v-model="drawer" direction="ltr" size="50%">
+  <el-drawer v-model="drawer" direction="ltr" size="480px">
     <template #header>
       <h4>房间设施</h4>
     </template>
@@ -99,16 +99,16 @@
                     <el-image style="width: 100px; height: 100px"
                       :src="'http://localhost:8080/upload/' + facility.favatar" fit />
                   </el-aside>
-                  <el-main>
-                    <el-descriptions direction="vertical" colum="1">
+                  <el-main width="250px">
+                    <el-descriptions direction="horizontal" column="1">
                       <el-descriptions-item label="名称">{{ facility.fname }}</el-descriptions-item>
                       <el-descriptions-item label="数量">{{ facility.fnum }}</el-descriptions-item>
                       <el-descriptions-item label="价值">{{ facility.fvalue }}</el-descriptions-item>
                     </el-descriptions>
                   </el-main>
-                  <el-main>
-                    <el-checkbox-group v-model="facilityYes.value" size="large" >
-                      <el-checkbox-button :key="facility.fid" :value="facility" >
+                  <el-main style="float: right;">
+                    <el-checkbox-group  v-model="facilityYes" size="large" style="float: right;">
+                      <el-checkbox-button  :key="facility.fid" :value="facility.fid" >
                         选中
                       </el-checkbox-button>
                     </el-checkbox-group>
@@ -122,7 +122,7 @@
 
     <template #footer>
       <div style="flex: auto">
-        <el-button type="primary" @click="insertFacility()">添加设施</el-button>
+        <el-button type="primary" @click="insertFacility()">提交</el-button>
       </div>
     </template>
   </el-drawer>
@@ -138,12 +138,12 @@
         <el-card v-for="facility in facilityList" style="max-width: 480px">
           <div class="common-layout">
             <el-container>
-              <el-aside width="100px">
+              <el-aside width="100px" style="padding-top: 18px;">
                 <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + facility.favatar"
                   fit />
               </el-aside>
               <el-main>
-                <el-descriptions direction="vertical" colum="1">
+                <el-descriptions direction="horizontal" column="1">
                   <el-descriptions-item label="名称">{{ facility.fname }}</el-descriptions-item>
                   <el-descriptions-item label="数量">{{ facility.fnum }}</el-descriptions-item>
                   <el-descriptions-item label="价值">{{ facility.fvalue }}</el-descriptions-item>
@@ -249,6 +249,7 @@ import facilityApi from '@/api/facilityApi';
 
 
 
+
 //查看设施抽屉
 const drawer2 = ref(false)
 //新增设施抽屉
@@ -291,19 +292,30 @@ const imageUrlAdd = ref("")
 //修改上传头像的地址
 const imageUrlUpd = ref("")
 
+//需要修改房间的
 
 
 //获取显示抽屉并将获取特定房间内的设施
 function facilityAddShow(facility,rid) {
   facilityList.value = facility
   facilityRoom.value=rid
-  drawer2.value = true
+  facilityYes.value=facilityList.fid
+  let arr =new Array(facilityList.length)
+  
+  arr=facilityList.value
+
+  let arr2 =new Array(arr.length)
+  for (let index = 0; index < arr.length; index++) {
+    arr2[index] = arr[index].fid;
+      
+  }
+    
+    facilityYes.value=arr2
+
+    drawer2.value = true
 }
 
-//获取所有设施
-function facilityAll() {
-  
-}
+
 
 //获取所有设施，并显示添加设施抽屉
 function facilityDialogShow() {
@@ -317,8 +329,42 @@ function facilityDialogShow() {
 
 //上传添加的设施
 function insertFacility(){
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
   facilityApi.insertFacilityAndRoom(facilityYes.value,facilityRoom.value)
     .then(resp => {
+      loading.close()
+      selectAll(roomList.value.pageNum)
+      //判断是否成功
+      if (resp.code == 10000) {
+        //弹出消息
+        ElMessage({
+          message: resp.msg,
+          type: 'success',
+          duration: 1200
+        })
+        
+
+        //关闭添加设施抽屉
+         drawer.value = false;
+         drawer2.value= false;
+         facilityYes.value=''
+         
+         
+         
+         facilityRoom.value=''
+         
+        
+      } else {
+        ElMessage({
+          message: resp.msg,
+          type: 'error',
+          duration: 1200
+        });
+      }
 
     })
 }

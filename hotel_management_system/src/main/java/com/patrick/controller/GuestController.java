@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@Validated
 @RequestMapping("/admin/guest")
 public class GuestController {
 

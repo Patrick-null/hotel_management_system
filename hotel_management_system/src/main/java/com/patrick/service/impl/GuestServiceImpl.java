@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class GuestServiceImpl implements GuestService {
     //添加住客
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean insert(Guest guest) {
+    public Boolean insert( Guest guest) {
         roomMapper.updateRstate(1,guest.getRid());
         return guestMapper.insert(guest)==1;
     }
@@ -42,7 +44,7 @@ public class GuestServiceImpl implements GuestService {
     //修改住客
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean update(Guest guest) {
+    public Boolean update(@Validated Guest guest) {
         //将本来房间变成空闲
         //roomMapper.updateRstate();
 

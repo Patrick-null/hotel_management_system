@@ -30,13 +30,11 @@ const facilityApi={
     selectById(fid){
         return service.get(`/admin/facility/selectById/${fid}`)
     },//把获取到的设施添加到房间
-    insertFacilityAndRoom(facilitys,fid){
+    insertFacilityAndRoom(facilitys,rid){
         return service.post('/admin/facility/insertFacilityAndRoom',{
-            params: {
-                facilitys,
-                fid
-            }
-          })
+            facilitys, 
+            rid
+    })
     }
 }
 

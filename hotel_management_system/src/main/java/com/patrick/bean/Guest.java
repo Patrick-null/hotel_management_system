@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -19,15 +21,19 @@ public class Guest {
     private Integer gid;
 
     //住客姓名
+    @NotBlank(message = "姓名不能为空")
     private String gname;
 
     //性别
+    @NotBlank(message = "性别不能为空")
     private String ggender;
 
     //住客身份证号
+    @NotBlank(message = "身份证不能为空")
     private String gno;
 
     //住客联系方式
+    @NotBlank(message = "手机号")
     private String gphone;
 
     //住客入住时间
@@ -43,6 +49,7 @@ public class Guest {
 
 
     //住客入住房间
+    @NotNull(message = "房间不能为空")
     private Integer rid;
 
     private Room room;

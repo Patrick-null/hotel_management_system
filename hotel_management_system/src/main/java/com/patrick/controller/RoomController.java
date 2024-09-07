@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/admin/room")
+@Validated
 public class RoomController {
     @Autowired
     private RoomService roomService;
