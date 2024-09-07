@@ -1,5 +1,7 @@
 package com.patrick.mapper;
 
-public interface Admin {
+import com.patrick.bean.Admin;
+
+public interface AdminMapper {
     Admin login(String username);
 }
