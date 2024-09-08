@@ -2,15 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.patrick.mapper.InfoMapper">
     <insert id="insert">
-        insert into `info`(`name`,`no`,`phone`,`addr`,`aid`) VALUES (#{name},#{no},#{phone},#{addr},#{aid})
+        insert into `info`(`name`,`gender`,`no`,`phone`,`addr`,`aid`) VALUES (#{name},#{gender},#{no},#{phone},#{addr},#{aid})
     </insert>
     <update id="update">
-        update `info` set `name`=#{name},`no`=#{no},`phone`=#{phone},`addr`=#{addr} where `aid`=#{aid}
+        update `info` set `name`=#{name},`gender`=#{gender},`no`=#{no},`phone`=#{phone},`addr`=#{addr} where `aid`=#{aid}
     </update>
     <delete id="delete">
         delete from `info` where aid=#{aid}
     </delete>
     <select id="selectById" resultType="info">
         select * from `info` where aid=#{aid}
+    </select>
+    <select id="selectByUsername" resultType="info">
+        select * from `info` i ,`admin` a where i.aid=a.aid AND a.username=#{username}
     </select>
 </mapper>

@@ -29,4 +29,9 @@ public class InfoServiceImpl implements InfoService {
     public Info selectById(Integer aid) {
         return infoMapper.selectById(aid);
     }
+
+    @Override
+    public Info selectByUsername(String username) {
+        return infoMapper.selectByUsername(username);
+    }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 public class Info {
     private Integer id;
     private String name;
+    private String gender;
     private String no;
     private String phone;
     private String addr;

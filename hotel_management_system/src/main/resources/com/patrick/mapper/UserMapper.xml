@@ -9,4 +9,7 @@
     <select id="selectAll" resultMap="roomMap">
         select * from `room` where `rstate`="0"
     </select>
+    <select id="selectMyAll" resultType="com.patrick.bean.Orders">
+        SELECT * from `orders` o ,`info` i WHERE o.gno=i.no
+    </select>
 </mapper>

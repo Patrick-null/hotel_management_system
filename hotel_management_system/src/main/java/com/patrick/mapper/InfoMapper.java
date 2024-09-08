@@ -7,4 +7,5 @@ public interface InfoMapper {
     int delete(Integer id);
     int update(Info info);
     Info selectById(Integer aid);
+    Info selectByUsername(String username);
 }

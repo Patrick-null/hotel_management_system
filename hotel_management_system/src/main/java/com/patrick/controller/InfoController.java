@@ -48,4 +48,16 @@ public class InfoController {
         }
     }
 
+    @GetMapping("/selectByUsername/{username}")
+    public RespBean selectByUsername(@PathVariable("username") String username){
+        Info info = infoService.selectByUsername(username);
+        System.out.println(info);
+        if (info!=null) {
+            return RespBean.ok("",info);
+        }else {
+            return RespBean.error("");
+        }
+    }
+
+
 }

@@ -29,8 +29,8 @@ public class AdminController {
         Admin admin = adminService.login(username, password ,role);
 
         HashMap<String, Object> map = new HashMap<String,Object>();
+        map.put("aid",admin.getAid());
         map.put("username",admin.getUsername());
-        map.put("password",admin.getPassword());
         map.put("role",admin.getRole());
         map.put("admin",0);
         String jwt = JwtUtil.generateJwt(map);
@@ -45,8 +45,8 @@ public class AdminController {
         Admin admin = adminService.loginTwo(username, password,role);
 
         HashMap<String, Object> map = new HashMap<String,Object>();
+        map.put("aid",admin.getAid());
         map.put("username",admin.getUsername());
-        map.put("password",admin.getPassword());
         map.put("role",admin.getRole());
         map.put("admin",1);
         String jwt = JwtUtil.generateJwt(map);

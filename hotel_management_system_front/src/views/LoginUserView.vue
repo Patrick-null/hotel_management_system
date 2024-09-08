@@ -44,14 +44,15 @@ import router from '@/router';
 import { ElNotification } from 'element-plus'
 import service from '@/api';
 
+
+
+
 //登录实体
 const admin = ref({
     username: '',
     password: ''
 })
 
-//用户名
-const username = ref('')
 
 function login() {
     const loading = ElLoading.service({

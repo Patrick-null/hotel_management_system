@@ -7,4 +7,6 @@ public interface InfoService {
     Boolean delete(Integer aid);
     Boolean update(Info info);
     Info selectById(Integer aid);
+
+    Info selectByUsername(String username);
 }
