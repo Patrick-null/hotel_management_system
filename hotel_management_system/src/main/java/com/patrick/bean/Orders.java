@@ -23,7 +23,7 @@ public class Orders {
 
     //订单编号
     @NotNull(message = "订单号不能为空")
-    private Integer ono;
+    private String ono;
 
     @NotNull(message = "身份证不能为空")
     private String gno;

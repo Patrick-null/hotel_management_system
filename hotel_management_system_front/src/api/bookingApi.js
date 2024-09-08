@@ -10,6 +10,10 @@ const facilityApi={
                 flag
             }
           })
+    },
+    //订购房间
+    buyRoom(order){
+        return service.post('/user/buyRoom',order)
     }
 }
 

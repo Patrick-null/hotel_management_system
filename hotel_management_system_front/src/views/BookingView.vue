@@ -72,33 +72,80 @@
     </el-card>
 
     <el-form label-width="auto" style="max-width: 600px">
-      <el-form-item v-model="orderGuest.gname" style="width: 300px;" label="姓名" >
-        <el-input  />
+      <el-form-item label="姓名">
+        <el-input v-model="orderGuest.gname" autocomplete="off" style="width: 230px;" />
       </el-form-item>
-      <el-form-item v-model="orderGuest.gno" style="width: 300px;" label="身份证">
-        <el-input />
+      <el-form-item label="身份证">
+        <el-input v-model="orderGuest.gno" autocomplete="off" style="width: 230px;" />
       </el-form-item>
       <el-form-item label="性别">
-        <el-radio-group v-model="orderGuest.ggender" >
+        <el-radio-group v-model="orderGuest.ggender">
           <el-radio-button label="男" value="男" />
           <el-radio-button label="女" value="女" />
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-model="orderGuest.gphone" label="联系方式" style="width: 300px;">
-        <el-input />
+      <el-form-item label="联系方式">
+        <el-input v-model="orderGuest.gphone" autocomplete="off" style="width: 230px;" />
       </el-form-item>
-      <el-form-item  label="入住时间">
-        <el-date-picker v-model="orderGuest.gstart" type="date"  :size="size"  style="width: 230px;"/>
+      <el-form-item label="入住时间">
+        <el-date-picker v-model="orderGuest.gstart" type="date" :size="size" style="width: 230px;" />
       </el-form-item>
       <el-form-item label="退房时间">
-        <el-date-picker v-model="orderGuest.gend" type="date"  :size="size"  style="width: 230px;" />
+        <el-date-picker v-model="orderGuest.gend" type="date" :size="size" style="width: 230px;" />
+      </el-form-item>
+      <el-form-item label="订单人员">
+        <div class="flex gap-2">
+          <el-tag v-for="guest in thisOrdersList" :key="guest" closable @click="deleteMem(guest.mid)"
+            @close="handleClose(guest)">
+            {{ guest.gname }}
+          </el-tag>
+          <el-button class="button-new-tag" size="small" @click="memberAddShow">
+            + New Guest
+          </el-button>
+        </div>
       </el-form-item>
 
-
     </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="buyRoomShow = false">取消</el-button>
+        <el-button type="primary" @click="buyRoom">确认</el-button>
+      </div>
+    </template>
   </el-drawer>
 
   <!-- 订购房间窗口结束 -->
+
+  <!-- 新增窗口开始 -->
+  <el-dialog v-model="memberAddShowWin" title="添加会员" width="500">
+    <el-form>
+
+      <el-form-item label="姓名" label-width="20%">
+        <el-input v-model="guestOne.gname" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="性别" label-width="20%">
+        <el-radio-group v-model="guestOne.ggender">
+          <el-radio-button label="男" value="男" />
+          <el-radio-button label="女" value="女" />
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="身份证号" label-width="20%">
+        <el-input v-model="guestOne.gno" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="联系方式" label-width="20%">
+        <el-input v-model="guestOne.gphone" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="memberAddShowWin = false">取消</el-button>
+        <el-button type="primary" @click="insertMember">确认</el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!-- 新增窗口结束 -->
+
 </template>
 
 <script setup>
@@ -121,23 +168,121 @@ const thisRoom = ref({})
 //订购房间窗口标识
 const buyRoomShow = ref(false)
 
+//添加住客窗口标识
+const memberAddShowWin = ref(false)
+
 //订单人
 const orderGuest = ref({})
 
+//订单人员集合
+const thisOrdersList = ref([])
+
+//添加的住客实体
+const guestOne = ref({
+
+})
+
+//订单实体
+const order = ref({})
+
+
 //显示订购房间窗口
 function buyRoomShowWin(room) {
-
-  console.log(room);
-
   thisRoom.value = room
+  orderGuest.value.rid=room.rid
   buyRoomShow.value = true
+}
+
+//显示添加住客窗口
+function memberAddShow() {
+  if ((thisOrdersList.value.length + 2) > thisRoom.value.rnum) {
+    ElMessage.error("该房间已经满了")
+  }
+  memberAddShowWin.value = true
+}
+
+//添加住客
+function insertMember() {
+  const biaoshi = ref(true)
+  for (let index = 0; index < thisOrdersList.value.length; index++) {
+    if (guestOne.value.gno == thisOrdersList.value[index].gno) {
+      biaoshi.value = false
+    }
+
+  }
+  if (biaoshi.value == true) {
+    guestOne.value.gstart = orderGuest.value.gstart
+    guestOne.value.gend = orderGuest.value.gend
+    guestOne.value.rid = orderGuest.value.rid
+
+    thisOrdersList.value.push(guestOne.value)
+    guestOne.value = {};
+    memberAddShowWin.value = false
+    ElMessage({
+      message: "添加成功",
+      type: 'success',
+      duration: 1200
+    })
+ 
+  } else {
+    ElMessage.error({
+      message: "添加失败",
+      duration: 1200
+    })
+  }
 }
 
 //订购房间
 function buyRoom() {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+
+
+  order.value.guest = orderGuest.value
+  order.value.ono=getTime
+  //自动获取下单时间 存储到orders实体中
+  order.value.otime = nowDate(time); order.value.on
+  //将下单人的gno存到
+  order.value.gno = order.value.guest.gno;
+  //将下单人存到订单中
+  thisOrdersList.value.push(orderGuest.value)
+
+
+  //将多人添加到房间中
+  order.value.guests = thisOrdersList.value;
+  thisOrdersList.value = {}
+
+  bookingApi.buyRoom(order.value)
+    .then(resp => {
+      loading.close()
+      //判断是否成功
+      if (resp.code == 10000) {
+        //弹出消息
+        ElMessage({
+          message: resp.msg,
+          type: 'success',
+          duration: 1200
+        })
+        buyRoomShow.value=false
+        orderGuest.value={}
+
+        
+      } else {
+        ElMessage({
+          message: resp.msg,
+          type: 'error',
+          duration: 1200
+        });
+      }
+
+    })
 
 }
 
+//查询所有房间
 function selectAll(pageNum) {
   bookingApi.selectAllRoom(pageNum, flag.value)
     .then(resp => {
@@ -145,6 +290,22 @@ function selectAll(pageNum) {
     })
 }
 selectAll(1)
+
+
+//获取时间
+let getTime = new Date().getTime(); //获取到当前时间戳
+let time = new Date(getTime); //创建一个日期对象
+function nowDate(time) {
+  let year = time.getFullYear(); // 年
+  let month = (time.getMonth() + 1).toString().padStart(2, '0'); // 月
+  let date = time.getDate().toString().padStart(2, '0'); // 日
+  let hour = time.getHours().toString().padStart(2, '0'); // 时
+  let minute = time.getMinutes().toString().padStart(2, '0'); // 分
+  let second = time.getSeconds().toString().padStart(2, '0'); // 秒
+  return (
+    year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second
+  )
+}
 
 </script>
 <style scoped>

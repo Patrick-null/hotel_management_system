@@ -50,7 +50,7 @@ public class OrdersServiceImpl implements OrdersService {
                 orders.getGuest().getRid()==null){
             throw new MyException("请填写完整数据");
         }
-        guestService.insert(orders.getGuest());
+        //guestService.insert(orders.getGuest());
         count++;
         //获取房间金额
             //获取房间
