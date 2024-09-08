@@ -9,7 +9,7 @@
                 background: rgba(255, 255, 255, 0.5); /* 半透明白色背景 */">
                     <template #header>
                         <div class="card-header">
-                            <span>管理员登录</span>
+                            <span>用户登录</span>
                         </div>
                     </template>
                     <el-form ref="ruleFormRef" style="max-width: 240px; " status-icon label-width="auto"
@@ -27,7 +27,7 @@
                     <el-divider>
                         <span style="font-weight: 200; font-size: 12px;">管理员登录</span>
                     </el-divider>
-                    <el-button color="#626aef" @click="router.push('/loginUser')">用户登录</el-button>
+                    <el-button color="#626aef" @click="router.push('/login')">管理员登录</el-button>
                 </el-card>
             </el-col>
 
@@ -59,7 +59,7 @@ function login() {
         text: 'Loading',
         background: 'rgba(0, 0, 0, 0.7)',
     })
-    loginApi.login(admin.value)
+    loginApi.loginTwo(admin.value)
         .then(resp => {
             loading.close()
             if (resp.code == 10000) {
@@ -74,7 +74,7 @@ function login() {
                 sessionStorage.setItem('token', resp.data)
                 sessionStorage.setItem('username', admin.value.username)
                 //重定向到首页
-                router.push('/admin')
+                router.push('/user')
             } else {
                 ElMessage.error({
                     message: resp.msg,

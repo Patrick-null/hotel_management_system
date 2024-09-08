@@ -5,6 +5,7 @@ import com.patrick.bean.Guest;
 import com.patrick.mapper.AdminMapper;
 import com.patrick.mapper.OrdersMapper;
 import com.patrick.mapper.RoomMapper;
+import com.patrick.mapper.UserMapper;
 import com.patrick.service.AdminService;
 import com.patrick.service.GuestService;
 import com.patrick.service.OrdersService;
@@ -29,6 +30,12 @@ public class GuestTest {
     private AdminMapper adminMapper;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private UserMapper userMapper;
+    @Test
+    public void test08(){
+        userMapper.selectAll("").stream().forEach(System.out::println);
+    }
 
     @Test
     public  void test07(){

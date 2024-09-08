@@ -30,6 +30,7 @@ public class AdminInterceptorTwo implements HandlerInterceptor {
         //错误 - 拦截
         //对OPTIONS请求放行，不然会出现跨域问题
         if("OPTIONS".equals(request.getMethod().toUpperCase())) {
+            System.out.println("------------------------");
             return true;
         }
         //获取token
@@ -38,10 +39,11 @@ public class AdminInterceptorTwo implements HandlerInterceptor {
         try {
             //解析JWT，如果出现问题会抛出异常
             Map<String,Object> map = JwtUtil.parseJwtToMap(token);
-            if((Integer) map.get("role")!=1){
-                throw new MyException("您无权访问");
+            System.out.println("==================================");
+            System.out.println(map);
+            if((Integer)map.get("role")!=1&&(Integer)map.get("admin")!=1){
+                throw new MyException("无权访问");
             }
-            JwtUtil.parseJwtToMap(token);
             return true;
         } catch (SignatureVerificationException e) {
             respBean = RespBean.error("无效签名");
@@ -60,8 +62,4 @@ public class AdminInterceptorTwo implements HandlerInterceptor {
 
     }
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
-
-    }
 }

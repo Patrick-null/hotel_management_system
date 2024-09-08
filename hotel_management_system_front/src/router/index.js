@@ -88,7 +88,7 @@ const router = createRouter({
 router.beforeEach((to,from)=>{
   //to - 要访问的位置
   //from - 起始位置
-  if(to.path = '/login'){
+  if(to.path == '/login'|| to.path == '/loginUser'){
     return true;
   }else{
     //判断是否sessionStorage中是否有token

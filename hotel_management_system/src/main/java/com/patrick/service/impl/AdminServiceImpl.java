@@ -15,38 +15,44 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMapper adminMapper;
     @Override
-    public Admin login(String username,String password) throws MyException {
+    public Admin login(String username,String password,Integer role) throws MyException {
         Admin admin = adminMapper.login(username);
+
+
 
         if(admin == null){
             throw new MyException("没找到该用户，请确认后重新输入");
+        }
+        if(!role.equals(admin.getRole())){
+            throw new MyException("请按角色登录");
         }
         if(!admin.getPassword().equals(password)){
             throw new MyException("密码错误，请确认后重新输入");
         }
 
-        if(admin.getRole()!=0){
-            throw new MyException("您无权访问");
-        }
 
         return admin;
 
     }
 
     @Override
-    public Admin loginTwo(String username, String password) throws MyException {
+    public Admin loginTwo(String username, String password,Integer role) throws MyException {
         Admin admin = adminMapper.login(username);
+
 
         if(admin == null){
             throw new MyException("没找到该用户，请确认后重新输入");
         }
+
+        if(!(role.equals(admin.getRole()))){
+            throw new MyException("请按角色登录");
+        }
+
         if(!admin.getPassword().equals(password)){
             throw new MyException("密码错误，请确认后重新输入");
         }
 
-        if(admin.getRole()!=1){
-            throw new MyException("请按正确角色登录");
-        }
+
         return admin;
 
     }

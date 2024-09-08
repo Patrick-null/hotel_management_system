@@ -4,7 +4,7 @@
       <el-card style="height: 550px;">
         <div class="common-layout">
           <el-container>
-            <el-header style="height: 30px;">
+            <el-header >
               <el-form :inline="true" class="demo-form-inline">
                 <el-button type="success"  @click="guestAddShow">添加</el-button>
                 <el-form-item label="搜索框" style="float: right;">
@@ -12,7 +12,7 @@
                 </el-form-item>
               </el-form>
             </el-header>
-            <el-main style="height: 445px;">
+            <el-main  style="height: 380px;">
               <el-table :data="guestList.list" border style="width: 100%">
                 <el-table-column prop="gid" label="ID" width="50" />
                 <el-table-column prop="gname" label="姓名" width="70px" />

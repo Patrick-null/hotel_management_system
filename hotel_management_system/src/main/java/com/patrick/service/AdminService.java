@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminService {
-    Admin login(String username, String password) throws MyException;
-    Admin loginTwo(String username, String password) throws MyException;
+    Admin login(String username, String password,Integer role) throws MyException;
+    Admin loginTwo(String username, String password,Integer role) throws MyException;
 
     int getOrderVolume();
 

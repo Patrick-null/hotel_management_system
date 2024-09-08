@@ -10,7 +10,7 @@ const service = axios.create({
 
 service.interceptors.request.use(function (config) {
     //如果不是登录请求就要在请求头中添加token
-    if (!config.url.startsWith("/login")) {
+    if (!config.url.startsWith("/login") || !config.url.startsWith("/loginUser")) {
         config.headers.token = sessionStorage.getItem('token');
     }
     return config;

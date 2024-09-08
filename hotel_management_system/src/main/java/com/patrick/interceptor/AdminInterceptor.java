@@ -41,7 +41,8 @@ public class AdminInterceptor implements HandlerInterceptor {
             //解析JWT，如果出现问题会抛出异常
             JwtUtil.parseJwtToMap(token);
             Map<String,Object> map = JwtUtil.parseJwtToMap(token);
-            if((Integer) map.get("role")!=0){
+            System.out.println("123123123123123123123213123123");
+            if((Integer)map.get("role")!=0&&(Integer)map.get("admin")!=0){
                 throw new MyException("您无权访问");
             }
             return true;
@@ -59,11 +60,6 @@ public class AdminInterceptor implements HandlerInterceptor {
         response.setContentType("application/json;charset=utf-8");
         objectMapper.writeValue(response.getOutputStream(), respBean);
         return false;
-
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
 
     }
 }

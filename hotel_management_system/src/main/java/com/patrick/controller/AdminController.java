@@ -25,11 +25,14 @@ public class AdminController {
     //管理员登录
     @RequestMapping("/login")
     public RespBean login(String username, String password) throws MyException {
-        Admin admin = adminService.login(username, password);
+        Integer role=0;
+        Admin admin = adminService.login(username, password ,role);
 
         HashMap<String, Object> map = new HashMap<String,Object>();
         map.put("username",admin.getUsername());
+        map.put("password",admin.getPassword());
         map.put("role",admin.getRole());
+        map.put("admin",0);
         String jwt = JwtUtil.generateJwt(map);
 
         return RespBean.ok("登录成功",jwt);
@@ -38,11 +41,14 @@ public class AdminController {
     //用户登录
     @RequestMapping("/loginTwo")
     public RespBean loginTwo(String username, String password) throws MyException {
-        Admin admin = adminService.loginTwo(username, password);
+        Integer role=1;
+        Admin admin = adminService.loginTwo(username, password,role);
 
         HashMap<String, Object> map = new HashMap<String,Object>();
         map.put("username",admin.getUsername());
+        map.put("password",admin.getPassword());
         map.put("role",admin.getRole());
+        map.put("admin",1);
         String jwt = JwtUtil.generateJwt(map);
 
         return RespBean.ok("登录成功",jwt);
@@ -52,7 +58,7 @@ public class AdminController {
     public RespBean getUsername(String username, String password) throws MyException {
 
 
-        Admin admin = adminService.login(username, password);
+        //Admin admin = adminService.login(username, password);
 
 
         return RespBean.ok("登录成功",username);
