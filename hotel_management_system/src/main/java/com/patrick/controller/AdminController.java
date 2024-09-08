@@ -89,4 +89,6 @@ public class AdminController {
         return RespBean.ok("",allRtype);
     }
 
+
+
 }
