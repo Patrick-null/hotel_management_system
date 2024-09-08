@@ -65,4 +65,5 @@ public class GuestController {
         List<Guest> guestList = guestService.selectByName(gname);
         return RespBean.ok("",guestList);
     }
+
 }

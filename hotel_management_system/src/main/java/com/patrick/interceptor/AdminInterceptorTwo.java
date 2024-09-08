@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @Component
-public class AdminInterceptor implements HandlerInterceptor {
+public class AdminInterceptorTwo implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
@@ -27,9 +27,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 
         //判断浏览器发送过来的jwt是否正确
         //正确 - 放行
-
         //错误 - 拦截
-
         //对OPTIONS请求放行，不然会出现跨域问题
         if("OPTIONS".equals(request.getMethod().toUpperCase())) {
             return true;
@@ -39,11 +37,11 @@ public class AdminInterceptor implements HandlerInterceptor {
         RespBean respBean = null;
         try {
             //解析JWT，如果出现问题会抛出异常
-            JwtUtil.parseJwtToMap(token);
             Map<String,Object> map = JwtUtil.parseJwtToMap(token);
-            if((Integer) map.get("role")!=0){
+            if((Integer) map.get("role")!=1){
                 throw new MyException("您无权访问");
             }
+            JwtUtil.parseJwtToMap(token);
             return true;
         } catch (SignatureVerificationException e) {
             respBean = RespBean.error("无效签名");

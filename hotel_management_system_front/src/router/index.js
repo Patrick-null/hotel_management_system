@@ -9,12 +9,19 @@ import RoomView from '@/views/RoomView.vue'
 import MemberView from '@/views/MemberView.vue'
 import FacilityView from '@/views/FacilityView.vue'
 import LoginView from '@/views/LoginView.vue'
+import LoginTwoView from '@/views/LoginUserView.vue'
+import IndexViewUser from '@/views/IndexUserView.vue'
+import IndexUserView from '@/views/IndexUserView.vue'
+import LoginUserView from '@/views/LoginUserView.vue'
+import HomeUserView from '@/views/HomeUserView.vue'
+import OrdersUserView from '@/views/OrdersUserView.vue'
+import BookingView from '@/views/BookingView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/admin',
       name: 'home',
       component: HomeView,
       redirect:'/index',
@@ -50,7 +57,30 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component:LoginView     
-    }
+    },
+    {
+      path: '/loginUser',
+      name: 'loginUser',
+      component:LoginUserView
+    },
+    {
+      path: '/user',
+      name: 'homeUser',
+      component: HomeUserView,
+      redirect:'/indexUser',
+      children:[
+        {
+          path:'/booking',
+          component:BookingView
+        },{
+          path:'/indexUser',
+          component:IndexUserView
+        },{
+          path:'/ordersUser',
+          component:OrdersUserView,
+        }
+      ]
+    },
   ]
 })
 

@@ -4,6 +4,9 @@
     <select id="login" resultType="admin">
         SELECT * FROM `admin` where `username`=#{username}
     </select>
+    <select id="loginTwo" resultType="admin">
+        SELECT * FROM `admin` where `username`=#{username}
+    </select>
     <select id="getOrderVolume" resultType="integer">
         select count(*) from `orders`
     </select>
@@ -16,5 +19,6 @@
     <select id="getAllRtype" resultType="java.lang.String">
         select rtype from `room` group by `rtype`
     </select>
+
 
 </mapper>

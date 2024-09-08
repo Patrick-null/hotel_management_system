@@ -14,13 +14,21 @@ public class MainConfig implements WebMvcConfigurer {
 
     @Autowired
     private AdminInterceptor adminInterceptor;
+    @Autowired
+    private AdminInterceptor adminInterceptorTwo;
     @Value("${patrick.picdir}")
     private String picdir;
 
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/**");
+        registry.addInterceptor(adminInterceptor)
+                .addPathPatterns("/admin/**")
+                .excludePathPatterns("/user/**");
+
+        registry.addInterceptor(adminInterceptorTwo)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/admin/**");
     }
 
 
