@@ -183,7 +183,7 @@
         <el-input v-model="roomAdd.rprice" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="头像" label-width="20%">
-        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic"
+        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
           :show-file-list="false" :on-success="handleAvatarSuccessAdd" :before-upload="beforeAvatarUploadAdd">
           <img v-if="imageUrlAdd" :src="imageUrlAdd" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
@@ -216,7 +216,7 @@
         <el-input v-model="roomUpd.rprice" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="房间照片" label-width="20%">
-        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic"
+        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
           :show-file-list="false" :on-success="handleAvatarSuccessUpd" :before-upload="beforeAvatarUploadUpd">
           <img v-if="imageUrlUpd" :src="imageUrlUpd" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
@@ -242,7 +242,7 @@
 
 <script setup>
 import roomApi from '@/api/roomApi'
-import { ref, reactive } from 'vue';
+import { ref, reactive,computed } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import facilityApi from '@/api/facilityApi';
@@ -271,6 +271,13 @@ const spareRoomList = ref([])
 const roomList = ref({
   total: 0,
   pageSize: 0
+})
+
+const headers = computed(()=>{
+  let token = sessionStorage.getItem('token');
+  return {
+    token
+  }
 })
 
 //特定房间内设施列表

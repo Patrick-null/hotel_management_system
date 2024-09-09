@@ -22,6 +22,15 @@ service.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 service.interceptors.response.use(resp => {
+    //获取续期的jwt
+    let token = resp.headers.token;
+   
+    //将续期的jwt放到sessionStorage中
+    sessionStorage.setItem("token",token)
+    console.log(123);
+    
+    console.log(token);
+    
     return resp.data
 }, error => {
     if(error.status == 403){

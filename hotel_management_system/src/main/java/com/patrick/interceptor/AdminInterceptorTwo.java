@@ -39,11 +39,17 @@ public class AdminInterceptorTwo implements HandlerInterceptor {
         try {
             //解析JWT，如果出现问题会抛出异常
             Map<String,Object> map = JwtUtil.parseJwtToMap(token);
-            System.out.println("==================================");
-            System.out.println(map);
+
             if((Integer)map.get("role")!=1&&(Integer)map.get("admin")!=1){
                 throw new MyException("无权访问");
             }
+            //获取新的jwt
+            String jwt = JwtUtil.generateJwt(map);
+            //将jwt放到response的响应头
+            response.setHeader("token",jwt);
+            System.out.println("123123123123123123");
+
+            response.setHeader("Access-Control-Expose-Headers","token");
             return true;
         } catch (SignatureVerificationException e) {
             respBean = RespBean.error("无效签名");

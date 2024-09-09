@@ -8,10 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.patrick.bean.RespBean;
 import com.patrick.excetion.MyException;
 import com.patrick.utils.JwtUtil;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +17,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @Component
-public class AdminInterceptor implements HandlerInterceptor {
+public class AdminInterceptorPublic implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
@@ -27,11 +25,10 @@ public class AdminInterceptor implements HandlerInterceptor {
 
         //判断浏览器发送过来的jwt是否正确
         //正确 - 放行
-
         //错误 - 拦截
-
         //对OPTIONS请求放行，不然会出现跨域问题
         if("OPTIONS".equals(request.getMethod().toUpperCase())) {
+            System.out.println("------------------------");
             return true;
         }
         //获取token
@@ -39,15 +36,13 @@ public class AdminInterceptor implements HandlerInterceptor {
         RespBean respBean = null;
         try {
             //解析JWT，如果出现问题会抛出异常
-            JwtUtil.parseJwtToMap(token);
             Map<String,Object> map = JwtUtil.parseJwtToMap(token);
-            if((Integer)map.get("role")!=0&&(Integer)map.get("admin")!=0){
-                throw new MyException("您无权访问");
-            }
             //获取新的jwt
             String jwt = JwtUtil.generateJwt(map);
             //将jwt放到response的响应头
             response.setHeader("token",jwt);
+            System.out.println("123123123123123123");
+            
             response.setHeader("Access-Control-Expose-Headers","token");
             return true;
         } catch (SignatureVerificationException e) {
@@ -66,4 +61,5 @@ public class AdminInterceptor implements HandlerInterceptor {
         return false;
 
     }
+
 }
