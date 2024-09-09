@@ -25,6 +25,7 @@
         <where>
             <if test="flag!=null">
                 `fname` LIKE concat('%',#{flag},'%')
+                or  `fvalue` LIKE concat('%',#{flag},'%')
             </if>
         </where>
     </select>

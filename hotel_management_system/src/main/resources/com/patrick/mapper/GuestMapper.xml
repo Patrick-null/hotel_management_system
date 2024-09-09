@@ -34,6 +34,9 @@
         <where>
             <if test="flag!=null">
                 `gname` LIKE concat('%',#{flag},'%')
+        or  `gno` LIKE concat('%',#{flag},'%')
+                or  `gphone` LIKE concat('%',#{flag},'%')
+                or  `ggender` LIKE concat('%',#{flag},'%')
             </if>
         </where>
     </select>

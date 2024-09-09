@@ -12,7 +12,7 @@ public interface UserMapper {
     List<Room> selectAll(String flag);
 
     //查询我的订单
-    List<Orders> selectMyAll(String gno);
+    List<Orders> selectMyAll(@Param("gno") String gno,@Param("flag") String flag);
 
 
 }

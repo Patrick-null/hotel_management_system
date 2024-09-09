@@ -45,6 +45,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public List<Room> selectAll() {
+        List<Room> roomList = roomMapper.selectAll("");
+        return roomList;
+    }
+
+    @Override
     public Room selectByRno(Integer rno) {
         return roomMapper.selectByRno(rno);
     }

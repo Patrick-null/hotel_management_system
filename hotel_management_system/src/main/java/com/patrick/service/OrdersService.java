@@ -18,6 +18,7 @@ public interface OrdersService {
 
     //查询所有订单
     PageInfo<Orders> selectAll(Integer pageNum, String flag);
+    List<Orders> selectAll();
 
     //根据订单号查询订单
     Orders selectByOno(Integer ono);

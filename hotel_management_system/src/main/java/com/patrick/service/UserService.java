@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
     PageInfo<Room> selectAllRoom(Integer pageNum, String flag);
 
-    PageInfo<Orders> selectMyAll(Integer pageNum,String gno);
+    PageInfo<Orders> selectMyAll(Integer pageNum,String gno,String flag);
 
     boolean updatePwd(Admin userAndpwd) throws MyException;
 

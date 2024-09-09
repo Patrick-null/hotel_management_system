@@ -40,8 +40,8 @@ public class UserController {
 
     //查询我的订单
     @GetMapping("/selectMyAll")
-    public RespBean selectMyAll(Integer pageNum,String gno){
-        PageInfo<Orders> ordersPageInfo = userService.selectMyAll(pageNum, gno);
+    public RespBean selectMyAll(Integer pageNum,String gno,String flag){
+        PageInfo<Orders> ordersPageInfo = userService.selectMyAll(pageNum, gno,flag);
         return RespBean.ok("",ordersPageInfo);
     }
 

@@ -1,13 +1,21 @@
 package com.patrick.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.listener.PageReadListener;
 import com.github.pagehelper.PageInfo;
+import com.patrick.bean.Orders;
 import com.patrick.bean.RespBean;
 import com.patrick.bean.Room;
+import com.patrick.excetion.MyException;
 import com.patrick.service.RoomService;
+import com.sun.deploy.net.URLEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,6 +25,30 @@ import java.util.List;
 public class RoomController {
     @Autowired
     private RoomService roomService;
+
+
+
+    @GetMapping("/download")
+    public void download(HttpServletResponse response) throws IOException {
+        // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        String fileName = URLEncoder.encode("全部订单", "UTF-8").replaceAll("\\+", "%50");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+        EasyExcel.write(response.getOutputStream(), Room.class).sheet("模板").doWrite(roomService.selectAll());
+    }
+
+    @PostMapping("/upload")
+    public RespBean upload(MultipartFile file) throws IOException {
+        EasyExcel.read(file.getInputStream(), Room.class, new PageReadListener<Room>(dataList -> {
+            for (Room room : dataList) {
+                roomService.insert(room);
+            }
+        })).sheet().doRead();
+        return RespBean.ok("上传成功");
+    }
+
 
     @PostMapping
     public RespBean insert(@RequestBody @Validated Room room){

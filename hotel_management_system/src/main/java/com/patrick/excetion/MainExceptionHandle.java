@@ -17,6 +17,12 @@ public class MainExceptionHandle {
         return RespBean.error(e.getMessage());
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public RespBean runtimeexceptionHandler(RuntimeException e) {
+        e.printStackTrace();
+        return RespBean.error(e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public RespBean ExceptionHandle(Exception e){
         e.printStackTrace();

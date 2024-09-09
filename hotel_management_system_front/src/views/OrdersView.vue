@@ -7,10 +7,30 @@
             <el-header style="height: 30px;">
               <el-form :inline="true" class="demo-form-inline">
                 <el-button type="success" style="margin-bottom: 10px;" @click="ordersAddShow">添加</el-button>
+                <el-button type="primary" :icon="Download" style="margin-bottom: 10px;" @click="downloadOrder">下载</el-button>
                 <el-form-item label="搜索框" style="float: right;">
                   <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)" />
                 </el-form-item>
               </el-form>
+              <!-- <el-form :inline="true" class="demo-form-inline">
+                <el-form-item>
+                  
+                  <el-upload :on-success="uploadOrders" action="http://localhost:8080/admin/orders/upload"
+                    :headers="headers" method="post" name="file" list-type="none" :show-file-list="false">
+                    <el-button type="warning" :icon="UploadFilled" circle>
+                      <el-icon>
+                        <Upload />
+                      </el-icon>
+                    </el-button>
+                  </el-upload>
+                </el-form-item>
+                <el-form-item style="float: right;margin-right: 80px;">
+                  <el-input v-model="sname" placeholder="请输入姓名" clearable @input="selectByPage(1)"
+                    style="width: 250px;" />
+                  <el-input v-model="sage" placeholder="请输入年龄" clearable @input="selectByPage(1)"
+                    style="width: 250px;" />
+                </el-form-item>
+              </el-form> -->
             </el-header>
             <el-main style="height: 430px;">
               <el-table :data="ordersList.list" border style="width: 100%">
@@ -301,7 +321,7 @@ function insertOne() {
   guestOne.value.gend = guestBuy.value.gend
   guestOne.value.rid = guestBuy.value.rid
 
-  
+
   guestListAdd.push(guestOne.value)
   guestListAddDy.value = guestListAdd
   console.log(guestListAddDy.value);
@@ -491,7 +511,37 @@ function selectRoom(rstate) {
     .then(resp => {
       spareRoomList.value = resp.data
     })
+
 }
+
+const headers = reactive({
+  token: sessionStorage.getItem('token')
+});
+
+//下载
+function downloadOrder() {
+    ordersApi.download()
+      .then(resp => {
+        let blob = new Blob([resp], { type: 'application/xlsx' });
+        let url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = "全部订单.xlsx";
+        link.click();
+        URL.revokeObjectURL(url);
+      })
+  }
+
+  //上传
+  function uploadOrders(response) {
+    if (response.code == 10000) {
+      selectByPage(1);
+      ElMessage.success("上传成功");
+    } else {
+      ElMessage.error(response.msg);
+    }
+
+  }
 
 
 

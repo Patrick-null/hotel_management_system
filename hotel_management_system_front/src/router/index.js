@@ -6,7 +6,7 @@ import EmployeeView from '@/views/EmployeeView.vue'
 import IndexView from '@/views/IndexView.vue'
 import DeptView from '@/views/DeptView.vue'
 import RoomView from '@/views/RoomView.vue'
-import MemberView from '@/views/MemberView.vue'
+
 import FacilityView from '@/views/FacilityView.vue'
 import LoginView from '@/views/LoginView.vue'
 import LoginTwoView from '@/views/LoginUserView.vue'
@@ -44,9 +44,6 @@ const router = createRouter({
         },{
           path:'/room',
           component:RoomView
-        },{
-          path:'/member',
-          component:MemberView
         },{
           path:'/facility',
           component:FacilityView

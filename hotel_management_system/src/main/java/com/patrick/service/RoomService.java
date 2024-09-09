@@ -19,6 +19,8 @@ public interface RoomService {
     //查询所有房间/根据房间类型
     PageInfo<Room> selectAll(Integer pageNum, String flag);
 
+    List<Room> selectAll();
+
     //根据房间号查询房间
     Room selectByRno(Integer rno);
 

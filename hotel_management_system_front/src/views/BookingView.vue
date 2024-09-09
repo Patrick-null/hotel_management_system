@@ -4,7 +4,7 @@
     <el-container>
       <el-header style="padding: 0;">
         <el-card>
-
+          <el-input v-model="flag" style="width: 240px;float:right;" placeholder="搜索" @input="selectAll(1)"/>
         </el-card>
       </el-header>
       <el-main style=" padding: 0;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)">
@@ -22,8 +22,8 @@
                   <el-main width="250px">
                     <el-descriptions direction="horizontal">
                       <el-descriptions-item label="名称">{{ room.rno }}</el-descriptions-item>
-                      <el-descriptions-item label="数量">{{ room.rtype }}</el-descriptions-item>
-                      <el-descriptions-item label="价值">{{ room.rprice }}</el-descriptions-item>
+                      <el-descriptions-item label="类型">{{ room.rtype }}</el-descriptions-item>
+                      <el-descriptions-item label="价格">{{ room.rprice }}</el-descriptions-item>
                     </el-descriptions>
                   </el-main>
                   <el-main style="float: right;">
@@ -155,6 +155,9 @@ import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import facilityApi from '@/api/facilityApi'
 import infoApi from '@/api/infoApi';
+
+
+
 
 //个人信息实体
 const info = ref({

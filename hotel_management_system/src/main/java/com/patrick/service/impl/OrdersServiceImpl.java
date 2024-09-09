@@ -112,6 +112,14 @@ public class OrdersServiceImpl implements OrdersService {
 
         return ordersListPageInfo;
     }
+    @Override
+    public List<Orders> selectAll() {
+
+        List<Orders> orders = ordersMapper.selectAll("");
+
+
+        return orders;
+    }
 
     @Override
     public Orders selectByOno(Integer ono) {

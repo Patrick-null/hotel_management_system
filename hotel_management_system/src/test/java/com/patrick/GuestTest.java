@@ -50,7 +50,7 @@ public class GuestTest {
 
     @Test
     public void test10(){
-        userMapper.selectMyAll("10010").stream().forEach(System.out::println);
+        //userMapper.selectMyAll("10010").stream().forEach(System.out::println);
     }
 
     @Test

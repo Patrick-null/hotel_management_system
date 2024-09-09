@@ -37,12 +37,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo<Orders> selectMyAll(Integer pageNum,String gno) {
+    public PageInfo<Orders> selectMyAll(Integer pageNum,String gno,String flag) {
         //导包
         //设置分页信息
         PageHelper.startPage(pageNum,5);
         //查询
-        List<Orders> ordersList = userMapper.selectMyAll(gno);
+        List<Orders> ordersList = userMapper.selectMyAll(gno,flag);
 
         System.out.println("1231231231");
         ordersList.stream().forEach(System.out::println);

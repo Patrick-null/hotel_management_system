@@ -29,6 +29,12 @@ const ordersApi={
     //查询所有空房间
     selectByStateSpareRoom(rstate){
         return service.get(`/admin/orders/selectByState/${rstate}`)
+    },
+    download(){
+        return service.get('/admin/orders/download',{
+            
+            responseType:'blob'
+        })
     }
 }
 

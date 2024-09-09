@@ -8,7 +8,15 @@
     </resultMap>
 
     <select id="selectAll" resultMap="roomMap">
-        select * from `room` where `rstate`="0"
+        select * from `room`
+        <where>
+             `rstate`='0'
+                 <if test="flag!=null">
+                   and  `rno` LIKE concat('%',#{flag},'%')
+                   or `rtype` LIKE concat('%',#{flag},'%')
+                     or `rprice` LIKE concat('%',#{flag},'%')
+                 </if>
+        </where>
     </select>
 
     <!--<resultMap id="orderMy" type="orders">-->
@@ -31,6 +39,12 @@
 
     </resultMap>
     <select id="selectMyAll" resultMap="orderMy">
-        select * from `orders` where `gno`=#{gno}
+        select * from `orders`
+        <where>
+            `gno`=#{gno}
+            <if test="flag!=null">
+                and `ono` LIKE concat('%',#{flag},'%')
+            </if>
+        </where>
     </select>
 </mapper>

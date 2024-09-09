@@ -1,5 +1,9 @@
 package com.patrick.bean;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
@@ -18,34 +22,47 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Orders {
-
+    @ExcelProperty("订单id")
     private Integer oid;
 
+
+
     //订单编号
+    @ExcelProperty("订单编号")
     @NotNull(message = "订单号不能为空")
     private String ono;
 
+    @ExcelProperty("身份证号")
     @NotNull(message = "身份证不能为空")
     private String gno;
 
+    @ExcelProperty("房间id")
     private Integer rid;
 
     //下单时间
-
+    @ExcelProperty("下单时间")
+    @DateTimeFormat("yyyy-MM-dd HH:mm:ss")
+    @ColumnWidth(30)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date otime;
 
+    @ExcelProperty("订单金额")
     private BigDecimal moneys;
 
     //下单人员
+    @ExcelIgnore
     @NotNull(message = "数据不能为空")
     private Guest guest;
 
     //住客人员
+    @ExcelIgnore
     private Guest[] guests;
 
     //是否已入住
+    @ExcelIgnore
     private Integer ostate;
 
+    @ExcelIgnore
     private Room room;
+
 }

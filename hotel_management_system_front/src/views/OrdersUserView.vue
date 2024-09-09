@@ -1,16 +1,16 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header style="padding: 0;">
+      <el-header style="padding: 0; ">
         <el-card>
-
+          <el-input v-model="flag" style="width: 240px;float:right;" placeholder="搜索" @input="selectMyAll(1)"/>
         </el-card>
       </el-header>
       <el-main style=" padding: 0;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)">
         <el-card style="height: 452px;">
           <ul class="infinite-list" style="overflow: auto">
             <el-card v-for="order in myAllOrders.list" :key="order.oid">
-             
+
               <div class="common-layout">
                 <el-container>
                   <el-aside width="100px">
@@ -20,8 +20,9 @@
                   <el-main width="250px">
                     <el-descriptions direction="horizontal">
                       <el-descriptions-item label="订单编号">{{ order.ono }}</el-descriptions-item>
-                      <el-descriptions-item label="订单人">{{ admin.info.name }}</el-descriptions-item>
+                      
                       <el-descriptions-item label="订单时间">{{ order.otime }}</el-descriptions-item>
+                      <el-descriptions-item label="订单金额">{{ order.moneys }}</el-descriptions-item>
                       <el-descriptions-item label="房间类型">{{ order.room.rtype }}</el-descriptions-item>
                       <el-descriptions-item label="房间人员">
                         <el-popover placement="right" :width="400" trigger="click">
@@ -43,21 +44,21 @@
                     </el-descriptions>
                   </el-main>
                   <el-main style="float: right;">
-                    
+
                     <el-checkbox-group size="large" style="float: right;">
                       <el-popconfirm confirm-button-text="使用" cancel-button-text="取消" title="你确认要使用吗?" width="200px"
-                      @confirm="useOrder(order.oid)">
-                      <template #reference>
-                        <el-button size="small" type="danger">使用</el-button>
-                      </template>
-                    </el-popconfirm>
+                        @confirm="useOrder(order.oid)">
+                        <template #reference>
+                          <el-button size="small" type="danger">使用</el-button>
+                        </template>
+                      </el-popconfirm>
                     </el-checkbox-group>
-                  
+
                   </el-main>
                 </el-container>
 
               </div>
-            
+
             </el-card>
 
           </ul>
@@ -91,38 +92,39 @@ const admin = ref({
     addr: ''
   }
 })
+const flag = ref("")
 
 const info = ref({})
 
 //用户使用订单
-function useOrder(oid){
+function useOrder(oid) {
   const loading = ElLoading.service({
-        lock: true,
-        text: 'Loading',
-        background: 'rgba(0, 0, 0, 0.7)',
-    })
-    bookingApi.useOrder(oid)
-      .then(resp => {
-            loading.close()
-            if (resp.code == 10000) {
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  bookingApi.useOrder(oid)
+    .then(resp => {
+      loading.close()
+      if (resp.code == 10000) {
 
-                ElNotification({
-                    title: resp.msg,
-                    message: '使用成功',
-                    type: 'success',
-                })
+        ElNotification({
+          title: resp.msg,
+          message: '使用成功',
+          type: 'success',
+        })
 
-               
-                selectMyAll(myAllOrders.value.pageNum)
-            } else {
-                ElMessage.error({
-                    message: resp.msg,
-                    type: 'success',
-                    duration: 1200
-                })
-            }
-        }
-      )
+
+        selectMyAll(myAllOrders.value.pageNum)
+      } else {
+        ElMessage.error({
+          message: resp.msg,
+          type: 'success',
+          duration: 1200
+        })
+      }
+    }
+    )
 }
 
 
@@ -144,12 +146,12 @@ selectUserInfo()
 const myAllOrders = ref({})
 
 function selectMyAll(pageNum) {
-  bookingApi.selectMyAll(pageNum, info.value.no)
+  bookingApi.selectMyAll(pageNum, info.value.no,flag.value)
     .then(resp => {
       console.log(resp.data);
       myAllOrders.value = resp.data
       console.log(myAllOrders.value);
-      
+
     })
 }
 
@@ -158,7 +160,6 @@ function selectMyAll(pageNum) {
 </script>
 
 <style scoped>
-
 .infinite-list {
   height: 410px;
   padding: 0;

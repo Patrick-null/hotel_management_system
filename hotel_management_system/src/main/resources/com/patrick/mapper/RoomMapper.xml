@@ -25,6 +25,8 @@
         <where>
             <if test="flag!=null">
                 `rtype` LIKE concat('%',#{flag},'%')
+                or  `rno` LIKE concat('%',#{flag},'%')
+                or  `rprice` LIKE concat('%',#{flag},'%')
             </if>
         </where>
                  ORDER BY `rstate` ASC

@@ -46,12 +46,6 @@
             </el-icon>
             <template #title>订单管理</template>
           </el-menu-item>
-          <el-menu-item index="/member">
-            <el-icon>
-              <setting />
-            </el-icon>
-            <template #title>用户管理</template>
-          </el-menu-item>
         </el-menu>
         <!--  -->
       </el-aside>

@@ -6,7 +6,19 @@
           <el-container>
             <el-header style="height: 30px;">
               <el-form :inline="true" class="demo-form-inline">
-                <el-button type="success" style="margin-bottom: 10px;" @click="roomAddShowWin = true">添加</el-button>
+                <el-button type="success" style="margin-bottom: 10px;float: left;" @click="roomAddShowWin = true">添加</el-button>
+                <el-button type="primary" :icon="Download" style="margin-bottom: 10px;float: left;"
+                  @click="downloadRoom">下载</el-button>
+
+
+
+                <el-upload :on-success="uploadRoom" action="http://localhost:8080/admin/room/upload" style="float: left;"
+                  :headers="headers" method="post" name="file" list-type="none" :show-file-list="false">
+                  <el-button  :icon="UploadFilled" style="margin-bottom: 10px; margin-left: 15px;">上传</el-button>
+                </el-upload>
+
+
+
                 <el-form-item label="搜索框" style="float: right;">
                   <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)" />
                 </el-form-item>
@@ -14,7 +26,7 @@
 
             </el-header>
             <el-main style="height: 420px;">
-              <el-table :data="roomList.list" border style="width: 100%">
+              <el-table :data="roomList.list" :border style="width: 100%">
                 <el-table-column prop="rid" label="ID" width="50px" />
                 <el-table-column prop="rno" label="房间号" width="80px" />
                 <el-table-column prop="ravatar" label="房间照片" width="100px">
@@ -38,7 +50,7 @@
                 <el-table-column label="房间设施">
                   <template #default="scope">
                     <el-button type="primary" style="margin-left: 16px"
-                      @click="facilityAddShow(scope.row.facilityList,scope.row.rid)">房间设施</el-button>
+                      @click="facilityAddShow(scope.row.facilityList, scope.row.rid)">房间设施</el-button>
                   </template>
                 </el-table-column>
 
@@ -90,33 +102,33 @@
     </template>
     <template #default>
       <div>
-        
-          <el-card v-for="facility in facilityAllList" style="max-width: 480px">
-            
-              <div class="common-layout">
-                <el-container>
-                  <el-aside width="100px">
-                    <el-image style="width: 100px; height: 100px"
-                      :src="'http://localhost:8080/upload/' + facility.favatar" fit />
-                  </el-aside>
-                  <el-main width="250px">
-                    <el-descriptions direction="horizontal" column="1">
-                      <el-descriptions-item label="名称">{{ facility.fname }}</el-descriptions-item>
-                      <el-descriptions-item label="数量">{{ facility.fnum }}</el-descriptions-item>
-                      <el-descriptions-item label="价值">{{ facility.fvalue }}</el-descriptions-item>
-                    </el-descriptions>
-                  </el-main>
-                  <el-main style="float: right;">
-                    <el-checkbox-group  v-model="facilityYes" size="large" style="float: right;">
-                      <el-checkbox-button  :key="facility.fid" :value="facility.fid" >
-                        选中
-                      </el-checkbox-button>
-                    </el-checkbox-group>
-                  </el-main>
-                </el-container>
-              </div>
-          </el-card>
-        
+
+        <el-card v-for="facility in facilityAllList" style="max-width: 480px">
+
+          <div class="common-layout">
+            <el-container>
+              <el-aside width="100px">
+                <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + facility.favatar"
+                  fit />
+              </el-aside>
+              <el-main width="250px">
+                <el-descriptions direction="horizontal" column="1">
+                  <el-descriptions-item label="名称">{{ facility.fname }}</el-descriptions-item>
+                  <el-descriptions-item label="数量">{{ facility.fnum }}</el-descriptions-item>
+                  <el-descriptions-item label="价值">{{ facility.fvalue }}</el-descriptions-item>
+                </el-descriptions>
+              </el-main>
+              <el-main style="float: right;">
+                <el-checkbox-group v-model="facilityYes" size="large" style="float: right;">
+                  <el-checkbox-button :key="facility.fid" :value="facility.fid">
+                    选中
+                  </el-checkbox-button>
+                </el-checkbox-group>
+              </el-main>
+            </el-container>
+          </div>
+        </el-card>
+
       </div>
     </template>
 
@@ -161,7 +173,7 @@
     <template #footer #default="scope">
       <div style="flex: auto">
         <el-button type="primary" @click="facilityDialogShow()">添加设施</el-button>
-        
+
       </div>
     </template>
 
@@ -242,7 +254,7 @@
 
 <script setup>
 import roomApi from '@/api/roomApi'
-import { ref, reactive,computed } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import facilityApi from '@/api/facilityApi';
@@ -273,7 +285,7 @@ const roomList = ref({
   pageSize: 0
 })
 
-const headers = computed(()=>{
+const headers = computed(() => {
   let token = sessionStorage.getItem('token');
   return {
     token
@@ -303,23 +315,23 @@ const imageUrlUpd = ref("")
 
 
 //获取显示抽屉并将获取特定房间内的设施
-function facilityAddShow(facility,rid) {
+function facilityAddShow(facility, rid) {
   facilityList.value = facility
-  facilityRoom.value=rid
-  facilityYes.value=facilityList.fid
-  let arr =new Array(facilityList.length)
-  
-  arr=facilityList.value
+  facilityRoom.value = rid
+  facilityYes.value = facilityList.fid
+  let arr = new Array(facilityList.length)
 
-  let arr2 =new Array(arr.length)
+  arr = facilityList.value
+
+  let arr2 = new Array(arr.length)
   for (let index = 0; index < arr.length; index++) {
     arr2[index] = arr[index].fid;
-      
-  }
-    
-    facilityYes.value=arr2
 
-    drawer2.value = true
+  }
+
+  facilityYes.value = arr2
+
+  drawer2.value = true
 }
 
 
@@ -335,13 +347,13 @@ function facilityDialogShow() {
 }
 
 //上传添加的设施
-function insertFacility(){
+function insertFacility() {
   const loading = ElLoading.service({
     lock: true,
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  facilityApi.insertFacilityAndRoom(facilityYes.value,facilityRoom.value)
+  facilityApi.insertFacilityAndRoom(facilityYes.value, facilityRoom.value)
     .then(resp => {
       loading.close()
       selectAll(roomList.value.pageNum)
@@ -353,18 +365,18 @@ function insertFacility(){
           type: 'success',
           duration: 1200
         })
-        
+
 
         //关闭添加设施抽屉
-         drawer.value = false;
-         drawer2.value= false;
-         facilityYes.value=''
-         
-         
-         
-         facilityRoom.value=''
-         
-        
+        drawer.value = false;
+        drawer2.value = false;
+        facilityYes.value = ''
+
+
+
+        facilityRoom.value = ''
+
+
       } else {
         ElMessage({
           message: resp.msg,
@@ -584,6 +596,37 @@ function insert() {
 
     })
 }
+
+
+
+//下载
+function downloadRoom() {
+  roomApi.download()
+    .then(resp => {
+      let blob = new Blob([resp], { type: 'application/xlsx' });
+      let url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "房间信息.xlsx";
+      link.click();
+      URL.revokeObjectURL(url);
+    })
+}
+
+//上传
+function uploadRoom(response) {
+  if (response.code == 10000) {
+    selectByPage(1);
+    ElMessage.success("上传成功");
+  } else {
+    ElMessage.error(response.msg);
+  }
+
+}
+
+
+
+
 
 //查询所有房间
 function selectAll(pageNum) {
