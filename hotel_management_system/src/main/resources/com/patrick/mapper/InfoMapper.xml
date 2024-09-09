@@ -13,7 +13,14 @@
     <select id="selectById" resultType="info">
         select * from `info` where aid=#{aid}
     </select>
-    <select id="selectByUsername" resultType="info">
-        select * from `info` i ,`admin` a where i.aid=a.aid AND a.username=#{username}
+
+    <resultMap id="adminInfo" type="admin">
+        <id column="aid" property="aid"/>
+        <association column="aid" property="info" javaType="info" select="com.patrick.mapper.InfoMapper.selectById">
+        </association>
+    </resultMap>
+    <select id="selectByUsername" resultMap="adminInfo">
+        select * from `admin` where `aid`=#{id}
     </select>
+
 </mapper>

@@ -70,6 +70,7 @@ public class OrdersServiceImpl implements OrdersService {
         System.out.println(new BigDecimal(day).multiply(moneys));
 
         orders.setMoneys(new BigDecimal(day).multiply(moneys));
+        orders.setRid(room.getRid());
         return ordersMapper.insert(orders)==1;
     }
 

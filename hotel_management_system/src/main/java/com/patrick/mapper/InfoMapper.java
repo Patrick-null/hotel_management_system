@@ -1,5 +1,6 @@
 package com.patrick.mapper;
 
+import com.patrick.bean.Admin;
 import com.patrick.bean.Info;
 
 public interface InfoMapper {
@@ -7,5 +8,5 @@ public interface InfoMapper {
     int delete(Integer id);
     int update(Info info);
     Info selectById(Integer aid);
-    Info selectByUsername(String username);
+    Admin selectByUsername(Integer id);
 }

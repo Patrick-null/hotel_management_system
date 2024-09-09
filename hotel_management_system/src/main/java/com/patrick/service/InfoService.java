@@ -1,5 +1,6 @@
 package com.patrick.service;
 
+import com.patrick.bean.Admin;
 import com.patrick.bean.Info;
 
 public interface InfoService {
@@ -8,5 +9,5 @@ public interface InfoService {
     Boolean update(Info info);
     Info selectById(Integer aid);
 
-    Info selectByUsername(String username);
+    Admin selectByUsername(Integer id);
 }

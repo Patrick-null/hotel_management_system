@@ -1,11 +1,11 @@
 package com.patrick;
 
 
+import com.patrick.bean.Admin;
 import com.patrick.bean.Guest;
-import com.patrick.mapper.AdminMapper;
-import com.patrick.mapper.OrdersMapper;
-import com.patrick.mapper.RoomMapper;
-import com.patrick.mapper.UserMapper;
+import com.patrick.bean.Info;
+import com.patrick.bean.Orders;
+import com.patrick.mapper.*;
 import com.patrick.service.AdminService;
 import com.patrick.service.GuestService;
 import com.patrick.service.OrdersService;
@@ -32,6 +32,19 @@ public class GuestTest {
     private AdminService adminService;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private InfoMapper infoMapper;
+
+    @Test
+    public void test10(){
+        //userMapper.selectMyAll()
+    }
+
+    @Test
+    public void test09(){
+        Admin admin = infoMapper.selectByUsername(2);
+        System.out.println(admin);
+    }
     @Test
     public void test08(){
         userMapper.selectAll("").stream().forEach(System.out::println);

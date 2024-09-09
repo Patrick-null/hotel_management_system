@@ -35,4 +35,6 @@ public interface GuestMapper {
 
     //根据身份证查询
     Guest selectByNo(String gno);
+    //根据订单ID查询住客
+    Guest selectByOid(Integer oid);
 }

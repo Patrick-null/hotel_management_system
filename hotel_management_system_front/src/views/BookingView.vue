@@ -153,7 +153,42 @@ import bookingApi from '@/api/bookingApi'
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
-import facilityApi from '@/api/facilityApi';
+import facilityApi from '@/api/facilityApi'
+import infoApi from '@/api/infoApi';
+
+//个人信息实体
+const info = ref({
+  name:'',
+  gender:'',
+  no:'',
+  phone:'',
+  addr:''
+})
+
+const admin = ref({
+  aid: 0,
+  username: '',
+  info: {
+    aid:'',
+    name: '',
+    gender: '',
+    no: '',
+    phone: '',
+    addr: ''
+  }
+})
+
+//获取个人信息
+function selectUserInfo() {
+  infoApi.selectByUsername()
+    .then(resp => {
+      console.log(resp.data);
+      
+      admin.value = resp.data
+      info.value=admin.value.info
+    })
+}
+selectUserInfo()
 
 //所有房间的集合
 const roomList = ref({
@@ -186,8 +221,16 @@ const guestOne = ref({
 const order = ref({})
 
 
+
+
+
 //显示订购房间窗口
 function buyRoomShowWin(room) {
+  console.log(info.value);
+  orderGuest.value.gname=info.value.name
+  orderGuest.value.gno=info.value.no
+  orderGuest.value.ggender=info.value.gender
+  orderGuest.value.gphone=info.value.phone
   thisRoom.value = room
   orderGuest.value.rid=room.rid
   buyRoomShow.value = true
@@ -269,7 +312,7 @@ function buyRoom() {
         buyRoomShow.value=false
         orderGuest.value={}
 
-        
+        selectAll(1)
       } else {
         ElMessage({
           message: resp.msg,

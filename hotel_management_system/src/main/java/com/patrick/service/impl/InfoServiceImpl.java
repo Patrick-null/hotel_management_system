@@ -1,5 +1,6 @@
 package com.patrick.service.impl;
 
+import com.patrick.bean.Admin;
 import com.patrick.bean.Info;
 import com.patrick.mapper.InfoMapper;
 import com.patrick.service.InfoService;
@@ -31,7 +32,7 @@ public class InfoServiceImpl implements InfoService {
     }
 
     @Override
-    public Info selectByUsername(String username) {
-        return infoMapper.selectByUsername(username);
+    public Admin selectByUsername(Integer id) {
+        return infoMapper.selectByUsername(id);
     }
 }

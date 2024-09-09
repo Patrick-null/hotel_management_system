@@ -28,6 +28,8 @@ public class Orders {
     @NotNull(message = "身份证不能为空")
     private String gno;
 
+    private Integer rid;
+
     //下单时间
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -44,4 +46,6 @@ public class Orders {
 
     //是否已入住
     private Integer ostate;
+
+    private Room room;
 }

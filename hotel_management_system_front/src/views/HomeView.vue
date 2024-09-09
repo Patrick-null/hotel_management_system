@@ -69,7 +69,7 @@
                     <div class="flex items-center">
                       <el-avatar :size="32" class="mr-3" src="http://localhost:8080/upload/patrick.jpg" />
                       <span class="text-sm mr-2" style="color: var(--el-text-color-regular)">
-                        {{ username }}
+                        {{ admin.username }}
                       </span>
                     </div>
                   </template>
@@ -119,11 +119,11 @@
   <!-- 个人信息页面开始 -->
   <el-drawer v-model="infoShowWin" title="个人信息">
     <el-descriptions direction="vertical" column="1">
-      <el-descriptions-item label="姓名">{{ info.name }}</el-descriptions-item>
-      <el-descriptions-item label="性别">{{ info.gender }}</el-descriptions-item>
-      <el-descriptions-item label="身份证号">{{ info.no }}</el-descriptions-item>
-      <el-descriptions-item label="手机号">{{ info.phone }}</el-descriptions-item>
-      <el-descriptions-item label="地址">{{ info.addr }}</el-descriptions-item>
+      <el-descriptions-item label="姓名">{{ admin.info.name }}</el-descriptions-item>
+      <el-descriptions-item label="性别">{{ admin.info.gender }}</el-descriptions-item>
+      <el-descriptions-item label="身份证号">{{ admin.info.no }}</el-descriptions-item>
+      <el-descriptions-item label="手机号">{{ admin.info.phone }}</el-descriptions-item>
+      <el-descriptions-item label="地址">{{ admin.info.addr }}</el-descriptions-item>
     </el-descriptions>
 
     <template #footer>
@@ -137,22 +137,22 @@
   <el-dialog v-model="updInfoShowInfo" title="修改信息" width="500" align-center>
     <template #footer>
       <el-form-item label="姓名" label-width="20%">
-        <el-input v-model="info.name" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="admin.info.name" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="性别" label-width="20%">
-        <el-radio-group v-model="info.gender">
+        <el-radio-group v-model="admin.info.gender">
           <el-radio-button label="男" value="男" />
           <el-radio-button label="女" value="女" />
         </el-radio-group>
       </el-form-item>
       <el-form-item label="身份证号" label-width="20%">
-        <el-input v-model="info.no" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="admin.info.no" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="联系方式" label-width="20%">
-        <el-input v-model="info.phone" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="admin.info.phone" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="地址" label-width="20%">
-        <el-input v-model="info.addr" autocomplete="off" style="width: 300px;" />
+        <el-input v-model="admin.info.addr" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <div class="dialog-footer">
         <el-button @click="updInfoShowInfo = false">取消</el-button>
@@ -171,14 +171,21 @@ import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { RouterView, RouterLink } from 'vue-router'
 import infoApi from '@/api/infoApi';
+import { ElLoading } from 'element-plus'
 
 //个人信息实体
-const info = ref({
-  name:'',
-  gender:'',
-  no:'',
-  phone:'',
-  addr:''
+const admin = ref({
+  aid: 0,
+  username: '',
+  info: {
+    aid:'',
+    name: '',
+    gender: '',
+    no: '',
+    phone: '',
+    addr: ''
+  }
+
 })
 //修改信息标识
 const updInfoShowInfo = ref(false)
@@ -187,16 +194,16 @@ const updInfoShowInfo = ref(false)
 //显示个人信息页面
 const infoShowWin = ref(false)
 //获取个人信息
-function selectUserInfo(username) {
-  infoApi.selectByUsername(username)
+function selectUserInfo() {
+  infoApi.selectByUsername()
     .then(resp => {
 
-      info.value = resp.data
+      admin.value = resp.data
 
     })
 }
-selectUserInfo(sessionStorage.getItem('username'))
 
+selectUserInfo()
 
 function updateInfo(){
   const loading = ElLoading.service({
@@ -205,7 +212,7 @@ function updateInfo(){
     background: 'rgba(0, 0, 0, 0.7)',
   })
 
-  infoApi.update(info.value)
+  infoApi.update(admin.value.info)
     .then(resp => {
       loading.close()
       //判断是否成功
@@ -241,9 +248,6 @@ function logout() {
   router.push('/login')
 }
 
-
-
-
 import {
   Document,
   Menu as IconMenu,
@@ -255,21 +259,6 @@ import loginApi from '@/api/loginApi';
 const isCollapse = ref(true)
 
 const centerDialogVisible = ref(false)
-
-//个人信息
-const username = ref(sessionStorage.getItem('username'))
-
-
-
-//获取个人信息
-function getUsername() {
-  loginApi.getUsername()
-    .then(resp => {
-      username.value = resp.data
-    })
-}
-
-
 
 </script>
 

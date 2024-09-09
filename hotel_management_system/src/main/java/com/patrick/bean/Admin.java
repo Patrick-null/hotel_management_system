@@ -13,4 +13,5 @@ public class Admin {
     private String password;
     //角色 0:管理员 1:用户
     private Integer role;
+    private Info info;
 }

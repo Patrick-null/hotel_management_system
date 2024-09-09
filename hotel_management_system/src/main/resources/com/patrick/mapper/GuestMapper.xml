@@ -49,4 +49,7 @@
     <select id="selectByNo" resultType="guest">
         SELECT * FROM `guest` WHERE `gno`=#{gno}
     </select>
+    <select id="selectByOid" resultType="guest">
+        SELECT * FROM `guest` WHERE `oid`=#{oid}
+    </select>
 </mapper>

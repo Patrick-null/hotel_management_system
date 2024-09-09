@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.patrick.mapper.OrdersMapper">
     <insert id="insert">
-        INSERT INTO `orders`(`ono`,`gno`,`otime`,`moneys`) VALUES (#{ono},#{gno},#{otime},#{moneys})
+        INSERT INTO `orders`(`ono`,`gno`,`otime`,`moneys`,`rid`) VALUES (#{ono},#{gno},#{otime},#{moneys},#{rid})
     </insert>
     <update id="update">
-        update  `orders` SET `ono`=#{ono},`gid`=#{gid},`otime`=#{otime} where `oid`=#{oid}
+        update  `orders` SET `ono`=#{ono},`gid`=#{gid},`otime`=#{otime},`rid`=#{rid} where `oid`=#{oid}
     </update>
     <delete id="delete">
         update  `orders` SET `ostate`="1" where `oid`=#{oid}
@@ -16,6 +16,7 @@
         <result column="gno" property="gno" />
         <association column="gno" property="guest" javaType="guest" select="com.patrick.mapper.GuestMapper.selectByNo">
         </association>
+
     </resultMap>
     <select id="selectAll" resultMap="ordersMap">
         select * from `orders`
@@ -30,9 +31,11 @@
         select * from `orders` where ono = #{ono}
     </select>
 
-
     <select id="selectById" resultMap="ordersMap">
         select * from `orders` where oid=#{oid}
     </select>
+
+
+
 
 </mapper>

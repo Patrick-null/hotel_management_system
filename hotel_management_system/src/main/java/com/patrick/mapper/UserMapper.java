@@ -10,5 +10,5 @@ public interface UserMapper {
     List<Room> selectAll(String flag);
 
     //查询我的订单
-    List<Orders> selectMyAll(Integer gno);
+    List<Orders> selectMyAll(Integer aid);
 }

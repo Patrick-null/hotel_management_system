@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @RequestMapping("/user")
-public class UserControler {
+public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
@@ -37,5 +37,10 @@ public class UserControler {
     }
 
     //查询我的订单
+    @GetMapping("/selectMyAll")
+    public RespBean selectMyAll(Integer pageNum,Integer aid){
+        PageInfo<Orders> ordersPageInfo = userService.selectMyAll(pageNum, aid);
+        return RespBean.ok("",ordersPageInfo);
+    }
 
 }

@@ -9,7 +9,26 @@
     <select id="selectAll" resultMap="roomMap">
         select * from `room` where `rstate`="0"
     </select>
-    <select id="selectMyAll" resultType="com.patrick.bean.Orders">
-        SELECT * from `orders` o ,`info` i WHERE o.gno=i.no
+
+    <!--<resultMap id="orderMy" type="orders">-->
+    <!--    <id column="id" property="oid"/>-->
+    <!--    <result column="rid" property="rid" />-->
+    <!--    <association column="rid" property="room" javaType="room" select="com.patrick.mapper.RoomMapper.selectById">-->
+    <!--    </association>-->
+    <!--</resultMap>-->
+    <!--<select id="selectMyAll" resultMap="orderMy">-->
+    <!--    SELECT * from-->
+    <!--                 `orders` o left JOIN 	`room` r on o.rid=r.rid ,`info` i WHERE o.gno=#{gno}-->
+    <!--</select>-->
+    <resultMap id="orderMy" type="orders">
+        <id column="oid" property="oid"/>
+        <result column="rid" property="rid" />
+        <association column="rid" property="room" javaType="room" select="com.patrick.mapper.RoomMapper.selectById">
+        </association>
+        <association column="oid" property="guests" javaType="guest" select="com.patrick.mapper.GuestMapper.selectByOid">
+        </association>
+    </resultMap>
+    <select id="selectMyAll" resultMap="orderMy">
+        select * from `orders` where `aid`=#{aid}
     </select>
 </mapper>
