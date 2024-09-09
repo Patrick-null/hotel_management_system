@@ -1,6 +1,7 @@
 package com.patrick.mapper;
 
 import com.patrick.bean.Admin;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.Map;
 public interface AdminMapper {
     Admin login(String username);
     Admin loginTwo(String username);
+
+    int updatePwd(@Param("username") String username, @Param(("password")) String password);
 
     int getOrderVolume();
 

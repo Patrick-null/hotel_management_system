@@ -90,5 +90,20 @@ public class AdminController {
     }
 
 
+    //修改密码
+    @PutMapping("/admin/userAndpwd")
+    public RespBean userAndpwd(@RequestBody @Validated Admin userAndpwd) throws MyException {
+        if(userAndpwd.getUsername()==null){
+            throw  new MyException("账号不能为空");
+        }
+        if(userAndpwd.getPassword()==null){
+            throw  new MyException("密码不能为空");
+        }
+        boolean b = adminService.updatePwd(userAndpwd);
+
+        return RespBean.ok("修改成功");
+    }
+
+
 
 }

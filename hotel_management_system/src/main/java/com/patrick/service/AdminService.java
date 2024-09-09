@@ -17,4 +17,5 @@ public interface AdminService {
     List<Map<String,Object>> selectRtypeByGender(String gender);
 
     List<String> getAllRtype();
+    boolean updatePwd(Admin userAndpwd) throws MyException;
 }

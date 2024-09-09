@@ -45,6 +45,7 @@
                   </template>
                   <template #extra>
                     <div class="flex items-center">
+                      <el-button @click="pwdUpdWin = true">修改密码</el-button>
                       <el-button @click="infoShowWin = true">个人信息</el-button>
                       <el-button type="primary" class="ml-2" color="#626aef"
                         @click="centerDialogVisible = true">退出</el-button>
@@ -135,6 +136,28 @@
     </template>
   </el-dialog>
   <!-- 修改信息窗口结束 -->
+
+   <!-- 修改密码窗口开始 -->
+  <el-dialog v-model="pwdUpdWin" title="修改密码" width="500" align-center>
+    <template #footer>
+      <el-form-item label="用户名" label-width="20%">
+        <el-input disabled="true" v-model="userAndpwd.username" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="输入密码" label-width="20%">
+        <el-input type="password" v-model="userAndpwd.password" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="确认密码" label-width="20%">
+        <el-input type="password" v-model="passwordTwo" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <div class="dialog-footer">
+        <el-button @click="pwdUpdWin = false">取消</el-button>
+        <el-button type="primary" @click="updPwd">
+          提交
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+  <!-- 修改密码窗口结束 -->
 </template>
 <script setup>
 import router from '@/router';
@@ -143,7 +166,22 @@ import { ElMessage } from 'element-plus';
 import { RouterView, RouterLink } from 'vue-router'
 import { ElLoading } from 'element-plus'
 
+import {
+  Document,
+  Menu as IconMenu,
+  Location,
+  Setting,
+  User,
+} from '@element-plus/icons-vue'
+import loginApi from '@/api/loginApi';
+import infoApi from '@/api/infoApi';
 
+  
+const userAndpwd = ref({
+  username:'',
+  password:''
+})
+const passwordTwo = ref('')
 
 //个人信息实体
 
@@ -165,14 +203,57 @@ const updInfoShowInfo = ref(false)
 
 //显示个人信息页面
 const infoShowWin = ref(false)
+
+//修改密码
+const pwdUpdWin = ref(false);
+
+//修改密码
+function updPwd(){
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  if(userAndpwd.value.password == passwordTwo.value){
+    loginApi.updPwd(userAndpwd.value)
+    .then(resp => {
+      loading.close()
+      //判断是否成功
+      if (resp.code == 10000) {
+        //弹出消息
+        ElMessage({
+          message: resp.msg,
+          type: 'success',
+          duration: 1200
+        })
+        pwdUpdWin.value = false
+        router.push('/loginUser')
+      } else {
+        ElMessage({
+          message: resp.msg,
+          type: 'error',
+          duration: 1200
+        });
+      }
+    })
+  }else{
+    loading.close()
+    ElMessage({
+          message: "两次密码不一致",
+          type: 'error',
+          duration: 1200
+        });
+  }
+  
+}
+
+
 //获取个人信息
 function selectUserInfo() {
   infoApi.selectByUsername()
     .then(resp => {
-      console.log(resp.data);
-      
       admin.value = resp.data
-
+      userAndpwd.value.username=resp.data.username
     })
 }
 
@@ -208,6 +289,7 @@ function updateInfo() {
 
 selectUserInfo()
 
+
 function toPage(indexPath) {
   router.push(indexPath);
 }
@@ -225,14 +307,6 @@ function logout() {
 
 
 
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
-import loginApi from '@/api/loginApi';
-import infoApi from '@/api/infoApi';
 
 const isCollapse = ref(true)
 

@@ -76,4 +76,13 @@ public class AdminServiceImpl implements AdminService {
     public List<String> getAllRtype() {
         return adminMapper.getAllRtype();
     }
+
+
+    @Override
+    public boolean updatePwd(Admin userAndpwd) throws MyException {
+        if(adminMapper.login(userAndpwd.getUsername())==null) {
+            throw new MyException("没有找到该用户名");
+        }
+        return adminMapper.updatePwd(userAndpwd.getUsername(),userAndpwd.getPassword())==1;
+    }
 }

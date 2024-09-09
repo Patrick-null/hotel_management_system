@@ -1,6 +1,7 @@
 package com.patrick.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.patrick.bean.Admin;
 import com.patrick.bean.Orders;
 import com.patrick.bean.RespBean;
 import com.patrick.bean.Room;
@@ -52,8 +53,20 @@ public class UserController {
         }else {
             return RespBean.error("使用失败");
         }
+    }
 
+    //修改密码
+    @PutMapping("/userAndpwd")
+    public RespBean userAndpwd(@RequestBody @Validated Admin userAndpwd) throws MyException {
+        if(userAndpwd.getUsername()==null){
+            throw  new MyException("账号不能为空");
+        }
+        if(userAndpwd.getPassword()==null){
+            throw  new MyException("密码不能为空");
+        }
+        boolean b = userService.updatePwd(userAndpwd);
 
+        return RespBean.ok("修改成功");
     }
 
 }

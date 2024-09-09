@@ -25,7 +25,7 @@
                             color="#626aef">登录</el-button>
                     </el-form>
                     <el-divider>
-                        <span style="font-weight: 200; font-size: 12px;">管理员登录</span>
+                        <span style="font-weight: 200; font-size: 12px;">其他登录方式</span>
                     </el-divider>
                     <el-button color="#626aef" @click="router.push('/loginUser')">用户登录</el-button>
                 </el-card>
