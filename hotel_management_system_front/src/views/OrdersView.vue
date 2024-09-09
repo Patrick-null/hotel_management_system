@@ -16,7 +16,7 @@
               <el-table :data="ordersList.list" border style="width: 100%">
                 <el-table-column prop="oid" label="ID" width="40px" />
                 <el-table-column prop="ono" label="订单编号" />
-                <el-table-column prop="guest.gname" label="下单人" />
+                <el-table-column prop="guests[0].gname" label="下单人" />
                 <el-table-column prop="moneys" label="订单金额" />
                 <el-table-column prop="otime" label="下单时间" show-overflow-tooltip />
                 <el-table-column label="状态">
@@ -336,7 +336,7 @@ function deleteByOid(oid) {
           duration: 1200
         })
         //刷新表格
-        selectAll()
+        selectAll(ordersList.value.pageNum)
       } else {
         ElMessage({
           message: resp.msg,
@@ -501,8 +501,11 @@ function selectAll(pageNum) {
   ordersApi.selectAll(pageNum, flag.value)
     .then(resp => {
       ordersList.value = resp.data
+      console.log(ordersList.value);
     })
 }
+
+
 selectAll(1);
 </script>
 

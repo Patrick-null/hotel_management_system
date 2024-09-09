@@ -34,10 +34,23 @@ public class GuestTest {
     private UserMapper userMapper;
     @Autowired
     private InfoMapper infoMapper;
+    @Autowired
+    private GuestMapper guestMapper;
+
+    @Test
+    public void test12(){
+        Guest guest = guestMapper.selectByGnoAndOno("10010", "1725862262190");
+        System.out.println(guest);
+    }
+
+    @Test
+    public  void test11(){
+        ordersMapper.selectAll("").stream().forEach(System.out::println);
+    }
 
     @Test
     public void test10(){
-        //userMapper.selectMyAll()
+        userMapper.selectMyAll("10010").stream().forEach(System.out::println);
     }
 
     @Test

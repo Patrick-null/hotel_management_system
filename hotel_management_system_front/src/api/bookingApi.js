@@ -16,13 +16,19 @@ const facilityApi={
         return service.post('/user/buyRoom',order)
     },
     //查询我的订单
-    selectMyAll(pageNum,aid){
+    selectMyAll(pageNum,gno){
+        console.log(gno);
+        
         return service.get('/user/selectMyAll',{
             params: {
                 pageNum,
-                aid
+                gno
             }
           })
+    },
+    //使用订单
+    useOrder(oid){
+        return service.post(`/user/useOrder/${oid}`)
     }
 }
 

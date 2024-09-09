@@ -9,5 +9,5 @@ import java.util.List;
 public interface UserService {
     PageInfo<Room> selectAllRoom(Integer pageNum, String flag);
 
-    PageInfo<Orders> selectMyAll(Integer pageNum,Integer aid);
+    PageInfo<Orders> selectMyAll(Integer pageNum,String gno);
 }

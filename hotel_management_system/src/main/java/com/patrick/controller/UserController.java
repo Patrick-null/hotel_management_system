@@ -38,9 +38,22 @@ public class UserController {
 
     //查询我的订单
     @GetMapping("/selectMyAll")
-    public RespBean selectMyAll(Integer pageNum,Integer aid){
-        PageInfo<Orders> ordersPageInfo = userService.selectMyAll(pageNum, aid);
+    public RespBean selectMyAll(Integer pageNum,String gno){
+        PageInfo<Orders> ordersPageInfo = userService.selectMyAll(pageNum, gno);
         return RespBean.ok("",ordersPageInfo);
+    }
+
+    //使用订单
+    @PostMapping("/useOrder/{oid}")
+    public RespBean useOrder(@PathVariable("oid") Integer oid){
+
+        if (ordersService.delete(oid)) {
+            return RespBean.ok("使用成功");
+        }else {
+            return RespBean.error("使用失败");
+        }
+
+
     }
 
 }

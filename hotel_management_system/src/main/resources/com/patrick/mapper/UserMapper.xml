@@ -21,14 +21,15 @@
     <!--                 `orders` o left JOIN 	`room` r on o.rid=r.rid ,`info` i WHERE o.gno=#{gno}-->
     <!--</select>-->
     <resultMap id="orderMy" type="orders">
-        <id column="oid" property="oid"/>
+        <id column="ono" property="ono"/>
         <result column="rid" property="rid" />
         <association column="rid" property="room" javaType="room" select="com.patrick.mapper.RoomMapper.selectById">
         </association>
-        <association column="oid" property="guests" javaType="guest" select="com.patrick.mapper.GuestMapper.selectByOid">
-        </association>
+
+        <collection property="guests" column="ono" ofType="guest" select="com.patrick.mapper.GuestMapper.selectByOno" />
+
     </resultMap>
     <select id="selectMyAll" resultMap="orderMy">
-        select * from `orders` where `aid`=#{aid}
+        select * from `orders` where `gno`=#{gno}
     </select>
 </mapper>

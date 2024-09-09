@@ -19,7 +19,7 @@ public interface GuestMapper {
     int update(Guest guest);
 
     //修改住客状态
-    void updateGstate(@Param("gstate") Integer gstate, @Param("gno") String gno);
+    void updateGstate(@Param("gstate") Integer gstate, @Param("ono") String ono);
 
     //查询所有住客
     List<Guest> selectAll(String flag);
@@ -35,6 +35,9 @@ public interface GuestMapper {
 
     //根据身份证查询
     Guest selectByNo(String gno);
+
+    //根据身份证查询
+    Guest selectByGnoAndOno(@Param("gno")String gno,@Param("ono")String ono);
     //根据订单ID查询住客
-    Guest selectByOid(Integer oid);
+    Guest selectByOno(String ono);
 }

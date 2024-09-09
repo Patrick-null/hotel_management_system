@@ -54,6 +54,6 @@ public class Guest {
 
     private Room room;
 
-    private Integer oid;
+    private String ono;
 
 }

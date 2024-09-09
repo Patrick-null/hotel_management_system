@@ -14,22 +14,23 @@
     <resultMap id="ordersMap" type="orders">
         <id column="oid" property="oid"/>
         <result column="gno" property="gno" />
-        <association column="gno" property="guest" javaType="guest" select="com.patrick.mapper.GuestMapper.selectByNo">
-        </association>
 
+        <collection column="gno" property="guests" ofType="guest"  select="com.patrick.mapper.GuestMapper.selectByNo">
+        </collection>
     </resultMap>
     <select id="selectAll" resultMap="ordersMap">
         select * from `orders`
-                <where>
-                    <if test="flag!=null">
-                        `gno` LIKE concat('%',#{flag},'%')
-                            or  `ono` LIKE concat('%',#{flag},'%')
-                    </if>
-            </where>
+        <where>
+            <if test="flag!=null">
+                `gno` LIKE concat('%',#{flag},'%')
+                or  `ono` LIKE concat('%',#{flag},'%')
+            </if>
+        </where>
     </select>
     <select id="selectByOno" resultType="orders">
         select * from `orders` where ono = #{ono}
     </select>
+
 
     <select id="selectById" resultMap="ordersMap">
         select * from `orders` where oid=#{oid}
@@ -37,5 +38,9 @@
 
 
 
+<!--&lt;!&ndash;    查询特定订单中的人员&ndash;&gt;-->
+<!--    <select id="selectByOid" resultMap="OidByGuests">-->
+<!--        select * from `order_guest` where oid=#{oid}-->
+<!--    </select>-->
 
 </mapper>

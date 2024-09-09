@@ -41,7 +41,6 @@ public class AdminInterceptor implements HandlerInterceptor {
             //解析JWT，如果出现问题会抛出异常
             JwtUtil.parseJwtToMap(token);
             Map<String,Object> map = JwtUtil.parseJwtToMap(token);
-            System.out.println("123123123123123123123213123123");
             if((Integer)map.get("role")!=0&&(Integer)map.get("admin")!=0){
                 throw new MyException("您无权访问");
             }

@@ -40,6 +40,7 @@ public class OrdersServiceImpl implements OrdersService {
         int count=0;
         //获取orders中的住客信息
         for (Guest guest : orders.getGuests()){
+            guest.setOno(orders.getOno());
             guestService.insert(guest);
             count++;
         }
@@ -76,14 +77,18 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Boolean delete(Integer oid) {
-        //获取gno
-        String gno = ordersMapper.selectById(oid).getGno();
-        //获取rid
-        Integer rid = guestMapper.selectByNo(gno).getRid();
+        //获取住客ono
+
+        String ono = ordersMapper.selectById(oid).getOno();
+        //System.out.println(ono);
+        ////获取rid
+        //System.out.println("ridridridrid");
+        Integer rid1 = ordersMapper.selectById(oid).getRid();
+        //Integer rid = guestMapper.selectByNo(ono).getRid();
         //根据rid修改房间为已入住
-        roomMapper.updateRstate(2,rid);
+        roomMapper.updateRstate(2,rid1);
         //根据gno修改用户为已入住
-        guestMapper.updateGstate(1,gno);
+        guestMapper.updateGstate(1,ono);
         return ordersMapper.delete(oid)==1;
     }
 

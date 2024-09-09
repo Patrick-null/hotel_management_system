@@ -8,7 +8,7 @@
                 <el-card style="max-width: 600px;border-radius: 20px; width: 300px; text-align: center; 
                 background: rgba(255, 255, 255, 0.5); /* 半透明白色背景 */">
                     <template #header>
-                        <div class="card-header">
+                        <div class="card-header">   
                             <span>用户登录</span>
                         </div>
                     </template>

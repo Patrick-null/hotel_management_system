@@ -140,8 +140,6 @@ function selectAllMem() {
     //显示所有会员信息
     memberApi.selectAll()
         .then(resp => {
-       
-
             memberList.value = resp.data
         })
 }

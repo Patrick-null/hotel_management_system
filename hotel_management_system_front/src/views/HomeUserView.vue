@@ -13,24 +13,15 @@
             <template #title>首页</template>
           </el-menu-item>
           <el-menu-item index="/booking">
-            <el-icon>
-              <HomeFilled />
-            </el-icon>
+            <el-icon><GoodsFilled /></el-icon>
             <template #title>预订房间</template>
           </el-menu-item>
-          <el-sub-menu index="1">
-            <template #title>
-              <el-icon>
-                <List />
-              </el-icon>
-              <span>订单管理</span>
-            </template>
-            <el-menu-item-group>
-              <template #title><span>Group One</span></template>
-              <el-menu-item index="/ordersUser">我的订单</el-menu-item>
-              <el-menu-item index="/user">我的</el-menu-item>
-            </el-menu-item-group>
-          </el-sub-menu>
+          <el-menu-item index="/ordersUser">
+            <el-icon>
+              <List />
+            </el-icon>
+            <template #title>我的订单</template>
+          </el-menu-item>
         </el-menu>
         <!--  -->
       </el-aside>
