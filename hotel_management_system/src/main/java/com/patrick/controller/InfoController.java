@@ -3,6 +3,7 @@ package com.patrick.controller;
 import com.patrick.bean.Admin;
 import com.patrick.bean.Info;
 import com.patrick.bean.RespBean;
+import com.patrick.service.AdminService;
 import com.patrick.service.InfoService;
 import com.patrick.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.util.Map;
 public class InfoController {
     @Autowired
     private InfoService infoService;
+    @Autowired
+    private AdminService adminService;
 
     @PostMapping
     public RespBean insert(@RequestBody @Validated Info info){

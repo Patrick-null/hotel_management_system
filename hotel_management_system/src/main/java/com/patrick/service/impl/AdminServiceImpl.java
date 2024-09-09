@@ -85,4 +85,6 @@ public class AdminServiceImpl implements AdminService {
         }
         return adminMapper.updatePwd(userAndpwd.getUsername(),userAndpwd.getPassword())==1;
     }
+
+
 }

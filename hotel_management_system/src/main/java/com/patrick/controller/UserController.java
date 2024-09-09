@@ -8,6 +8,7 @@ import com.patrick.bean.Room;
 import com.patrick.excetion.MyException;
 import com.patrick.service.OrdersService;
 import com.patrick.service.UserService;
+import com.sun.javafx.logging.PulseLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -68,5 +69,7 @@ public class UserController {
 
         return RespBean.ok("修改成功");
     }
+
+
 
 }

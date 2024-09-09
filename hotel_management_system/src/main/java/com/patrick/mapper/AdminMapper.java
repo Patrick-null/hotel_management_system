@@ -21,4 +21,8 @@ public interface AdminMapper {
 
     //获取所有房间类型
     List<String> getAllRtype();
+
+
+    //注册
+    int insert(@Param("username") String username, @Param("password") String password);
 }

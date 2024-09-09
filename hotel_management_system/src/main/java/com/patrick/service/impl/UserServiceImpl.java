@@ -11,6 +11,7 @@ import com.patrick.mapper.UserMapper;
 import com.patrick.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -56,5 +57,20 @@ public class UserServiceImpl implements UserService {
             throw new MyException("没有找到该用户名");
         }
         return adminMapper.updatePwd(userAndpwd.getUsername(),userAndpwd.getPassword())==1;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Admin enroll(Admin enroll) throws MyException {
+        if(adminMapper.loginTwo(enroll.getUsername()) != null){
+            throw new MyException("用户名已存在，请重新输入");
+        }
+        if(adminMapper.insert(enroll.getUsername(),enroll.getPassword())==1){
+
+            Integer aid = adminMapper.loginTwo(enroll.getUsername()).getAid();
+            enroll.setAid(aid);
+            return enroll;
+        }
+        return null;
     }
 }

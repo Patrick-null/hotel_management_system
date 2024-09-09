@@ -14,4 +14,7 @@ public interface UserService {
     PageInfo<Orders> selectMyAll(Integer pageNum,String gno);
 
     boolean updatePwd(Admin userAndpwd) throws MyException;
+
+    //注册账号
+    Admin enroll(Admin enroll) throws MyException;
 }

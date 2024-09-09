@@ -6,6 +6,7 @@
         <id column="rid" property="rid"/>
         <collection property="facilityList" column="rid" ofType="facility" select="com.patrick.mapper.RoomMapper.selectByRoomFac" />
     </resultMap>
+
     <select id="selectAll" resultMap="roomMap">
         select * from `room` where `rstate`="0"
     </select>

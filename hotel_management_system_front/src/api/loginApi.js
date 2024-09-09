@@ -21,6 +21,10 @@ const loginApi = {
     //修改密码
     updPwd(userAndpwd){
         return service.put('/admin/userAndpwd',userAndpwd)
+    },
+    //用户注册
+    enroll(enroll){
+        return service.post('/enroll',enroll)
     }
     
 }

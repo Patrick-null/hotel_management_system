@@ -4,6 +4,7 @@ import com.patrick.bean.Admin;
 import com.patrick.bean.RespBean;
 import com.patrick.excetion.MyException;
 import com.patrick.service.AdminService;
+import com.patrick.service.UserService;
 import com.patrick.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -21,6 +22,8 @@ import java.util.Map;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private UserService userService;
 
     //管理员登录
     @RequestMapping("/login")
@@ -102,6 +105,23 @@ public class AdminController {
         boolean b = adminService.updatePwd(userAndpwd);
 
         return RespBean.ok("修改成功");
+    }
+
+
+    //注册账号
+    @PostMapping("/enroll")
+    public RespBean enroll(@RequestBody @Validated Admin enroll) throws MyException {
+        if(enroll.getUsername()==null){
+            throw  new MyException("账号不能为空");
+        }
+        if(enroll.getPassword()==null){
+            throw  new MyException("密码不能为空");
+        }
+        if(userService.enroll(enroll)!=null){
+            return RespBean.ok("注册成功",enroll);
+        }else {
+            return RespBean.error("注册失败");
+        }
     }
 
 
