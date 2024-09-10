@@ -32,6 +32,8 @@ public interface RoomMapper {
 
     //根据状态查询房间
     List<Room> selectByState(Integer rstate);
+    //根据状态查询房间
+    List<Room> selectByState2(@Param("rstate") Integer rstate,@Param("flag") String flag);
 
     //查看当前房间设施
 

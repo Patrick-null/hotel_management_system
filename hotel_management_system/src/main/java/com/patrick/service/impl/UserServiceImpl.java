@@ -7,6 +7,7 @@ import com.patrick.bean.Orders;
 import com.patrick.bean.Room;
 import com.patrick.excetion.MyException;
 import com.patrick.mapper.AdminMapper;
+import com.patrick.mapper.RoomMapper;
 import com.patrick.mapper.UserMapper;
 import com.patrick.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,16 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private RoomMapper roomMapper;
     @Override
     public PageInfo<Room> selectAllRoom(Integer pageNum,String flag) {
         //导包
         //设置分页信息
         PageHelper.startPage(pageNum,5);
         //查询
-        List<Room> roomList = userMapper.selectAll(flag);
+        List<Room> roomList = roomMapper.selectByState2(0,flag);
+
 
 
         //创建封装查询结果
