@@ -17,7 +17,8 @@ public interface AdminMapper {
     int getGuestVolume();
 
     //根据性别获取每个房间的人数
-    List<Map<String,Object>> selectRtypeByGender(String gender);
+    List<Map<String,Object>> selectRtypeByGender();
+    List<Map<String,Object>> selectRtypeBy1();
 
     //获取所有房间类型
     List<String> getAllRtype();

@@ -10,13 +10,18 @@ const indexApi={
         return service.get('/admin/getGuestVolume')
     },
     //根据性别查询每个房间的人数
-    selectRtypeByGender(gender){
-        console.log(gender);
-        return service.get(`/admin/selectRtypeByGender/${gender}`)
+    selectRtypeByGender(){
+       
+        return service.get('/admin/selectRtypeByGender')
     },
     //查询所有房间的类型
     getAllRtype(){
         return service.get('/admin/getAllRtype')
+    },
+    //根据性别查询每个房间的人数
+    selectRtypeBy1(){
+       
+        return service.get('/admin/selectRtypeBy1')
     }
 }
 

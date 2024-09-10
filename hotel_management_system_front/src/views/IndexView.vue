@@ -48,7 +48,7 @@
     </el-col>
     <el-col :span="12">
       <el-card>
-        <div id="" style="width: 507px; height: 380px;"></div>
+        <div id="RtypeByGender1" style="width: 507px; height: 380px;"></div>
       </el-card>
     </el-col>
   </el-row>
@@ -59,120 +59,27 @@
 </template>
 <script setup>
 import indexApi from '@/api/indexApi'
-import { ref, reactive } from 'vue';
+import { ref, reactive,watch } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import * as echarts from "echarts";
 import { onMounted } from "vue";
 
-
-
-
-function RtypeByGender() {
-
-  let manArr = [];
-  let manArrType = [];
-  let womanArr = [];
-
-
-
-
-
-
-
-  // 基于准备好的dom，初始化echarts实例
-  var myChart = echarts.init(document.getElementById('RtypeByGender'));
-
-  // 指定图表的配置项和数据
-  var option = {
-  title: {
-    text: '男女住房比例',
-    subtext: '人数'
-  },
-  tooltip: {
-    trigger: 'axis'
-  },
-  legend: {
-    data: ['男', '女']
-  },
-  toolbox: {
-    show: true,
-    feature: {
-      dataView: { show: true, readOnly: false },
-      magicType: { show: true, type: ['line', 'bar'] },
-      restore: { show: true },
-      saveAsImage: { show: true }
-    }
-  },
-  calculable: true,
-  xAxis: [
-    {
-      type: 'category',
-      // prettier-ignore
-      data: allRtype.value
-    }
-  ],
-  yAxis: [
-    {
-      type: 'value'
-    }
-  ],
-  series: [
-    {
-      name: '男',
-      type: 'bar',
-      data: [
-        2, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-      ]
-    },
-    {
-      name: '女',
-      type: 'bar',
-      data: [
-        2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3
-      ]
-    }
-  ]
-};
-
-  // 使用刚指定的配置项和数据显示图表。
-  myChart.setOption(option);
-}
-
-onMounted(() => {
-  RtypeByGender();
-})
-
 //订单量
 const OrderVolume = ref('')
 //住客人数
 const GuestVolume = ref('')
-//男每个房间的集合
+
 const manList = ref({})
-//女每个房间的集合
+
 const womanList = ref({})
-//所有房间类型的集合
-const allRtype = ref({})
 
-//给这3个集合赋值
-function selectRtypeByGender() {
-  indexApi.selectRtypeByGender('男')
-    .then(resp => {
-      manList.value = resp.data
-      console.log(manList.value);
-    })
 
-  indexApi.selectRtypeByGender('女')
-    .then(resp => {
-      womanList.value = resp.data
-      console.log(womanList.value);
-    })
-    indexApi.getAllRtype()
-      .then(resp => {
-        allRtype.value = resp.data
-      })
-}
-selectRtypeByGender()
+const ct = ref([])
+
+const ct1 = ref([])
+const type1= ref({})
+
 
 //获取订单量
 function getOrderVolume() {
@@ -190,6 +97,125 @@ function getGuestVolume() {
 }
 getGuestVolume()
 getOrderVolume()
+GetManList()
+GetManList1()
+
+//获取出租房间
+function GetManList1() {
+  indexApi.selectRtypeBy1()
+    .then(resp => {
+      type1.value = resp.data.map(item => item.type);
+        ct1.value = resp.data.map(item => item.ct);
+        // 重新初始化图表以更新数据
+        console.log(type1.value);
+        console.log(ct1.value);
+        RtypeByGender1();
+    })
+}
+
+
+function RtypeByGender1() {
+
+
+// 基于准备好的dom，初始化echarts实例
+let myChart = echarts.init(document.getElementById('RtypeByGender1'));
+
+// 指定图表的配置项和数据
+let option = {
+  title: {
+    text: '住客人数',
+    left: 'left'
+  },
+  xAxis: {
+    type: 'category',
+    data: type1.value
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: ct1.value,
+      type: 'bar'
+    }
+  ]
+};
+// 使用刚指定的配置项和数据显示图表。
+myChart.setOption(option);
+}
+
+
+
+//获取剩余房间
+function GetManList() {
+  indexApi.selectRtypeByGender()
+    .then(resp => {
+      manList.value = resp.data.map(item => item.type);
+        ct.value = resp.data.map(item => item.ct);
+        // 重新初始化图表以更新数据
+        RtypeByGender();
+    })
+}
+
+function RtypeByGender() {
+
+
+  // 基于准备好的dom，初始化echarts实例
+  let myChart = echarts.init(document.getElementById('RtypeByGender'));
+
+  // 指定图表的配置项和数据
+  let option = {
+    title: {
+    text: '房间剩余',
+    left: 'left'
+  },
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    top: '5%',
+    left: 'center'
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: 40,
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      
+      data: manList.value.map((name, index) => ({ value: ct.value[index], name }))
+    }
+  ]
+};
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+}
+
+
+// onMounted(() => {
+//   RtypeByGender();
+// })
+
+
 
 </script>
 

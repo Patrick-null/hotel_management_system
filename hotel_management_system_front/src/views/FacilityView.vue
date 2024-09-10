@@ -189,7 +189,6 @@ function handleAvatarSuccessAdd(resp, uploadFile) {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  console.log(resp)
   loading.close()
   if (resp.code == 10000) {
     ElMessage.success({
@@ -231,7 +230,6 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  console.log(resp)
   loading.close()
   if (resp.code == 10000) {
     ElMessage.success({
@@ -350,8 +348,6 @@ function selectAll(pageNum){
   facilityApi.selectAll(pageNum,flag.value)
     .then(resp => {
       facilityList.value=resp.data
-      console.log(resp.data);
-      
     })
 }
 

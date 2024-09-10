@@ -79,16 +79,23 @@ public class AdminController {
         return RespBean.ok("",volume);
     }
 
-    @GetMapping("/admin/selectRtypeByGender/{gender}")
-    public RespBean selectRtypeByGender(@PathVariable("gender") String gender){
-        System.out.println(gender);
-        List<Map<String, Object>> list = adminService.selectRtypeByGender(gender);
+    @GetMapping("/admin/selectRtypeByGender")
+    public RespBean selectRtypeByGender(){
+        System.out.println();
+        List<Map<String, Object>> list = adminService.selectRtypeByGender();
+        return RespBean.ok("",list);
+    }
+
+    @GetMapping("/admin/selectRtypeBy1")
+    public RespBean selectRtypeBy1(){
+        System.out.println();
+        List<Map<String, Object>> list = adminService.selectRtypeBy1();
         return RespBean.ok("",list);
     }
 
     @GetMapping("/admin/getAllRtype")
     public RespBean getAllRtype(){
-        List<String> allRtype = adminService.getAllRtype();
+        String[] allRtype = adminService.getAllRtype().toArray(new String[0]);
         return RespBean.ok("",allRtype);
     }
 

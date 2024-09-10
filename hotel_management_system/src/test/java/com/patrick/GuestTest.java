@@ -72,7 +72,7 @@ public class GuestTest {
 
     @Test
     public void test06(){
-        adminMapper.selectRtypeByGender("男").stream().forEach(System.out::println);
+        //adminMapper.selectRtypeByGender("男").stream().forEach(System.out::println);
     }
     @Test
     public void test05(){

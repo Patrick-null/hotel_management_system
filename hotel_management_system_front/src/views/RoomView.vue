@@ -409,7 +409,7 @@ function handleAvatarSuccessAdd(resp, uploadFile) {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  console.log(resp)
+  
   loading.close()
   if (resp.code == 10000) {
     ElMessage.success({
@@ -451,7 +451,7 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  console.log(resp)
+
   loading.close()
   if (resp.code == 10000) {
     ElMessage.success({
@@ -633,7 +633,7 @@ function selectAll(pageNum) {
   roomApi.selectAll(pageNum, flag.value)
     .then(resp => {
       roomList.value = resp.data;
-      console.log(roomList.value.list);
+      
     })
 }
 selectAll(1);

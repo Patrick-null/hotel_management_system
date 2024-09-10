@@ -27,9 +27,7 @@ service.interceptors.response.use(resp => {
    
     //将续期的jwt放到sessionStorage中
     sessionStorage.setItem("token",token)
-    console.log(123);
-    
-    console.log(token);
+
     
     return resp.data
 }, error => {

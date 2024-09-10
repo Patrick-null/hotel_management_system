@@ -83,9 +83,6 @@
   <!-- 新增窗口开始 -->
   <el-dialog v-model="ordersAddShowWin" title="添加订单" width="500">
     <el-form>
-      <el-form-item label="订单号" label-width="20%">
-        <el-input v-model="ordersAdd.ono" autocomplete="off" style="width: 300px;" />
-      </el-form-item>
       <el-form-item label="姓名" label-width="20%">
         <el-input v-model="guestBuy.gname" autocomplete="off" style="width: 300px;" />
       </el-form-item>
@@ -322,11 +319,13 @@ function insertOne() {
   guestOne.value.rid = guestBuy.value.rid
 
 
-  guestListAdd.push(guestOne.value)
-  guestListAddDy.value = guestListAdd
+  // guestListAdd.push(guestOne.value)
+  // guestListAddDy.value = guestListAdd
+  guestListAddDy.value.push(guestOne.value)
+  
   console.log(guestListAddDy.value);
-
-
+  console.log(123);
+  
   //数据清空
   guestOne.value = {}
   //关闭页面
@@ -412,9 +411,6 @@ function ordersUpdShow(oid) {
   ordersApi.selectById(oid)
     .then(resp => {
       ordersUpd.value = resp.data
-      console.log(resp);
-      console.log(ordersUpd.value);
-
     })
   //显示窗口
   ordersUpdShowWin.value = true
@@ -433,14 +429,18 @@ function insert() {
   //将下单人的gno存到
   ordersAdd.value.gno = ordersAdd.value.guest.gno;
 
-
+  //获取订单编号
+  ordersAdd.value.ono=getTime;
 
   //将多人添加到房间中
-  ordersAdd.value.guests = guestListAdd;
-  guestListAdd.length = 0
+  ordersAdd.value.guests = guestListAddDy.value;
+  guestListAddDy.value={}
 
+  //将下单人存到房间中
+  ordersAdd.value.guests.push(guestBuy.value)
 
-
+  console.log(ordersAdd.value);
+  
   ordersApi.insert(ordersAdd.value)
     .then(resp => {
       loading.close()
@@ -457,12 +457,12 @@ function insert() {
         ordersAddShowWin.value = false
 
         //清空数据
-        ordersAdd.value = ''
-        guestBuy.value = ''
+        ordersAdd.value = {}
+        guestBuy.value = {}
 
 
         //刷新表格
-        selectAll()
+        selectAll(1)
       } else {
         ElMessage({
           message: resp.msg,
@@ -551,7 +551,6 @@ function selectAll(pageNum) {
   ordersApi.selectAll(pageNum, flag.value)
     .then(resp => {
       ordersList.value = resp.data
-      console.log(ordersList.value);
     })
 }
 

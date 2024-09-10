@@ -263,8 +263,6 @@ function guestUpdShow(gid) {
   guestApi.selectById(gid)
     .then(resp => {
       guestUpd.value = resp.data;
-      console.log(resp);
-
     })
 
   //显示修改窗口
@@ -321,8 +319,6 @@ function guestAddShow() {
 function selectAll(pageNum) {
   guestApi.selectAll(pageNum, flag.value)
     .then(resp => {
-      console.log(resp);
-
       guestList.value = resp.data
 
     })

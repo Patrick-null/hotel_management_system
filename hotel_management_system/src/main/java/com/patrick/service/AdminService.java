@@ -14,7 +14,8 @@ public interface AdminService {
 
     int getGuestVolume();
 
-    List<Map<String,Object>> selectRtypeByGender(String gender);
+    List<Map<String,Object>> selectRtypeByGender( );
+    List<Map<String,Object>> selectRtypeBy1( );
 
     List<String> getAllRtype();
     boolean updatePwd(Admin userAndpwd) throws MyException;

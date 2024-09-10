@@ -16,8 +16,14 @@
     <select id="getGuestVolume" resultType="integer">
         select count(*) from `guest`
     </select>
+    <!--<select id="selectRtypeByGender" resultType="java.util.Map">-->
+    <!--    select r.rtype type,count(1) ct FROM `guest` g ,`room` r WHERE g.rid=r.rid  GROUP BY r.rtype-->
+    <!--</select>-->
     <select id="selectRtypeByGender" resultType="java.util.Map">
-        select r.rtype type,count(1) ct FROM `guest` g ,`room` r WHERE g.rid=r.rid AND g.ggender=#{gender} GROUP BY r.rtype
+        select r.rtype type,count(1) ct FROM `room` r WHERE r.rstate="0"  GROUP BY r.rtype
+    </select>
+    <select id="selectRtypeBy1" resultType="java.util.Map">
+        select r.rtype type,count(1) ct FROM `room` r WHERE r.rstate="1"  GROUP BY r.rtype
     </select>
     <select id="getAllRtype" resultType="java.lang.String">
         select rtype from `room` group by `rtype`

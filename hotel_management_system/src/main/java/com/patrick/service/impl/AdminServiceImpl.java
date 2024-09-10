@@ -68,8 +68,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Map<String, Object>> selectRtypeByGender(String gender) {
-        return adminMapper.selectRtypeByGender(gender);
+    public List<Map<String, Object>> selectRtypeByGender( ) {
+        return adminMapper.selectRtypeByGender();
+    }
+    public List<Map<String, Object>> selectRtypeBy1( ) {
+        return adminMapper.selectRtypeBy1();
     }
 
     @Override
