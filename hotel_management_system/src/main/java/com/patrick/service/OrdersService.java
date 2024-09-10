@@ -21,7 +21,7 @@ public interface OrdersService {
     List<Orders> selectAll();
 
     //根据订单号查询订单
-    Orders selectByOno(Integer ono);
+    Orders selectByOno(String ono);
 
 
     //根据ID查询订单

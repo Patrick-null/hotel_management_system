@@ -122,7 +122,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public Orders selectByOno(Integer ono) {
+    public Orders selectByOno(String  ono) {
         return ordersMapper.selectByOno(ono);
     }
 

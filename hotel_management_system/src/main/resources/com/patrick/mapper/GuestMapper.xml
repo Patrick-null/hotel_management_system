@@ -22,6 +22,10 @@
         UPDATE `guest` SET `gstate`="2" WHERE `gid`=#{gid}
     </delete>
 
+    <delete id="delete2">
+        delete from `guest` WHERE `gid`=#{gid}
+    </delete>
+
     <resultMap id="guestMap" type="guest">
         <id column="gid" property="gid"/>
         <result column="rid" property="rid" />

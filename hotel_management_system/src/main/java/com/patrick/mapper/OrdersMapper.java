@@ -12,6 +12,7 @@ public interface OrdersMapper {
 
     //删除订单
     int delete(Integer oid);
+    int delete2(Integer oid);
 
     //修改订单
     int update(Orders orders);
@@ -20,7 +21,7 @@ public interface OrdersMapper {
     List<Orders> selectAll(String flag);
 
     //根据订单号查询订单
-    Orders selectByOno(Integer ono);
+    Orders selectByOno(String ono);
 
 
     //根据ID查询订单

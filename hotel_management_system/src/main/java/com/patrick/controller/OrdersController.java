@@ -66,9 +66,9 @@ public class OrdersController {
     @DeleteMapping("{oid}")
     public RespBean delete(@PathVariable("oid") Integer oid){
         if (ordersService.delete(oid)) {
-            return RespBean.ok("删除成功");
+            return RespBean.ok("使用成功");
         }
-        return RespBean.error("删除失败");
+        return RespBean.error("使用失败");
     }
 
     @PutMapping

@@ -5,10 +5,14 @@
         INSERT INTO `orders`(`ono`,`gno`,`otime`,`moneys`,`rid`) VALUES (#{ono},#{gno},#{otime},#{moneys},#{rid})
     </insert>
     <update id="update">
-        update  `orders` SET `ono`=#{ono},`gid`=#{gid},`otime`=#{otime},`rid`=#{rid} where `oid`=#{oid}
+        update  `orders` SET `ono`=#{ono},`gno`=#{gno},`otime`=#{otime},`rid`=#{rid} where `oid`=#{oid}
     </update>
     <delete id="delete">
         update  `orders` SET `ostate`="1" where `oid`=#{oid}
+    </delete>
+
+    <delete id="delete2">
+       delete from `orders` where `oid`=#{oid}
     </delete>
 
     <resultMap id="ordersMap" type="orders">

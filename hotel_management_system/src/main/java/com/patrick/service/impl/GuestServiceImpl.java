@@ -3,8 +3,10 @@ package com.patrick.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Guest;
+import com.patrick.bean.Orders;
 import com.patrick.excetion.MyException;
 import com.patrick.mapper.GuestMapper;
+import com.patrick.mapper.OrdersMapper;
 import com.patrick.mapper.RoomMapper;
 import com.patrick.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class GuestServiceImpl implements GuestService {
     private GuestMapper guestMapper;
     @Autowired
     private RoomMapper roomMapper;
+    @Autowired
+    private OrdersMapper ordersMapper;
 
     //添加住客
     @Override
@@ -45,13 +49,30 @@ public class GuestServiceImpl implements GuestService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean update(@Validated Guest guest) {
+
+        Integer rid = guestMapper.selectByNo(guest.getGno()).getRid();
+
         //将本来房间变成空闲
-        //roomMapper.updateRstate();
+        roomMapper.updateRstate(0,rid);
 
-        //将修改后的房间变成已预订
+        //删除该住户
+        guestMapper.delete2(guest.getGid());
+        System.out.println(guestMapper.selectByRid(guest.getGid()));
+        System.out.println(123123);
+        //添加该住户
+        guestMapper.insert(guest);
+        //将新房间设为已预订
+        roomMapper.updateRstate(1, guest.getRid());
+        //修改订单中的房间修改
+        if(guest.getOno() != null){
 
-        //将用户修改为已
-        return guestMapper.update(guest)==1;
+            String ono = guest.getOno();
+            Orders orders = ordersMapper.selectByOno(ono);
+            orders.setRid(guest.getRid());
+            ordersMapper.delete2(orders.getOid());
+            ordersMapper.insert(orders);
+        }
+        return true;
     }
 
 

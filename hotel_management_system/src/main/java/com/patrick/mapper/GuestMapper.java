@@ -14,6 +14,7 @@ public interface GuestMapper {
 
     //删除住客
     int delete(Integer gid);
+    int delete2(Integer gid);
 
     //修改住客
     int update(Guest guest);

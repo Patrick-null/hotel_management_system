@@ -178,7 +178,7 @@ function RtypeByGender() {
   },
   series: [
     {
-      name: 'Access From',
+      name: '房间剩余',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,

@@ -12,7 +12,7 @@
                 </el-form-item>
               </el-form>
             </el-header>
-            <el-main  style="height: 380px;">
+            <el-main  style="height: 420px;">
               <el-table :data="guestList.list" border style="width: 100%">
                 <el-table-column prop="gid" label="ID" width="50" />
                 <el-table-column prop="gname" label="姓名" width="70px" />
@@ -46,7 +46,7 @@
             </el-main>
 
             <el-footer>
-              <el-row class="row-bg" justify="center" style="margin-top: 20px;">
+              <el-row class="row-bg" justify="center" >
                 <el-pagination background layout="prev, pager, next" :total="guestList.total"
                   :page-size="guestList.pageSize" @change="selectAll" />
               </el-row>
@@ -65,7 +65,7 @@
 
 
   <!-- 新增窗口开始 -->
-  <el-dialog v-model="guestAddShowWin" title="添加员工" width="500">
+  <el-dialog v-model="guestAddShowWin" title="添加住客" width="500">
     <el-form>
       <el-form-item label="姓名" label-width="20%">
         <el-input v-model="guestAdd.gname" autocomplete="off" style="width: 300px;" />
@@ -107,7 +107,7 @@
   <!-- 新增窗口结束 -->
 
   <!-- 修改窗口开始 -->
-  <el-dialog v-model="guestUpdShowWin" title="添加员工" width="500">
+  <el-dialog v-model="guestUpdShowWin" title="修改住客" width="500">
     <el-form>
       <el-form-item label="姓名" label-width="20%">
         <el-input v-model="guestUpd.gname" autocomplete="off" style="width: 300px;" />
@@ -198,7 +198,7 @@ function deleteByGid(gid) {
         })
 
         //刷新表格
-        selectAll()
+        selectAll(guestList.value.pageNum)
       } else {
         ElMessage({
           message: resp.msg,
@@ -242,7 +242,7 @@ function update() {
 
 
         //刷新表格
-        selectAll()
+        selectAll(guestList.value.pageNum)
       } else {
         ElMessage({
           message: resp.msg,
@@ -295,7 +295,7 @@ function insert() {
         guestAdd.value = ""
 
         //刷新表格
-        selectAll()
+        selectAll(1)
       } else {
         ElMessage({
           message: resp.msg,
