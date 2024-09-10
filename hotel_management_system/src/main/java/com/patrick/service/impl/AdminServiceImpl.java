@@ -1,5 +1,7 @@
 package com.patrick.service.impl;
 
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.MD5;
 import com.patrick.bean.Admin;
 import com.patrick.excetion.MyException;
 import com.patrick.mapper.AdminMapper;
@@ -26,7 +28,12 @@ public class AdminServiceImpl implements AdminService {
         if(!role.equals(admin.getRole())){
             throw new MyException("请按角色登录");
         }
-        if(!admin.getPassword().equals(password)){
+
+
+        //md5加密
+        String md5Pwd = SecureUtil.md5(SecureUtil.md5(password));
+
+        if(!admin.getPassword().equals(md5Pwd)){
             throw new MyException("密码错误，请确认后重新输入");
         }
 
@@ -48,9 +55,13 @@ public class AdminServiceImpl implements AdminService {
             throw new MyException("请按角色登录");
         }
 
-        if(!admin.getPassword().equals(password)){
+        //md5加密
+        String md5Pwd = SecureUtil.md5(SecureUtil.md5(password));
+        if(!admin.getPassword().equals(md5Pwd)){
             throw new MyException("密码错误，请确认后重新输入");
         }
+
+
 
 
         return admin;
@@ -86,6 +97,8 @@ public class AdminServiceImpl implements AdminService {
         if(adminMapper.login(userAndpwd.getUsername())==null) {
             throw new MyException("没有找到该用户名");
         }
+        String md5 = SecureUtil.md5(SecureUtil.md5(userAndpwd.getPassword()));
+        userAndpwd.setPassword(md5);
         return adminMapper.updatePwd(userAndpwd.getUsername(),userAndpwd.getPassword())==1;
     }
 

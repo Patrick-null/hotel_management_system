@@ -30,7 +30,19 @@ const facilityApi={
     //使用订单
     useOrder(oid){
         return service.post(`/user/useOrder/${oid}`)
-    }
+    },
+    //修改订单
+    updateOrders(orders){
+        return service.put('/user/updateOrder',orders)
+    },
+    //根据ID查询
+    selectById(oid){
+        return service.get(`/user/selectById/${oid}`)
+    },
+    //查询所有空闲房间
+    selectByStateSpareRoom(rstate){
+        return service.get(`/user/selectByState/${rstate}`)
+    },
 }
 
 export default facilityApi;

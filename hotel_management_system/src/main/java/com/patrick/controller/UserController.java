@@ -7,11 +7,14 @@ import com.patrick.bean.RespBean;
 import com.patrick.bean.Room;
 import com.patrick.excetion.MyException;
 import com.patrick.service.OrdersService;
+import com.patrick.service.RoomService;
 import com.patrick.service.UserService;
 import com.sun.javafx.logging.PulseLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -21,6 +24,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private OrdersService ordersService;
+    @Autowired
+    private RoomService roomService;
 
     //获取所有房间
     @GetMapping("/selectAllRoom")
@@ -47,8 +52,12 @@ public class UserController {
 
     //使用订单
     @PostMapping("/useOrder/{oid}")
-    public RespBean useOrder(@PathVariable("oid") Integer oid){
+    public RespBean useOrder(@PathVariable("oid") Integer oid) throws MyException {
+        Integer ostate = ordersService.selectById(oid).getOstate();
+        if (ostate == 1) {
 
+            throw  new MyException("该订单已使用，不能重复使用");
+        }
         if (ordersService.delete(oid)) {
             return RespBean.ok("使用成功");
         }else {
@@ -68,6 +77,40 @@ public class UserController {
         boolean b = userService.updatePwd(userAndpwd);
 
         return RespBean.ok("修改成功");
+    }
+
+    //修改订单
+    @PutMapping("/updateOrder")
+    public  RespBean updateOrder(@RequestBody @Validated Orders orders) throws MyException {
+
+        System.out.println("123123123123123123---");
+        System.out.println("999999999999999999999999");
+        System.out.println(orders);
+        Boolean update = userService.update(orders);
+        if(update){
+            return RespBean.ok("修改成功");
+        }
+
+        return RespBean.error("修改失败");
+    }
+
+    //根据订单id查询
+    @GetMapping("/selectById/{oid}")
+    public RespBean selectById(@PathVariable("oid") Integer oid){
+        Orders orders = ordersService.selectById(oid);
+        if(orders != null){
+            return RespBean.ok("",orders);
+        }else {
+            return RespBean.error("没有找到该订单");
+        }
+    }
+
+    //查询所有空闲房间
+    @GetMapping("/selectByState/{rstate}")
+    public RespBean selectByState(@PathVariable("rstate") Integer rstate){
+        List<Room> roomList = roomService.selectByState(rstate);
+        roomList.stream().forEach(System.out::println);
+        return RespBean.ok("",roomList);
     }
 
 

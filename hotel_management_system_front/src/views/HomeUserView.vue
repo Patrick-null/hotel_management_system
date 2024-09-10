@@ -151,7 +151,7 @@
       </el-form-item>
       <div class="dialog-footer">
         <el-button @click="pwdUpdWin = false">取消</el-button>
-        <el-button type="primary" @click="updPwd">
+        <el-button type="primary" @click="updPwdUser">
           提交
         </el-button>
       </div>
@@ -208,14 +208,14 @@ const infoShowWin = ref(false)
 const pwdUpdWin = ref(false);
 
 //修改密码
-function updPwd(){
+function updPwdUser(){
   const loading = ElLoading.service({
     lock: true,
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
   if(userAndpwd.value.password == passwordTwo.value){
-    loginApi.updPwd(userAndpwd.value)
+    loginApi.updPwdUser(userAndpwd.value)
     .then(resp => {
       loading.close()
       //判断是否成功

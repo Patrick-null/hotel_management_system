@@ -123,6 +123,20 @@ public class OrdersServiceImpl implements OrdersService {
                 guestMapper.insert(guests[i]);
             }
             roomMapper.updateRstate(0,rid);
+            BigDecimal rprice = roomMapper.selectById(orders.getRid()).getRprice();
+
+            //获取时间
+            Date gstart = guests[0].getGstart();
+            Date gend = guests[0].getGend();
+            LocalDate start = gstart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate end = gend.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+
+            long day = ChronoUnit.DAYS.between(start, end);
+
+
+            orders.setMoneys(new BigDecimal(day).multiply(rprice));
+
             roomMapper.updateRstate(1,orders.getRid());
         }else {
 
@@ -134,6 +148,9 @@ public class OrdersServiceImpl implements OrdersService {
             //修改后来房间的住客为1
         //删除原来的订单
         ordersMapper.delete2(orders.getOid());
+
+        System.out.println("00000000000000000");
+        System.out.println(orders);
         //新增现在的订单
         return ordersMapper.insert(orders)==1;
     }

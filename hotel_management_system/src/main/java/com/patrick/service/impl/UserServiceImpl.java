@@ -1,19 +1,26 @@
 package com.patrick.service.impl;
 
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.MD5;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Admin;
+import com.patrick.bean.Guest;
 import com.patrick.bean.Orders;
 import com.patrick.bean.Room;
 import com.patrick.excetion.MyException;
-import com.patrick.mapper.AdminMapper;
-import com.patrick.mapper.RoomMapper;
-import com.patrick.mapper.UserMapper;
+import com.patrick.mapper.*;
 import com.patrick.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,6 +31,10 @@ public class UserServiceImpl implements UserService {
     private AdminMapper adminMapper;
     @Autowired
     private RoomMapper roomMapper;
+    @Autowired
+    private OrdersMapper ordersMapper;
+    @Autowired
+    private GuestMapper guestMapper;
     @Override
     public PageInfo<Room> selectAllRoom(Integer pageNum,String flag) {
         //导包
@@ -31,7 +42,8 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(pageNum,5);
         //查询
         List<Room> roomList = roomMapper.selectByState2(0,flag);
-
+        roomList.stream().forEach(System.out::println);
+        System.out.println("=========");;
 
 
         //创建封装查询结果
@@ -48,7 +60,6 @@ public class UserServiceImpl implements UserService {
         //查询
         List<Orders> ordersList = userMapper.selectMyAll(gno,flag);
 
-        System.out.println("1231231231");
         ordersList.stream().forEach(System.out::println);
         //创建封装查询结果
         PageInfo<Orders> ordersListPageInfo = new PageInfo<>(ordersList);
@@ -60,6 +71,8 @@ public class UserServiceImpl implements UserService {
         if(adminMapper.loginTwo(userAndpwd.getUsername())==null) {
             throw new MyException("没有找到该用户名");
         }
+        String md5 = SecureUtil.md5(SecureUtil.md5(userAndpwd.getPassword()));
+        userAndpwd.setPassword(md5);
         return adminMapper.updatePwd(userAndpwd.getUsername(),userAndpwd.getPassword())==1;
     }
 
@@ -69,6 +82,8 @@ public class UserServiceImpl implements UserService {
         if(adminMapper.loginTwo(enroll.getUsername()) != null){
             throw new MyException("用户名已存在，请重新输入");
         }
+        String md5 = SecureUtil.md5(SecureUtil.md5(enroll.getPassword()));
+        enroll.setPassword(md5);
         if(adminMapper.insert(enroll.getUsername(),enroll.getPassword())==1){
 
             Integer aid = adminMapper.loginTwo(enroll.getUsername()).getAid();
@@ -76,5 +91,71 @@ public class UserServiceImpl implements UserService {
             return enroll;
         }
         return null;
+    }
+
+
+    //修改订单
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean update(@Validated Orders orders) throws MyException {
+        if(ordersMapper.selectById(orders.getOid()).getOstate()==1){
+            throw new MyException("订单已完成，无法修改");
+        }
+
+        //获取到之前的房间类型
+
+        //修改订单
+        //修改订单中原来的房间为0
+        //获取之前房间的id
+        Guest[] guests = guestMapper.selectByOno(orders.getOno());
+
+        //Integer rnum = roomMapper.selectById(orders.getRid()).getRnum();
+        Integer rnum = roomMapper.selectById(orders.getRid()).getRnum();
+        System.out.println("--------------------");
+        System.out.println(orders.getGuest().getRid());
+        System.out.println("房间人数"+rnum);
+        System.out.println("客人人数"+guests.length);
+        if(guests.length>rnum){
+            throw new MyException("订单人数大于房间人数，无法修改");
+        }
+
+        if(guests.length>0){
+            Integer rid = guests[0].getRid();
+            for (int i = 0; i < guests.length; i++) {
+                guestMapper.delete2(guests[i].getGid());
+                guests[i].setRid(orders.getRid());
+                guestMapper.insert(guests[i]);
+            }
+            roomMapper.updateRstate(0,rid);
+
+
+
+            BigDecimal rprice = roomMapper.selectById(orders.getRid()).getRprice();
+
+            //获取时间
+            Date gstart = guests[0].getGstart();
+            Date gend = guests[0].getGend();
+            LocalDate start = gstart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate end = gend.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+
+            long day = ChronoUnit.DAYS.between(start, end);
+
+
+            orders.setMoneys(new BigDecimal(day).multiply(rprice));
+
+            roomMapper.updateRstate(1,orders.getRid());
+        }else {
+
+            throw new MyException("修改失败");
+        }
+        //修改原来房间中的住客为0
+
+        //修改订单中后来的房间为1
+        //修改后来房间的住客为1
+        //删除原来的订单
+        ordersMapper.delete2(orders.getOid());
+        //新增现在的订单
+        return ordersMapper.insert(orders)==1;
     }
 }

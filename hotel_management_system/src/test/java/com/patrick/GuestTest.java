@@ -1,6 +1,7 @@
 package com.patrick;
 
 
+import cn.hutool.crypto.digest.MD5;
 import com.patrick.bean.Admin;
 import com.patrick.bean.Guest;
 import com.patrick.bean.Info;
@@ -36,6 +37,11 @@ public class GuestTest {
     private InfoMapper infoMapper;
     @Autowired
     private GuestMapper guestMapper;
+
+    @Test
+    public void test13(){
+        System.out.println(MD5.create().digestHex(MD5.create().digestHex("admin")));
+    }
 
     @Test
     public void test12(){

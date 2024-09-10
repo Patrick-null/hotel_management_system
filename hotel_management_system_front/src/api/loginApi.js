@@ -15,7 +15,7 @@ const loginApi = {
         return service.get('/admin/getUsername')
     },
     //修改密码
-    updPwd(userAndpwd){
+    updPwdUser(userAndpwd){
         return service.put('/user/userAndpwd',userAndpwd)
     },
     //修改密码

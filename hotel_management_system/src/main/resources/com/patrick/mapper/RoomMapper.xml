@@ -43,15 +43,14 @@
         SELECT * FROM `room` WHERE `rstate` = #{rstate}
     </select>
     <select id="selectByState2" resultType="room">
-        SELECT * FROM `room`
-        <where>
-             `rstate` = #{rstate}
+        SELECT * FROM `room` where `rstate` = #{rstate}
+
             <if test="flag!=null">
-               and `rtype` LIKE concat('%',#{flag},'%')
+               and (`rtype` LIKE concat('%',#{flag},'%')
                 or  `rno` LIKE concat('%',#{flag},'%')
-                or  `rprice` LIKE concat('%',#{flag},'%')
+                or  `rprice` LIKE concat('%',#{flag},'%'))
             </if>
-        </where>
+
     </select>
 
 <!--    获取房间信息-->
