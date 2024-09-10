@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -51,11 +52,13 @@ public class Orders {
 
     //下单人员
     @ExcelIgnore
+    @Valid
     @NotNull(message = "数据不能为空")
     private Guest guest;
 
     //住客人员
     @ExcelIgnore
+    @Valid
     private Guest[] guests;
 
     //是否已入住
@@ -63,6 +66,7 @@ public class Orders {
     private Integer ostate;
 
     @ExcelIgnore
+    @Valid
     private Room room;
 
 }

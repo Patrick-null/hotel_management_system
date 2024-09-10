@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -52,6 +53,7 @@ public class Guest {
     @NotNull(message = "房间不能为空")
     private Integer rid;
 
+    @Valid
     private Room room;
 
     private String ono;

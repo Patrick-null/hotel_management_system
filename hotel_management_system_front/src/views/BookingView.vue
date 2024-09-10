@@ -254,7 +254,6 @@ function insertMember() {
     if (guestOne.value.gno == thisOrdersList.value[index].gno) {
       biaoshi.value = false
     }
-
   }
   if (biaoshi.value == true) {
     guestOne.value.gstart = orderGuest.value.gstart
@@ -272,7 +271,7 @@ function insertMember() {
  
   } else {
     ElMessage.error({
-      message: "添加失败",
+      message: "该客人已经添加,不能重复添加",
       duration: 1200
     })
   }

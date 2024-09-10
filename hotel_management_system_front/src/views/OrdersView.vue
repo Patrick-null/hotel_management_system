@@ -335,7 +335,9 @@ function insertOne() {
 
   // guestListAdd.push(guestOne.value)
   // guestListAddDy.value = guestListAdd
-  guestListAddDy.value.push(guestOne.value)
+  if(guestListAddDy.value.guest.gno!=guestOne.value.gno){
+    guestListAddDy.value.push(guestOne.value)
+  }
   
   console.log(guestListAddDy.value);
   console.log(123);
@@ -389,7 +391,6 @@ function update() {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  ordersUpd.value.otime = nowDate(time);
   ordersUpd.value.guests.push(ordersUpd.value.guest)
   console.log(ordersUpd.value);
   

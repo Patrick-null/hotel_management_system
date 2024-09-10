@@ -12,14 +12,15 @@
                             <span>管理员登录</span>
                         </div>
                     </template>
-                    <el-form ref="ruleFormRef" style="max-width: 240px; " status-icon label-width="auto"
-                        class="demo-ruleForm">
-                        <el-form-item prop="pass">
-                            <el-input v-model="admin.username" type="password" autocomplete="off"
+                    <el-form ref="loginXY" style="max-width: 240px; " status-icon label-width="auto"
+                        class="demo-ruleForm"  :model="admin.value" :rules="rules">
+                        <el-form-item prop="username" >
+                            <el-input v-model="admin.username" type="password" autocomplete="off" 
                                 placeholder="请输入用户名" />
                         </el-form-item>
-                        <el-form-item prop="checkPass">
-                            <el-input v-model="admin.password" type="password" autocomplete="off" placeholder="请输入密码" />
+                        <el-form-item prop="password">
+                            <el-input v-model="admin.password" type="password" autocomplete="off" prop="password"
+                             placeholder="请输入密码" />
                         </el-form-item>
                         <el-button style="width: 200px; margin-top: 10px;" round @click="login"
                             color="#626aef">登录</el-button>
@@ -43,6 +44,15 @@ import { ElLoading } from 'element-plus'
 import router from '@/router';
 import { ElNotification } from 'element-plus'
 import service from '@/api';
+
+
+const loginXY = ref(null) 
+
+const rules =reactive({
+    username:[{required:true,message:'请输入用户名',trigger:'blur'}],
+    password:[{required:true,message:'请输入密码',trigger:'blur'}],
+})
+
 
 //登录实体
 const admin = ref({

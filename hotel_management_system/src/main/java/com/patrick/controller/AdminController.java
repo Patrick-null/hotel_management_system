@@ -19,6 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping
 @CrossOrigin
+@Validated
 public class AdminController {
     @Autowired
     private AdminService adminService;
@@ -118,10 +119,10 @@ public class AdminController {
     //注册账号
     @PostMapping("/enroll")
     public RespBean enroll(@RequestBody @Validated Admin enroll) throws MyException {
-        if(enroll.getUsername()==null){
+        if(enroll.getUsername().equals("")){
             throw  new MyException("账号不能为空");
         }
-        if(enroll.getPassword()==null){
+        if(enroll.getPassword().equals("")){
             throw  new MyException("密码不能为空");
         }
         if(userService.enroll(enroll)!=null){

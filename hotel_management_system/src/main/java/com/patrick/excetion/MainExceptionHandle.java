@@ -33,7 +33,9 @@ public class MainExceptionHandle {
         BindingResult bindingResult = e.getBindingResult();
         StringBuilder sbf = new StringBuilder("添加失败 ");
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
+
             sbf.append(fieldError.getDefaultMessage()).append(", ");
+
         }
         String msg = sbf.toString();
         int i = msg.lastIndexOf(", ");

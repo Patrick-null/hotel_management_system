@@ -12,13 +12,12 @@
                             <span>用户登录</span>
                         </div>
                     </template>
-                    <el-form ref="ruleFormRef" style="max-width: 240px; " status-icon label-width="auto"
-                        class="demo-ruleForm">
-                        <el-form-item prop="pass">
-                            <el-input v-model="admin.username" type="password" autocomplete="off"
-                                placeholder="请输入用户名" />
+                    <el-form ref="loginXY" :model="admin" style="max-width: 240px; " status-icon label-width="auto"
+                        class="demo-ruleForm" :rules="rules">
+                        <el-form-item prop="username">
+                            <el-input v-model="admin.username" autocomplete="off" placeholder="请输入用户名" />
                         </el-form-item>
-                        <el-form-item prop="checkPass">
+                        <el-form-item prop="password">
                             <el-input v-model="admin.password" type="password" autocomplete="off" placeholder="请输入密码" />
                         </el-form-item>
                         <div style="display: flex; justify-content: center; max-width: 600px;">
@@ -41,39 +40,47 @@
 
     <!-- 注册窗口开始 -->
     <el-dialog v-model="enrollShowWin" title="注册" width="500" center>
+
         <template #footer>
-            <el-form-item label="用户名" label-width="20%">
-                <el-input v-model="enroll.username" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <el-form-item label="密码" label-width="20%">
-                <el-input type="password" v-model="enroll.password" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <el-form-item label="重复密码" label-width="20%">
-                <el-input type="password" v-model="enrollPwd" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <el-form-item label="姓名" label-width="20%">
-                <el-input v-model="info.name" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <el-form-item label="性别" label-width="20%">
-                <el-radio-group v-model="info.gender">
-                    <el-radio-button label="男" value="男" />
-                    <el-radio-button label="女" value="女" />
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="身份证号" label-width="20%">
-                <el-input v-model="info.no" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <el-form-item label="联系方式" label-width="20%">
-                <el-input v-model="info.phone" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <el-form-item label="地址" label-width="20%">
-                <el-input v-model="info.addr" autocomplete="off" style="width: 300px;" />
-            </el-form-item>
-            <div class="dialog-footer">
-                <el-button @click="enrollShowWin = false">取消</el-button>
-                <el-button type="primary" @click="enrollShow">注册</el-button>
-            </div>
+            <el-form ref="adminXY" :model="enroll" :rules="adminrules">
+
+                <el-form-item label="用户名" label-width="20%" prop="username">
+                    <el-input v-model="enroll.username" autocomplete="off" style="width: 300px;" />
+                </el-form-item>
+                <el-form-item label="密码" label-width="20%" prop="password">
+                    <el-input type="password" v-model="enroll.password" autocomplete="off" style="width: 300px;" />
+                </el-form-item>
+                <el-form-item label="重复密码" label-width="20%" prop="password">
+                    <el-input type="password" v-model="enrollPwd" autocomplete="off" style="width: 300px;" />
+                </el-form-item>
+            </el-form>
+            <el-form ref="enrollXY" :model="info" :rules="enrollrules">
+                <el-form-item label="姓名" label-width="20%" prop="name">
+                    <el-input v-model="info.name" autocomplete="off" style="width: 300px;" />
+                </el-form-item>
+                <el-form-item label="性别" label-width="20%">
+                    <el-radio-group v-model="info.gender">
+                        <el-radio-button label="男" value="男" />
+                        <el-radio-button label="女" value="女" />
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="身份证号" label-width="20%" prop="no">
+                    <el-input v-model="info.no" autocomplete="off" style="width: 300px;" />
+                </el-form-item>
+                <el-form-item label="联系方式" label-width="20%" prop="phone">
+                    <el-input v-model="info.phone" autocomplete="off" style="width: 300px;" />
+                </el-form-item>
+                <el-form-item label="地址" label-width="20%" prop="addr">
+                    <el-input v-model="info.addr" autocomplete="off" style="width: 300px;" />
+                </el-form-item>
+
+                <div class="dialog-footer">
+                    <el-button @click="enrollShowWin = false">取消</el-button>
+                    <el-button type="primary" @click="enrollShow">注册</el-button>
+                </div>
+            </el-form>
         </template>
+
     </el-dialog>
     <!-- 注册窗口结束 -->
 </template>
@@ -88,6 +95,30 @@ import { ElNotification } from 'element-plus'
 import service from '@/api';
 import infoApi from '@/api/infoApi';
 
+const loginXY = ref(null)
+
+const rules = reactive({
+    username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+})
+
+
+const adminXY = ref(null)
+const adminrules = reactive({
+    username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+})
+
+
+
+const enrollXY = ref(null)
+const enrollrules = reactive({
+    name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+    no: [{ required: true, message: '请输入身份证号', trigger: 'blur' }],
+    phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+    addr: [{ required: true, message: '请输入地址', trigger: 'blur' }],
+    gender: [{ required: true, message: '请选择性别', trigger: 'blur' }]
+})
 
 
 //登录实体
@@ -105,12 +136,12 @@ const enroll = ref({
 const enrollPwd = ref('')
 //用户信息
 const info = ref({
-    name:'',
-    gender:'',
-    no:'',
-    phone:'',
-    addr:'',
-    aid:''
+    name: '',
+    gender: '男',
+    no: '',
+    phone: '',
+    addr: '',
+    aid: ''
 
 })
 
@@ -123,9 +154,28 @@ function enrollShow() {
         text: 'Loading',
         background: 'rgba(0, 0, 0, 0.7)',
     })
-    if (enroll.value.password != enrollPwd.value) {
-        Element.error("两次密码不一致，请确认后输入")
-    } else {
+    if (enroll.value.username == "" || enroll.value.username == "") {
+        loading.close()
+        ElMessage({
+            message: "用户名或密码不能为空",
+            type: 'error',
+            duration: 1200
+        });  
+    } else if (enroll.value.password != enrollPwd.value) {
+        loading.close()
+        ElMessage({
+            message: "两次密码不一致，请确认后输入",
+            type: 'error',
+            duration: 1200
+        });
+    } else if(info.value.name==""||info.value.no==""||info.value.phone==""||info.value.addr==""){
+        loading.close()
+        ElMessage({
+            message: "请填写完整信息",
+            type: 'error',
+            duration: 1200
+        });
+    }else {
         loginApi.enroll(enroll.value)
             .then(resp => {
                 loading.close()
@@ -139,11 +189,25 @@ function enrollShow() {
                     })
                     enrollShowWin.value = false
                     console.log(resp.data);
-                    
-                    info.value.aid=resp.data.aid
+
+                    info.value.aid = resp.data.aid
                     //吧信息添加到数据库
                     infoApi.insert(info.value)
                         .then(resp => {
+                            if (resp.code == 10000) {
+                                //弹出消息
+                                ElMessage({
+                                    message: resp.msg,
+                                    type: 'success',
+                                    duration: 1200
+                                })
+                            } else {
+                                ElMessage({
+                                    message: resp.msg,
+                                    type: 'error',
+                                    duration: 1200
+                                });
+                            }
                         })
 
                     //清空数据

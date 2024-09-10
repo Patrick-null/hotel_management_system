@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
+@Validated
 @RequestMapping("/admin/facility")
 public class FacilityController {
     @Autowired

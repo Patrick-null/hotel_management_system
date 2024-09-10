@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
+@Validated
 @RequestMapping("/info")
 public class InfoController {
     @Autowired

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -53,9 +54,11 @@ public class Room {
 
     //房间人员
     @ExcelIgnore
+    @Valid
     private List<Guest> guestList;
 
     //房间设施
     @ExcelIgnore
+    @Valid
     private List<Facility> facilityList;
 }
