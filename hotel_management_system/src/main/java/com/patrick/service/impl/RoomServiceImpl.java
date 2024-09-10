@@ -2,11 +2,16 @@ package com.patrick.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.patrick.bean.Guest;
 import com.patrick.bean.Room;
+import com.patrick.excetion.MyException;
+import com.patrick.mapper.GuestMapper;
+import com.patrick.mapper.OrdersMapper;
 import com.patrick.mapper.RoomMapper;
 import com.patrick.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,18 +19,30 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
     @Autowired
     private RoomMapper roomMapper;
+    @Autowired
+    private GuestMapper guestMapper;
+    @Autowired
+    private OrdersMapper ordersMapper;
     @Override
     public Boolean insert(Room room) {
         return roomMapper.insert(room)==1;
     }
 
     @Override
-    public Boolean delete(Integer rid) {
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean delete(Integer rid) throws MyException {
+        Guest[] guests = guestMapper.selectByRid2(rid);
+        if (guests != null && guests.length > 0) {
+
+            throw new MyException("该房间还有住客，不能设为异常");
+        }
         return roomMapper.delete(rid)==1;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean update(Room room) {
+
         return roomMapper.update(room)==1;
     }
 

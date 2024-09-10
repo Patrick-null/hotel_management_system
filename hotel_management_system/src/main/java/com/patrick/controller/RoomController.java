@@ -59,7 +59,7 @@ public class RoomController {
         }
     }
     @DeleteMapping("{rid}")
-    public RespBean delete(@PathVariable("rid") Integer rid){
+    public RespBean delete(@PathVariable("rid") Integer rid) throws MyException {
         if (roomService.delete(rid)) {
             return RespBean.ok("删除成功");
         }else {
@@ -95,6 +95,7 @@ public class RoomController {
     @GetMapping("/selectByState/{rstate}")
     public RespBean selectByState(@PathVariable("rstate") Integer rstate){
         List<Room> roomList = roomService.selectByState(rstate);
+        roomList.stream().forEach(System.out::println);
         return RespBean.ok("",roomList);
     }
 

@@ -179,8 +179,20 @@
       </el-form-item>
 
       <el-form-item label="订单人员" label-width="20%">
-        <el-input v-model="ordersUpd.gid" autocomplete="off" style="width: 300px;" />
+        <el-select :placeholder="ordersUpd.guests[0].gname" style="width: 300px">
+          <el-option v-for="item in ordersUpd.guests" :key="item.gname" :label="item.gname"
+            :value="item.gname" />
+        </el-select>
       </el-form-item>
+
+
+      <el-form-item label="订单房间" label-width="20%">
+        <el-select v-model="ordersUpd.rid" placeholder="" style="width: 300px">
+          <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype"
+            :value="item.rid" />
+        </el-select>
+      </el-form-item>
+      
 
     </el-form>
     <template #footer>
@@ -250,7 +262,9 @@ const ordersUpd = ref({
   gno: '',
   otime: '',
   moneys: '',
-  guest: {},
+  guest: {
+    gname:''
+  },
   guests: [{}]
 })
 //修改订单窗口标识
@@ -376,6 +390,9 @@ function update() {
     background: 'rgba(0, 0, 0, 0.7)',
   })
   ordersUpd.value.otime = nowDate(time);
+  ordersUpd.value.guests.push(ordersUpd.value.guest)
+  console.log(ordersUpd.value);
+  
   ordersApi.update(ordersUpd.value)
     .then(resp => {
       loading.close()
@@ -392,7 +409,7 @@ function update() {
         ordersUpdShowWin.value = false
 
         //刷新表格
-        selectAll()
+        selectAll(ordersList.value.pageNum)
       } else {
         ElMessage({
           message: resp.msg,
@@ -410,7 +427,10 @@ function ordersUpdShow(oid) {
   //回现数据
   ordersApi.selectById(oid)
     .then(resp => {
+      selectRoom(0)
       ordersUpd.value = resp.data
+      ordersUpd.value.guest=ordersUpd.value.guests[0]
+      
     })
   //显示窗口
   ordersUpdShowWin.value = true

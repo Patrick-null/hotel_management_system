@@ -2,6 +2,7 @@ package com.patrick.service;
 
 import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Room;
+import com.patrick.excetion.MyException;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface RoomService {
     Boolean insert(Room room);
 
     //删除房间
-    Boolean delete(Integer rid);
+    Boolean delete(Integer rid) throws MyException;
 
     //修改房间
     Boolean update(Room room);

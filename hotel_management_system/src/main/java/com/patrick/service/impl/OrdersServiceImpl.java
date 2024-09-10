@@ -13,6 +13,7 @@ import com.patrick.service.GuestService;
 import com.patrick.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
@@ -35,14 +36,12 @@ public class OrdersServiceImpl implements OrdersService {
     private RoomMapper roomMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean insert(@Validated Orders orders) throws MyException {
-        //记录有多少人
-        int count=0;
         //获取orders中的住客信息
         for (Guest guest : orders.getGuests()){
             guest.setOno(orders.getOno());
             guestService.insert(guest);
-            count++;
         }
         if(orders.getGuest().getGname()==null||
                 orders.getGuest().getGno()==null||
@@ -52,7 +51,6 @@ public class OrdersServiceImpl implements OrdersService {
             throw new MyException("请填写完整数据");
         }
         //guestService.insert(orders.getGuest());
-        count++;
         //获取房间金额
             //获取房间
         Integer rid = orders.getGuest().getRid();
@@ -63,11 +61,11 @@ public class OrdersServiceImpl implements OrdersService {
         //获取时间
         Date gend = orders.getGuest().getGend();
         Date gstart = orders.getGuest().getGstart();
-        LocalDate ldg = gstart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate lde = gend.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate start = gstart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate end = gend.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
 
-        long day = ChronoUnit.DAYS.between(ldg, lde);
+        long day = ChronoUnit.DAYS.between(start, end);
         System.out.println(new BigDecimal(day).multiply(moneys));
 
         orders.setMoneys(new BigDecimal(day).multiply(moneys));
@@ -76,6 +74,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean delete(Integer oid) {
         //获取住客ono
 
@@ -93,11 +92,50 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean update(@Validated Orders orders) throws MyException {
         if(ordersMapper.selectById(orders.getOid()).getOstate()==1){
-            throw new MyException("订单已完成不能修改");
+            throw new MyException("订单已完成，无法修改");
         }
-        return ordersMapper.update(orders)==1;
+
+        //获取到之前的房间类型
+
+        //修改订单
+        //修改订单中原来的房间为0
+        //获取之前房间的id
+        Guest[] guests = guestMapper.selectByOno(orders.getOno());
+
+        //Integer rnum = roomMapper.selectById(orders.getRid()).getRnum();
+        Integer rnum = roomMapper.selectById(orders.getRid()).getRnum();
+        System.out.println("--------------------");
+        System.out.println(orders.getGuest().getRid());
+        System.out.println("房间人数"+rnum);
+        System.out.println("客人人数"+guests.length);
+        if(guests.length>rnum){
+            throw new MyException("订单人数大于房间人数，无法修改");
+        }
+
+        if(guests.length>0){
+            Integer rid = guests[0].getRid();
+            for (int i = 0; i < guests.length; i++) {
+                guestMapper.delete2(guests[i].getGid());
+                guests[i].setRid(orders.getRid());
+                guestMapper.insert(guests[i]);
+            }
+            roomMapper.updateRstate(0,rid);
+            roomMapper.updateRstate(1,orders.getRid());
+        }else {
+
+            throw new MyException("修改失败");
+        }
+        //修改原来房间中的住客为0
+
+        //修改订单中后来的房间为1
+            //修改后来房间的住客为1
+        //删除原来的订单
+        ordersMapper.delete2(orders.getOid());
+        //新增现在的订单
+        return ordersMapper.insert(orders)==1;
     }
 
     @Override

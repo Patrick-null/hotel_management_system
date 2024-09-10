@@ -33,6 +33,7 @@ public interface GuestMapper {
 
     //根据房间ID查询住客
     Guest selectByRid(Integer rid);
+    Guest[] selectByRid2(Integer rid);
 
     //根据身份证查询
     Guest selectByNo(String gno);
@@ -40,5 +41,5 @@ public interface GuestMapper {
     //根据身份证查询
     Guest selectByGnoAndOno(@Param("gno")String gno,@Param("ono")String ono);
     //根据订单ID查询住客
-    Guest selectByOno(String ono);
+    Guest[] selectByOno(String ono);
 }

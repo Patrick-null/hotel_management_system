@@ -42,6 +42,10 @@ public class Room {
     @ExcelProperty("房间价格")
     @NotNull(message = "房间价格不能为空")
     private BigDecimal rprice;
+    //房间人数
+    @ExcelProperty("房间人数")
+    @NotNull(message = "房间人数不能为空")
+    private Integer rnum;
 
     //房间状态
     @ExcelIgnore

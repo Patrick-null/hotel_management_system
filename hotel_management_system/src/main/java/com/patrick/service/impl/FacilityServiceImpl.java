@@ -9,6 +9,7 @@ import com.patrick.mapper.FacilityMapper;
 import com.patrick.service.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean insertFacilityAndRoom(Integer[] fids, Integer rid) {
         //删除之前选的
         facilityMapper.deleteAllRoom(rid);
