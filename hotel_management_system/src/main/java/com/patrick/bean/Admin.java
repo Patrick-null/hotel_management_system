@@ -17,6 +17,7 @@ public class Admin {
     @NotNull(message = "密码不能为空")
     private String password;
     //角色 0:管理员 1:用户
+    private String avatar;
 
     private Integer role;
 

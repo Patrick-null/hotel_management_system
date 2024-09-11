@@ -20,9 +20,10 @@
     <delete id="deleteAllRoom">
         delete from `room_facility` where `rid`=#{rid}
     </delete>
-    <select id="selectAll" resultType="facility">
+    <select id="selectAll" resultMap="facilityRoom">
         select * from `facility`
         <where>
+
             <if test="flag!=null">
                 `fname` LIKE concat('%',#{flag},'%')
                 or  `fvalue` LIKE concat('%',#{flag},'%')
@@ -32,5 +33,21 @@
     <select id="selectById" resultType="facility">
         select * from `facility` where `fid`=#{fid}
     </select>
+
+
+    <resultMap id="facilityRoom" type="facility">
+        <id column="fid" property="fid" />
+        <collection property="roomList" column="fid" ofType="room" select="facilityByRoom" />
+    </resultMap>
+
+    <select id="facilityByRoom" resultType="room">
+        select * from room_facility rf
+                          right JOIN room r  on rf.rid=r.rid where rf.fid=#{fid}
+
+    </select>
+    <!--<select id="selectFacilityByRooms" resultMap="facilityRoom">-->
+    <!--    select * from facility f LEFT JOIN room_facility rf on  f.fid =rf.fid-->
+    <!--                             LEFT JOIN room r on rf.rid=r.rid-->
+    <!--</select>-->
 
 </mapper>

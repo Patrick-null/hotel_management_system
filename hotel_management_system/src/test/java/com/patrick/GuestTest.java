@@ -37,7 +37,14 @@ public class GuestTest {
     private InfoMapper infoMapper;
     @Autowired
     private GuestMapper guestMapper;
+    @Autowired
+    private FacilityMapper facilityMapper;
 
+
+    @Test
+    public  void test14(){
+        facilityMapper.selectAll("").stream().forEach(System.out::println);
+    }
     @Test
     public void test13(){
         System.out.println(MD5.create().digestHex(MD5.create().digestHex("admin")));

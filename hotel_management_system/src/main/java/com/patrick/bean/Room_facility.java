@@ -5,7 +5,7 @@ package com.patrick.bean;
  */
 
 public class Room_facility {
-    private Integer id;
+
 
     //房间id
     private Integer rid;

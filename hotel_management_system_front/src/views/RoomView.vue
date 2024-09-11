@@ -60,7 +60,7 @@
                       <template #reference>
                         <el-button style="margin-right: 16px">房间人员</el-button>
                       </template>
-                      <el-table :data="scope.row.guestList">
+                      <el-table :data="scope.row.guestList" >
                         <el-table-column width="70px" property="gname" label="姓名" />
                         <el-table-column width="100px" property="gno" label="身份证号" />
                         <el-table-column width="120px" property="gphone" label="联系方式" />

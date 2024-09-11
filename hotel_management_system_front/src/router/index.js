@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import GuestView from '@/views/GuestView.vue'
 import OrdersView from '@/views/OrdersView.vue'
-import EmployeeView from '@/views/EmployeeView.vue'
+
 import IndexView from '@/views/IndexView.vue'
-import DeptView from '@/views/DeptView.vue'
+
 import RoomView from '@/views/RoomView.vue'
 
 import FacilityView from '@/views/FacilityView.vue'
@@ -33,14 +33,8 @@ const router = createRouter({
           path:'/orders',
           component:OrdersView
         },{
-          path:'/employee',
-          component:EmployeeView
-        },{
           path:'/index',
           component:IndexView
-        },{
-          path:'/dept',
-          component:DeptView
         },{
           path:'/room',
           component:RoomView

@@ -13,7 +13,7 @@
                         </div>
                     </template>
                     <el-form ref="loginXY" style="max-width: 240px; " status-icon label-width="auto"
-                        class="demo-ruleForm"  :model="admin.value" :rules="rules">
+                        class="demo-ruleForm"  :model="admin" :rules="rules">
                         <el-form-item prop="username" >
                             <el-input v-model="admin.username" type="password" autocomplete="off" 
                                 placeholder="请输入用户名" />

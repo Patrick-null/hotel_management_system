@@ -19,17 +19,25 @@
                 <el-table-column prop="fname" label="设施名称" width="90px" />
                 <el-table-column prop="favatar" label="设施照片" width="90px">
                   <template #default="scope">
-                    <el-image style="width: 60px; height: 43px" :src="'http://localhost:8080/upload/' + scope.row.favatar" contain />
+                    <el-image style="width: 60px; height: 43px"
+                      :src="'http://localhost:8080/upload/' + scope.row.favatar" contain />
                   </template>
                 </el-table-column>
-                <el-table-column prop="fnum" label="数量" width="100px" />
+                <el-table-column prop="roomList.length" label="数量" width="100px" />
                 <el-table-column prop="fvalue" label="价格" show-overflow-tooltip width="75px" />
-                <el-table-column label="状态" width="100px">
+                
+                <el-table-column label="所在房间">
                   <template #default="scope">
-                    <el-tag v-if="scope.row.rstate == 0" type="success" effect="dark">空闲</el-tag>
-                    <el-tag v-else-if="scope.row.rstate == 1" type="primary" effect="dark">已预订</el-tag>
-                    <el-tag v-else-if="scope.row.rstate == 2" type="info" effect="dark">已入住</el-tag>
-                    <el-tag v-else="scope.row.rstate == 3" type="danger" effect="dark">未开放</el-tag>
+                    <el-popover placement="right" width="320px" trigger="hover">
+                      <template #reference>
+                        <el-button style="margin-right: 16px">所在房间</el-button>
+                      </template>
+                      <el-table :data="scope.row.roomList"  max-height="200px">
+                        <el-table-column width="70px" property="rno" label="房间号" />
+                        <el-table-column width="100px" property="rtype" label="房间类型" />
+                        <el-table-column width="120px" property="rprice" label="房间价格" />
+                      </el-table>
+                    </el-popover>
                   </template>
                 </el-table-column>
                 <el-table-column fixed="right" label="操作">
@@ -96,8 +104,8 @@
   </el-dialog>
   <!-- 新增窗口结束 -->
 
-   <!-- 修改窗口开始 -->
-   <el-dialog v-model="facilityUpdShowWin" title="添加房间" width="500">
+  <!-- 修改窗口开始 -->
+  <el-dialog v-model="facilityUpdShowWin" title="添加房间" width="500">
     <el-form>
       <el-form-item label="设施名称" label-width="20%">
         <el-input v-model="facilityUpd.fname" autocomplete="off" style="width: 300px;" />
@@ -134,7 +142,7 @@
 
 <script setup>
 import facilityApi from '@/api/facilityApi'
-import { ref, reactive,computed } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 
@@ -144,7 +152,7 @@ const facilityList = ref({
   pageSize: 0
 })
 
-const headers = computed(()=>{
+const headers = computed(() => {
   let token = sessionStorage.getItem('token');
   return {
     token
@@ -154,7 +162,7 @@ const headers = computed(()=>{
 const flag = ref('')
 
 //新增设施标识
-const facilityAddShowWin =ref(false)
+const facilityAddShowWin = ref(false)
 //新增设施实体
 const facilityAdd = ref({})
 
@@ -252,22 +260,22 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
 }
 
 //显示修改窗口并回现数据
-function facilityUpdShow(fid){
+function facilityUpdShow(fid) {
   //回现数据
   facilityApi.selectById(fid)
     .then(resp => {
       facilityUpd.value = resp.data
       imageUrlUpd.value = `http://localhost:8080/upload/${facilityUpd.value.favatar}`
 
-      
-      
+
+
     })
   //显示窗口
   facilityUpdShowWin.value = true
 }
 
 //修改设施函数
-function update(){
+function update() {
   const loading = ElLoading.service({
     lock: true,
     text: 'Loading',
@@ -287,7 +295,7 @@ function update(){
 
         //隐藏对话框
         facilityUpdShowWin.value = false
-        
+
 
         //刷新表格
         selectAll(1)
@@ -303,7 +311,7 @@ function update(){
 }
 
 //添加设施函数
-function insert(){
+function insert() {
   const loading = ElLoading.service({
     lock: true,
     text: 'Loading',
@@ -324,7 +332,7 @@ function insert(){
         //隐藏对话框
         facilityAddShowWin.value = false
 
-        
+
         //清空数据
         facilityAdd.value = ""
         //清空数据
@@ -344,10 +352,12 @@ function insert(){
 }
 
 //查询所有
-function selectAll(pageNum){
-  facilityApi.selectAll(pageNum,flag.value)
+function selectAll(pageNum) {
+  facilityApi.selectAll(pageNum, flag.value)
     .then(resp => {
-      facilityList.value=resp.data
+      facilityList.value = resp.data
+      console.log(resp.data);
+
     })
 }
 

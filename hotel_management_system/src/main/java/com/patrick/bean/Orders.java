@@ -30,11 +30,11 @@ public class Orders {
 
     //订单编号
     @ExcelProperty("订单编号")
-    @NotNull(message = "订单号不能为空")
+    @NotBlank(message = "订单号不能为空")
     private String ono;
 
     @ExcelProperty("身份证号")
-    @NotNull(message = "身份证不能为空")
+    @NotBlank(message = "身份证不能为空")
     private String gno;
 
     @ExcelProperty("房间id")

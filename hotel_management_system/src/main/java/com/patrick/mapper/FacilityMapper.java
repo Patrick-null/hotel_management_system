@@ -1,6 +1,7 @@
 package com.patrick.mapper;
 
 import com.patrick.bean.Facility;
+import com.patrick.bean.Room;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -27,5 +28,7 @@ public interface FacilityMapper {
 
     //删除该房间的所有设施
     int deleteAllRoom(Integer rid);
+
+
 
 }

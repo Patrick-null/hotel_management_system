@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 房间设施
@@ -27,4 +28,7 @@ public class Facility {
 
     //设施图片
     private String favatar;
+
+    //设施所在房间
+    private List<Room> roomList;
 }

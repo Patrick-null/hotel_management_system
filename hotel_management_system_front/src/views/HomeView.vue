@@ -12,19 +12,6 @@
             </el-icon>
             <template #title>首页</template>
           </el-menu-item>
-          <el-sub-menu index="1">
-            <template #title>
-              <el-icon>
-                <Shop />
-              </el-icon>
-              <span>员工管理</span>
-            </template>
-            <el-menu-item-group>
-              <template #title><span>Group One</span></template>
-              <el-menu-item index="/employee">员工管理</el-menu-item>
-              <el-menu-item index="/dept">部门管理</el-menu-item>
-            </el-menu-item-group>
-          </el-sub-menu>
           <el-sub-menu index="2">
             <template #title>
               <el-icon>
