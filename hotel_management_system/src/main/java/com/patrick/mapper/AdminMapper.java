@@ -25,5 +25,5 @@ public interface AdminMapper {
 
 
     //注册
-    int insert(@Param("username") String username, @Param("password") String password);
+    int insert(Admin admin);
 }

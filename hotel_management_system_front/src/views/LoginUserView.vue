@@ -176,7 +176,10 @@ function enrollShow() {
             duration: 1200
         });
     }else {
-        loginApi.enroll(enroll.value)
+        console.log(enroll.value);
+        console.log(info.value);
+        
+        loginApi.enroll(enroll.value,info.value)
             .then(resp => {
                 loading.close()
                 //判断是否成功
@@ -190,25 +193,25 @@ function enrollShow() {
                     enrollShowWin.value = false
                     console.log(resp.data);
 
-                    info.value.aid = resp.data.aid
+                    // info.value.aid = resp.data.aid
                     //吧信息添加到数据库
-                    infoApi.insert(info.value)
-                        .then(resp => {
-                            if (resp.code == 10000) {
-                                //弹出消息
-                                ElMessage({
-                                    message: resp.msg,
-                                    type: 'success',
-                                    duration: 1200
-                                })
-                            } else {
-                                ElMessage({
-                                    message: resp.msg,
-                                    type: 'error',
-                                    duration: 1200
-                                });
-                            }
-                        })
+                    // infoApi.insert(info.value)
+                    //     .then(resp => {
+                    //         if (resp.code == 10000) {
+                    //             //弹出消息
+                    //             ElMessage({
+                    //                 message: resp.msg,
+                    //                 type: 'success',
+                    //                 duration: 1200
+                    //             })
+                    //         } else {
+                    //             ElMessage({
+                    //                 message: resp.msg,
+                    //                 type: 'error',
+                    //                 duration: 1200
+                    //             });
+                    //         }
+                    //     })
 
                     //清空数据
                     info.value = {}

@@ -23,8 +23,12 @@ const loginApi = {
         return service.put('/admin/userAndpwd',userAndpwd)
     },
     //用户注册
-    enroll(enroll){
-        return service.post('/enroll',enroll)
+    enroll(enroll,info){
+        console.log(enroll);
+        console.log(info);
+        
+        
+        return service.post('/enroll',{enroll,info})
     }
     
 }

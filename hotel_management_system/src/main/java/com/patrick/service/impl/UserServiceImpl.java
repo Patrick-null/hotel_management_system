@@ -4,12 +4,10 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.MD5;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.patrick.bean.Admin;
-import com.patrick.bean.Guest;
-import com.patrick.bean.Orders;
-import com.patrick.bean.Room;
+import com.patrick.bean.*;
 import com.patrick.excetion.MyException;
 import com.patrick.mapper.*;
+import com.patrick.service.InfoService;
 import com.patrick.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private OrdersMapper ordersMapper;
     @Autowired
     private GuestMapper guestMapper;
+    @Autowired
+    private InfoMapper infoMapper;
     @Override
     public PageInfo<Room> selectAllRoom(Integer pageNum,String flag) {
         //导包
@@ -78,19 +78,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Admin enroll(Admin enroll) throws MyException {
-        if(adminMapper.loginTwo(enroll.getUsername()) != null){
+    public Boolean enroll(Enroll enroll) throws MyException {
+        Admin admin = enroll.getEnroll();
+        Info info = enroll.getInfo();
+        if(adminMapper.loginTwo(admin.getUsername()) != null){
             throw new MyException("用户名已存在，请重新输入");
         }
-        String md5 = SecureUtil.md5(SecureUtil.md5(enroll.getPassword()));
-        enroll.setPassword(md5);
-        if(adminMapper.insert(enroll.getUsername(),enroll.getPassword())==1){
-
-            Integer aid = adminMapper.loginTwo(enroll.getUsername()).getAid();
-            enroll.setAid(aid);
-            return enroll;
-        }
-        return null;
+        String md5 = SecureUtil.md5(SecureUtil.md5(admin.getPassword()));
+        admin.setPassword(md5);
+        adminMapper.insert(admin);
+        Integer aid = admin.getAid();
+        info.setAid(aid);
+        infoMapper.insert(info);
+        return true;
     }
 
 

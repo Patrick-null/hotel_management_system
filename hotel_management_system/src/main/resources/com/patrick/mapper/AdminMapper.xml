@@ -33,11 +33,7 @@
 
 
 
-    <insert id="insert" parameterType="admin">
-        <selectKey keyColumn="aid" keyProperty="aid" resultType="integer" order="AFTER">
-            <!-- 适用于整数类型自增主键 -->
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insert" parameterType="admin" useGeneratedKeys="true" keyColumn="aid" keyProperty="aid">
         insert into `admin`(`username`,`password`) values (#{username},#{password})
     </insert>
 

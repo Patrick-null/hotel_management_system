@@ -2,6 +2,7 @@ package com.patrick.service;
 
 import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Admin;
+import com.patrick.bean.Enroll;
 import com.patrick.bean.Orders;
 import com.patrick.bean.Room;
 import com.patrick.excetion.MyException;
@@ -17,7 +18,7 @@ public interface UserService {
     boolean updatePwd(Admin userAndpwd) throws MyException;
 
     //注册账号
-    Admin enroll(Admin enroll) throws MyException;
+    Boolean enroll(Enroll enroll) throws MyException;
 
     //修改订单
     Boolean update(@Validated Orders orders) throws MyException;

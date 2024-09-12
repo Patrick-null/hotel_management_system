@@ -1,6 +1,7 @@
 package com.patrick.controller;
 
 import com.patrick.bean.Admin;
+import com.patrick.bean.Enroll;
 import com.patrick.bean.RespBean;
 import com.patrick.excetion.MyException;
 import com.patrick.service.AdminService;
@@ -118,14 +119,15 @@ public class AdminController {
 
     //注册账号
     @PostMapping("/enroll")
-    public RespBean enroll(@RequestBody @Validated Admin enroll) throws MyException {
-        if(enroll.getUsername().equals("")){
+    public RespBean enroll(@RequestBody @Validated Enroll enroll) throws MyException {
+        System.out.println(enroll);
+        if(enroll.getEnroll().getUsername().equals("")){
             throw  new MyException("账号不能为空");
         }
-        if(enroll.getPassword().equals("")){
+        if(enroll.getEnroll().getPassword().equals("")){
             throw  new MyException("密码不能为空");
         }
-        if(userService.enroll(enroll)!=null){
+        if(userService.enroll(enroll)){
             return RespBean.ok("注册成功",enroll);
         }else {
             return RespBean.error("注册失败");
