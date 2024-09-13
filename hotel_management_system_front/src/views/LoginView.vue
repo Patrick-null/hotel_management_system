@@ -44,8 +44,9 @@ import { ElLoading } from 'element-plus'
 import router from '@/router';
 import { ElNotification } from 'element-plus'
 import service from '@/api';
+import { useTokenStore } from '@/stores/token.js';
 
-
+const tokenStore = useTokenStore();
 const loginXY = ref(null) 
 
 const rules =reactive({
@@ -81,7 +82,8 @@ function login() {
                 })
 
                 //将jwt保存在token中
-                sessionStorage.setItem('token', resp.data)
+                //sessionStorage.setItem('token', resp.data)
+                tokenStore.update(resp.data)
                 sessionStorage.setItem('username', admin.value.username)
                 //重定向到首页
                 router.push('/admin')

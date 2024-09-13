@@ -176,6 +176,7 @@ import { ElMessage } from 'element-plus';
 import { RouterView, RouterLink } from 'vue-router'
 import infoApi from '@/api/infoApi';
 import { ElLoading } from 'element-plus'
+import { useTokenStore } from '@/stores/token';
 
 //个人信息实体
 const admin = ref({
@@ -302,7 +303,9 @@ function handleOpen() {
 
 
 function logout() {
-  sessionStorage.removeItem('token');
+  const tokenStore = useTokenStore();
+  tokenStore.$reset()
+  //sessionStorage.removeItem('token');
   router.push('/login')
 }
 

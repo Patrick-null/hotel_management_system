@@ -16,6 +16,7 @@ import LoginUserView from '@/views/LoginUserView.vue'
 import HomeUserView from '@/views/HomeUserView.vue'
 import OrdersUserView from '@/views/OrdersUserView.vue'
 import BookingView from '@/views/BookingView.vue'
+import { useTokenStore } from '@/stores/token'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -82,8 +83,9 @@ router.beforeEach((to,from)=>{
   if(to.path == '/login'|| to.path == '/loginUser'){
     return true;
   }else{
+    const tokenStore = useTokenStore()
     //判断是否sessionStorage中是否有token
-    if(!sessionStorage.getItem('token')){
+    if(!tokenStore.tokenStr){
       return '/login'
     }else{
       return true;
