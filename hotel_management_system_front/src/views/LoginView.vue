@@ -22,9 +22,17 @@
                             <el-input v-model="admin.password" type="password" autocomplete="off" prop="password"
                              placeholder="请输入密码" />
                         </el-form-item>
+                        <el-form-item  prop="password">
+                            <el-input v-model="admin.captcha"  autocomplete="off" prop="captcha"
+                             placeholder="请输入验证码" />
+                        </el-form-item>
+                        <el-form-item>
+                            <el-image style="width: 120px; height: 38px" :src="captchaPhoto"  @click="getCaptcha"/>
+                        </el-form-item>
                         <el-button style="width: 200px; margin-top: 10px;" round @click="login"
                             color="#626aef">登录</el-button>
                     </el-form>
+                   
                     <el-divider>
                         <span style="font-weight: 200; font-size: 12px;">其他登录方式</span>
                     </el-divider>
@@ -58,9 +66,12 @@ const rules =reactive({
 //登录实体
 const admin = ref({
     username: '',
-    password: ''
+    password: '',
+    captcha:'',
+    captchaId:''
 })
-
+//验证码图片
+const captchaPhoto = ref("")
 //用户名
 const username = ref('')
 
@@ -97,6 +108,15 @@ function login() {
         })
 }
 
+//获取验证码
+function getCaptcha(){
+    loginApi.captcha()
+        .then(resp => {
+            captchaPhoto.value=resp.data.captchaImageBase64Data;
+            admin.value.captchaId=resp.data.captchaId
+        })
+}
 
+getCaptcha();
 </script>
 <style scoped></style>

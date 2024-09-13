@@ -20,6 +20,13 @@
                         <el-form-item prop="password">
                             <el-input v-model="admin.password" type="password" autocomplete="off" placeholder="请输入密码" />
                         </el-form-item>
+                        <el-form-item  prop="password">
+                            <el-input v-model="admin.captcha"  autocomplete="off" prop="captcha"
+                             placeholder="请输入验证码" />
+                        </el-form-item>
+                        <el-form-item>
+                            <el-image style="width: 120px; height: 38px" :src="captchaPhoto"  @click="getCaptcha"/>
+                        </el-form-item>
                         <div style="display: flex; justify-content: center; max-width: 600px;">
                             <el-button style="width: 100px; margin-top: 10px;" round @click="login"
                                 color="#626aef">登录</el-button>
@@ -94,6 +101,7 @@ import router from '@/router';
 import { ElNotification } from 'element-plus'
 import service from '@/api';
 import infoApi from '@/api/infoApi';
+import { useTokenStore } from '@/stores/token';
 
 const loginXY = ref(null)
 
@@ -124,8 +132,12 @@ const enrollrules = reactive({
 //登录实体
 const admin = ref({
     username: '',
-    password: ''
+    password: '',
+    captcha:'',
+    captchaId:''
 })
+//验证码照片
+const captchaPhoto = ref("")
 
 //注册实体
 const enroll = ref({
@@ -248,8 +260,10 @@ function login() {
                     type: 'success',
                 })
 
+                const tokenStore = useTokenStore();
+                tokenStore.update(resp.data)
                 //将jwt保存在token中
-                sessionStorage.setItem('token', resp.data)
+                // sessionStorage.setItem('token', resp.data)
                 sessionStorage.setItem('username', admin.value.username)
                 //重定向到首页
                 router.push('/user')
@@ -262,6 +276,17 @@ function login() {
             }
         })
 }
+
+//获取验证码
+function getCaptcha(){
+    loginApi.captcha()
+        .then(resp => {
+            captchaPhoto.value=resp.data.captchaImageBase64Data;
+            admin.value.captchaId=resp.data.captchaId
+        })
+}
+
+getCaptcha();
 
 
 </script>

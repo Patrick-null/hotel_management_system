@@ -29,6 +29,10 @@ const loginApi = {
         
         
         return service.post('/enroll',{enroll,info})
+    },
+    //验证码
+    captcha(){
+        return service.post('/captcha')
     }
     
 }

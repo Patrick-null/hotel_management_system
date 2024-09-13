@@ -1,15 +1,19 @@
 package com.patrick.controller;
 
+import cn.hutool.captcha.LineCaptcha;
+import cn.hutool.core.lang.UUID;
 import com.patrick.bean.Admin;
 import com.patrick.bean.Info;
 import com.patrick.bean.RespBean;
 import com.patrick.service.AdminService;
 import com.patrick.service.InfoService;
 import com.patrick.utils.JwtUtil;
+import com.patrick.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -21,6 +25,8 @@ public class InfoController {
     private InfoService infoService;
     @Autowired
     private AdminService adminService;
+
+
 
     @PostMapping
     public RespBean insert(@RequestBody @Validated Info info){
