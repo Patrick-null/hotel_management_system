@@ -22,6 +22,7 @@ public interface OrdersService {
 
     //根据订单号查询订单
     Orders selectByOno(String ono);
+    Orders selectByOnoAndGno(String ono,String gno);
 
 
     //根据ID查询订单

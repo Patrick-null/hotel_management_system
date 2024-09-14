@@ -47,6 +47,21 @@ public class Orders {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date otime;
 
+    //住房时间
+    @ExcelProperty("住房时间")
+    @DateTimeFormat("yyyy-MM-dd")
+    @ColumnWidth(30)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ostart;
+
+
+    //离房时间
+    @ExcelProperty("离房时间")
+    @DateTimeFormat("yyyy-MM-dd")
+    @ColumnWidth(30)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date end;
+
     @ExcelProperty("订单金额")
     private BigDecimal moneys;
 

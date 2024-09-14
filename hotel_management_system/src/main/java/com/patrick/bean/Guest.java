@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -40,12 +41,12 @@ public class Guest {
 
     //住客入住时间
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @FutureOrPresent(message = "请选择未来时间")
+    @Future(message = "start")
     private Date gstart;
 
     //住客离店时间
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @FutureOrPresent(message = "请选择未来时间")
+    @Future(message = "end")
     private Date gend;
 
     //住客状态

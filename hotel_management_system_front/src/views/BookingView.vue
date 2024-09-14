@@ -293,7 +293,10 @@ function buyRoom() {
   //将下单人的gno存到
   order.value.gno = order.value.guest.gno;
   //将下单人存到订单中
-  thisOrdersList.value.push(orderGuest.value)
+  if(orderGuest.value!=null){
+    thisOrdersList.value.push(orderGuest.value)
+  }
+  
 
 
   //将多人添加到房间中

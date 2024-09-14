@@ -212,6 +212,7 @@ import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import roomApi from '@/api/roomApi';
+import { useTokenStore } from '@/stores/token';
 
 //订单编号
 const orderNumber = ref()
@@ -458,7 +459,10 @@ function insert() {
   guestListAddDy.value={}
 
   //将下单人存到房间中
-  ordersAdd.value.guests.push(guestBuy.value)
+  if(guestBuy.value!=null){
+    ordersAdd.value.guests.push(guestBuy.value)
+  }
+
 
   console.log(ordersAdd.value);
   
@@ -534,9 +538,9 @@ function selectRoom(rstate) {
     })
 
 }
-
+const tokenStore = useTokenStore()
 const headers = reactive({
-  token: sessionStorage.getItem('token')
+  token: tokenStore.tokenStr
 });
 
 //下载

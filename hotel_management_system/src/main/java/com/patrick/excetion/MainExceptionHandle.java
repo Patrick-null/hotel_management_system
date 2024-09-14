@@ -35,7 +35,7 @@ public class MainExceptionHandle {
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
 
             sbf.append(fieldError.getDefaultMessage()).append(", ");
-
+break;
         }
         String msg = sbf.toString();
         int i = msg.lastIndexOf(", ");

@@ -162,6 +162,12 @@ public class OrdersServiceImpl implements OrdersService {
         PageHelper.startPage(pageNum,5);
         //查询
         List<Orders> ordersList = ordersMapper.selectAll(flag);
+        for (Orders orders : ordersList) {
+            Date date = new Date();
+            if(orders.getGuest().getGend().before(date)){
+                orders.setOstate(1);
+            }
+        }
         //创建封装查询结果
         PageInfo<Orders> ordersListPageInfo = new PageInfo<>(ordersList);
 
@@ -179,6 +185,16 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public Orders selectByOno(String  ono) {
         return ordersMapper.selectByOno(ono);
+    }
+
+    @Override
+    public Orders selectByOnoAndGno(String ono, String gno) {
+        Orders orders = ordersMapper.selectByOno(ono);
+        Guest guest = guestMapper.selectByGnoAndOno(gno, ono);
+        Guest[] guests = guestMapper.selectByOno(ono);
+        orders.setGuest(guest);
+        orders.setGuests(guests);
+        return orders;
     }
 
     @Override

@@ -258,6 +258,7 @@ import { ref, reactive, computed } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import facilityApi from '@/api/facilityApi';
+import { useTokenStore } from '@/stores/token';
 
 
 
@@ -286,7 +287,8 @@ const roomList = ref({
 })
 
 const headers = computed(() => {
-  let token = sessionStorage.getItem('token');
+  const tokenStore = useTokenStore()
+  let token = tokenStore.tokenStr
   return {
     token
   }

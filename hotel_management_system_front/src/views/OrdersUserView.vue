@@ -52,7 +52,7 @@
                           <el-button size="small" type="success">使用</el-button>
                         </template>
                       </el-popconfirm>
-                      <el-button size="small" type="primary" @click="ordersUpdShow(order.oid)" >修改</el-button>
+                      <el-button size="small" type="primary" @click="ordersUpdShow(order.ono,order.gno)" >修改</el-button>
                     </el-checkbox-group>
                     
 
@@ -148,7 +148,9 @@ const ordersUpd = ref({
   otime: '',
   moneys: '',
   guest: {
-    gname:''
+    gname:'',
+    gstart:'',
+    gend:''
   },
   guests: [{}]
 })
@@ -164,7 +166,7 @@ function update() {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  ordersUpd.value.otime = nowDate(time)
+  //ordersUpd.value.otime = nowDate(time)
   ordersUpd.value.guests.push(ordersUpd.value.guest)
  
   bookingApi.updateOrders(ordersUpd.value)
@@ -198,14 +200,18 @@ function update() {
 
 
 //显示修改窗口并回显数据
-function ordersUpdShow(oid) {
+function ordersUpdShow(ono,gno) {
   //回现数据
-  bookingApi.selectById(oid)
+  
+  
+  bookingApi.selectByOno(ono,gno)
     .then(resp => {
       selectRoom(0)
-      ordersUpd.value = resp.data
-      ordersUpd.value.guest=ordersUpd.value.guests[0]
+      console.log(resp.data);
+      console.log(123);
       
+      ordersUpd.value = resp.data
+      //ordersUpd.value.guest=ordersUpd.value.guests[0]
     })
   //显示窗口
   ordersUpdShowWin.value = true

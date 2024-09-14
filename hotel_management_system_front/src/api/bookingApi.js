@@ -39,6 +39,15 @@ const facilityApi={
     selectById(oid){
         return service.get(`/user/selectById/${oid}`)
     },
+    //根据Ono查询
+    selectByOno(ono,gno){
+        return service.get('/user/selectByOno',{
+            params: {
+                ono,
+                gno
+            }
+          })
+    },
     //查询所有空闲房间
     selectByStateSpareRoom(rstate){
         return service.get(`/user/selectByState/${rstate}`)

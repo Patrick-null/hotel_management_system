@@ -145,19 +145,23 @@ import facilityApi from '@/api/facilityApi'
 import { ref, reactive, computed } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
+import { useTokenStore } from '@/stores/token';
 
+
+const headers = computed(() => {
+  const tokenStore = useTokenStore()
+  let token = tokenStore.tokenStr
+  return {
+    token
+  }
+})
 //所有设施的集合
 const facilityList = ref({
   total: 0,
   pageSize: 0
 })
 
-const headers = computed(() => {
-  let token = sessionStorage.getItem('token');
-  return {
-    token
-  }
-})
+
 //搜索的标识
 const flag = ref('')
 

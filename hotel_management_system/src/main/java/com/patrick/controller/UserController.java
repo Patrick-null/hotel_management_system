@@ -84,8 +84,7 @@ public class UserController {
     @PutMapping("/updateOrder")
     public  RespBean updateOrder(@RequestBody @Validated Orders orders) throws MyException {
 
-        System.out.println("123123123123123123---");
-        System.out.println("999999999999999999999999");
+
         System.out.println(orders);
         Boolean update = userService.update(orders);
         if(update){
@@ -99,6 +98,17 @@ public class UserController {
     @GetMapping("/selectById/{oid}")
     public RespBean selectById(@PathVariable("oid") Integer oid){
         Orders orders = ordersService.selectById(oid);
+        if(orders != null){
+            return RespBean.ok("",orders);
+        }else {
+            return RespBean.error("没有找到该订单");
+        }
+    }
+
+    //根据订单no查询
+    @GetMapping("/selectByOno")
+    public RespBean selectById(String ono,String gno){
+        Orders orders = ordersService.selectByOnoAndGno(ono,gno);
         if(orders != null){
             return RespBean.ok("",orders);
         }else {

@@ -22,7 +22,7 @@
                             <el-input v-model="admin.password" type="password" autocomplete="off" prop="password"
                              placeholder="请输入密码" />
                         </el-form-item>
-                        <el-form-item  prop="password">
+                        <el-form-item  prop="captcha">
                             <el-input v-model="admin.captcha"  autocomplete="off" prop="captcha"
                              placeholder="请输入验证码" />
                         </el-form-item>
@@ -60,6 +60,7 @@ const loginXY = ref(null)
 const rules =reactive({
     username:[{required:true,message:'请输入用户名',trigger:'blur'}],
     password:[{required:true,message:'请输入密码',trigger:'blur'}],
+    captcha:[{required:true,message:'请输入验证码',trigger:'blur'}],
 })
 
 
