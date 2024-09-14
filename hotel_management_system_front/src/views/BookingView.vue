@@ -185,8 +185,6 @@ const admin = ref({
 function selectUserInfo() {
   infoApi.selectByUsername()
     .then(resp => {
-      console.log(resp.data);
-      
       admin.value = resp.data
       info.value=admin.value.info
     })
@@ -229,7 +227,6 @@ const order = ref({})
 
 //显示订购房间窗口
 function buyRoomShowWin(room) {
-  console.log(info.value);
   orderGuest.value.gname=info.value.name
   orderGuest.value.gno=info.value.no
   orderGuest.value.ggender=info.value.gender
@@ -292,13 +289,13 @@ function buyRoom() {
   order.value.otime = nowDate(time); order.value.on
   //将下单人的gno存到
   order.value.gno = order.value.guest.gno;
+  order.value.ostart = order.value.guest.gstart;
+  order.value.oend = order.value.guest.gend;
   //将下单人存到订单中
   if(orderGuest.value!=null){
     thisOrdersList.value.push(orderGuest.value)
   }
   
-
-
   //将多人添加到房间中
   order.value.guests = thisOrdersList.value;
   thisOrdersList.value = {}

@@ -360,8 +360,6 @@ function selectAll(pageNum) {
   facilityApi.selectAll(pageNum, flag.value)
     .then(resp => {
       facilityList.value = resp.data
-      console.log(resp.data);
-
     })
 }
 

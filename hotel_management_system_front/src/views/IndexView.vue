@@ -107,8 +107,6 @@ function GetManList1() {
       type1.value = resp.data.map(item => item.type);
         ct1.value = resp.data.map(item => item.ct);
         // 重新初始化图表以更新数据
-        console.log(type1.value);
-        console.log(ct1.value);
         RtypeByGender1();
     })
 }

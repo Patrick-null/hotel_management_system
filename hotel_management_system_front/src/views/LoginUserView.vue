@@ -189,9 +189,7 @@ function enrollShow() {
             duration: 1200
         });
     }else {
-        console.log(enroll.value);
-        console.log(info.value);
-        
+
         loginApi.enroll(enroll.value,info.value)
             .then(resp => {
                 loading.close()
@@ -204,7 +202,7 @@ function enrollShow() {
                         duration: 1200
                     })
                     enrollShowWin.value = false
-                    console.log(resp.data);
+             
 
                     // info.value.aid = resp.data.aid
                     //吧信息添加到数据库

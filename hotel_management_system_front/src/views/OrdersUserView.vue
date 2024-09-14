@@ -87,6 +87,12 @@
       <el-form-item label="下单时间" label-width="20%">
         <el-date-picker type="datetime" disabled :placeholder="ordersUpd.otime" style="width: 300px;" />
       </el-form-item>
+      <el-form-item label="入住时间" label-width="20%">
+        <el-date-picker v-model="ordersUpd.ostart" type="date" :placeholder="ordersUpd.ostart" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="离店时间" label-width="20%">
+        <el-date-picker v-model="ordersUpd.oend" type="date"  :placeholder="ordersUpd.oend" style="width: 300px;" />
+      </el-form-item>
 
       <el-form-item label="订单人员" label-width="20%">
         <el-select :placeholder="ordersUpd.guests[0].gname" style="width: 300px">
@@ -97,7 +103,7 @@
 
 
       <el-form-item label="订单房间" label-width="20%">
-        <el-select v-model="ordersUpd.rid" placeholder="" style="width: 300px">
+        <el-select v-model="ordersUpd.rid" style="width: 300px">
           <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype"
             :value="item.rid" />
         </el-select>
@@ -146,6 +152,8 @@ const ordersUpd = ref({
   ono: '',
   gno: '',
   otime: '',
+  ostart:'',
+  oend:'',
   moneys: '',
   guest: {
     gname:'',
@@ -167,6 +175,8 @@ function update() {
     background: 'rgba(0, 0, 0, 0.7)',
   })
   //ordersUpd.value.otime = nowDate(time)
+  ordersUpd.value.guest.gstart=ordersUpd.value.ostart
+  ordersUpd.value.guest.gend=ordersUpd.value.oend
   ordersUpd.value.guests.push(ordersUpd.value.guest)
  
   bookingApi.updateOrders(ordersUpd.value)
@@ -207,9 +217,7 @@ function ordersUpdShow(ono,gno) {
   bookingApi.selectByOno(ono,gno)
     .then(resp => {
       selectRoom(0)
-      console.log(resp.data);
-      console.log(123);
-      
+
       ordersUpd.value = resp.data
       //ordersUpd.value.guest=ordersUpd.value.guests[0]
     })
@@ -279,11 +287,8 @@ function useOrder(oid) {
 function selectUserInfo() {
   infoApi.selectByUsername()
     .then(resp => {
-      console.log(resp.data);
-
       admin.value = resp.data
       info.value = admin.value.info
-      //console.log(info.value.no);
       selectMyAll(1)
     })
 }
@@ -295,10 +300,7 @@ const myAllOrders = ref({})
 function selectMyAll(pageNum) {
   bookingApi.selectMyAll(pageNum, info.value.no,flag.value)
     .then(resp => {
-      console.log(resp.data);
       myAllOrders.value = resp.data
-      console.log(myAllOrders.value);
-
     })
 }
 

@@ -12,7 +12,7 @@
                             <span>管理员登录</span>
                         </div>
                     </template>
-                    <el-form ref="loginXY" style="max-width: 240px; " status-icon label-width="auto"
+                    <el-form ref="loginXY" style="max-width: 240px; " status-icon 
                         class="demo-ruleForm"  :model="admin" :rules="rules">
                         <el-form-item prop="username" >
                             <el-input v-model="admin.username" type="password" autocomplete="off" 
