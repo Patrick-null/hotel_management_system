@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService {
         //查询
         List<Room> roomList = roomMapper.selectByState2(0,flag);
         roomList.stream().forEach(System.out::println);
-        System.out.println("=========");;
 
 
         //创建封装查询结果
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    //修改订单
+    /*//修改订单
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean update(@Validated Orders orders) throws MyException {
@@ -128,8 +127,6 @@ public class UserServiceImpl implements UserService {
             }
             roomMapper.updateRstate(0,rid);
 
-
-
             BigDecimal rprice = roomMapper.selectById(orders.getRid()).getRprice();
 
             //获取时间
@@ -157,5 +154,5 @@ public class UserServiceImpl implements UserService {
         ordersMapper.delete2(orders.getOid());
         //新增现在的订单
         return ordersMapper.insert(orders)==1;
-    }
+    }*/
 }

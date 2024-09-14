@@ -30,12 +30,10 @@ public class MainConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(adminInterceptor)
                 .excludePathPatterns("/user/**")
-                .excludePathPatterns("/info/**")
                 .addPathPatterns("/admin/**");
 
         registry.addInterceptor(adminInterceptorTwo)
                 .excludePathPatterns("/admin/**")
-                .excludePathPatterns("/info/**")
                 .addPathPatterns("/user/**");
 
 

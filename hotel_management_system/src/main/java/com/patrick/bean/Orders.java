@@ -60,7 +60,7 @@ public class Orders {
     @DateTimeFormat("yyyy-MM-dd")
     @ColumnWidth(30)
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date end;
+    private Date oend;
 
     @ExcelProperty("订单金额")
     private BigDecimal moneys;

@@ -164,7 +164,7 @@ public class OrdersServiceImpl implements OrdersService {
         List<Orders> ordersList = ordersMapper.selectAll(flag);
         for (Orders orders : ordersList) {
             Date date = new Date();
-            if(orders.getGuest().getGend().before(date)){
+            if(orders.getOend().before(date)){
                 orders.setOstate(1);
             }
         }

@@ -84,9 +84,7 @@ public class UserController {
     @PutMapping("/updateOrder")
     public  RespBean updateOrder(@RequestBody @Validated Orders orders) throws MyException {
 
-
-        System.out.println(orders);
-        Boolean update = userService.update(orders);
+        Boolean update = ordersService.update(orders);
         if(update){
             return RespBean.ok("修改成功");
         }

@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.patrick.mapper.OrdersMapper">
     <insert id="insert">
-        INSERT INTO `orders`(`ono`,`gno`,`otime`,`moneys`,`rid`) VALUES (#{ono},#{gno},#{otime},#{moneys},#{rid})
+        INSERT INTO `orders`(`ono`,`gno`,`otime`,`ostart`,`oend`,`moneys`,`rid`) VALUES (#{ono},#{gno},#{otime},#{ostart},#{oend},#{moneys},#{rid})
     </insert>
     <update id="update">
-        update  `orders` SET `ono`=#{ono},`gno`=#{gno},`otime`=#{otime},`rid`=#{rid} where `oid`=#{oid}
+        update  `orders` SET `ono`=#{ono},`gno`=#{gno},`otime`=#{otime},`ostart`=#{ostart},`oend`=#{oend},`rid`=#{rid} where `oid`=#{oid}
     </update>
     <delete id="delete">
         update  `orders` SET `ostate`="1" where `oid`=#{oid}

@@ -39,6 +39,8 @@
                 <el-table-column prop="guests[0].gname" label="下单人" />
                 <el-table-column prop="moneys" label="订单金额" />
                 <el-table-column prop="otime" label="下单时间" show-overflow-tooltip />
+                <el-table-column prop="ostart" label="入住时间" show-overflow-tooltip />
+                <el-table-column prop="oend" label="离房时间" show-overflow-tooltip />
                 <el-table-column label="状态">
                   <template #default="scope">
                     <el-tag v-if="scope.row.ostate == 0" type="success" effect="dark">订单未使用</el-tag>
@@ -221,6 +223,8 @@ const ordersAdd = ref({
   ono: '',
   gno: '',
   otime: '',
+  ostart:'',
+  oend:'',
   moneys: '',
   guest: {},
   guests: [{}]
@@ -262,6 +266,8 @@ const ordersUpd = ref({
   ono: '',
   gno: '',
   otime: '',
+  ostart:'',
+  oend:'',
   moneys: '',
   guest: {
     gname:''
@@ -340,9 +346,6 @@ function insertOne() {
     guestListAddDy.value.push(guestOne.value)
   }
   
-  console.log(guestListAddDy.value);
-  console.log(123);
-  
   //数据清空
   guestOne.value = {}
   //关闭页面
@@ -393,7 +396,6 @@ function update() {
     background: 'rgba(0, 0, 0, 0.7)',
   })
   ordersUpd.value.guests.push(ordersUpd.value.guest)
-  console.log(ordersUpd.value);
   
   ordersApi.update(ordersUpd.value)
     .then(resp => {
@@ -459,13 +461,14 @@ function insert() {
   guestListAddDy.value={}
 
   //将下单人存到房间中
-  if(guestBuy.value!=null){
+  if(ordersAdd.value.guests!=null){
     ordersAdd.value.guests.push(guestBuy.value)
+  }else{
+    ordersAdd.value.guests=guestBuy.value
   }
 
-
-  console.log(ordersAdd.value);
-  
+  ordersAdd.value.ostart=guestBuy.value.gstart
+  ordersAdd.value.oend=guestBuy.value.gend
   ordersApi.insert(ordersAdd.value)
     .then(resp => {
       loading.close()
@@ -567,8 +570,6 @@ function downloadOrder() {
     }
 
   }
-
-
 
 
 //查询所有订单

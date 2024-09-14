@@ -21,5 +21,5 @@ public interface UserService {
     Boolean enroll(Enroll enroll) throws MyException;
 
     //修改订单
-    Boolean update(@Validated Orders orders) throws MyException;
+   // Boolean update(@Validated Orders orders) throws MyException;
 }
