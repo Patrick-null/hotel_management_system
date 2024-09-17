@@ -1,11 +1,14 @@
 package com.patrick.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.patrick.bean.Enroll;
 import com.patrick.bean.Guest;
 import com.patrick.bean.Info;
 import com.patrick.bean.RespBean;
+import com.patrick.excetion.MyException;
 import com.patrick.service.GuestService;
 import com.patrick.service.InfoService;
+import com.patrick.service.UserService;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +27,8 @@ public class GuestController {
 
     @Autowired
     private InfoService infoService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     public RespBean insert(@RequestBody @Validated Guest guest){
@@ -75,5 +80,22 @@ public class GuestController {
     public RespBean selectAllInfo(Integer pageNum,String flag){
         PageInfo<Info> infoList = infoService.selectAll(pageNum,flag);
         return RespBean.ok("",infoList);
+    }
+
+    //注册账号
+    @PostMapping("/enroll")
+    public RespBean enroll(@RequestBody @Validated Enroll enroll) throws MyException {
+        System.out.println(enroll);
+        if(enroll.getEnroll().getUsername().equals("")){
+            throw  new MyException("账号不能为空");
+        }
+        if(enroll.getEnroll().getPassword().equals("")){
+            throw  new MyException("密码不能为空");
+        }
+        if(userService.enroll(enroll)){
+            return RespBean.ok("注册成功",enroll);
+        }else {
+            return RespBean.error("注册失败");
+        }
     }
 }

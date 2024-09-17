@@ -12,6 +12,12 @@
             </el-icon>
             <template #title>首页</template>
           </el-menu-item>
+          <el-menu-item index="/userInfo">
+            <el-icon>
+              <List />
+            </el-icon>
+            <template #title>用户管理</template>
+          </el-menu-item>
           <el-sub-menu index="2">
             <template #title>
               <el-icon>

@@ -17,6 +17,7 @@ import HomeUserView from '@/views/HomeUserView.vue'
 import OrdersUserView from '@/views/OrdersUserView.vue'
 import BookingView from '@/views/BookingView.vue'
 import { useTokenStore } from '@/stores/token'
+import UserView from '@/views/UserView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,9 @@ const router = createRouter({
       redirect:'/index',
       children:[
         {
+          path:'/userInfo',
+          component:UserView
+        },{
           path:'/guest',
           component:GuestView
         },{
