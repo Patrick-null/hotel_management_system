@@ -29,6 +29,8 @@ public class Info {
 
     @NotBlank(message = "地址不能为空")
     private String addr;
+    //头像
+    private String avatar;
 
     private Integer aid;
 

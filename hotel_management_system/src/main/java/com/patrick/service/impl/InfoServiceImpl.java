@@ -18,6 +18,7 @@ public class InfoServiceImpl implements InfoService {
     private InfoMapper infoMapper;
     @Override
     public Boolean insert(Info info) {
+        info.setAvatar("moren.jpg");
         return infoMapper.insert(info)==1;
     }
 

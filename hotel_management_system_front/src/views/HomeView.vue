@@ -54,7 +54,8 @@
                 <el-page-header :icon="null">
                   <template #content>
                     <div class="flex items-center">
-                      <el-avatar :size="32" class="mr-3" src="http://localhost:8080/upload/patrick.jpg" />
+                      <el-avatar :size="32" class="mr-3" :src="'http://localhost:8080/upload/' + admin.info.avatar"
+                        @click="avatarUpdShow" />
                       <span class="text-sm mr-2" style="color: var(--el-text-color-regular)">
                         {{ admin.username }}
                       </span>
@@ -64,7 +65,8 @@
                     <div class="flex items-center">
                       <el-button @click="pwdUpdWin = true">修改密码</el-button>
                       <el-button @click="infoShowWin = true">个人信息</el-button>
-                      <el-button type="primary" class="ml-2"  color="#626aef" @click="centerDialogVisible = true">退出</el-button>
+                      <el-button type="primary" class="ml-2" color="#626aef"
+                        @click="centerDialogVisible = true">退出</el-button>
                     </div>
                   </template>
                 </el-page-header>
@@ -89,7 +91,7 @@
 
 
   <!-- 退出登录提示框 -->
-  
+
 
   <el-dialog v-model="centerDialogVisible" title="退出登录" width="300" align-center style="border-radius: 20px;">
     <span>你确定要退出吗</span>
@@ -152,10 +154,10 @@
   </el-dialog>
   <!-- 修改信息窗口结束 -->
 
-   <!-- 修改密码窗口开始 -->
-   <el-dialog v-model="pwdUpdWin" title="修改密码" width="500" align-center>
+  <!-- 修改密码窗口开始 -->
+  <el-dialog v-model="pwdUpdWin" title="修改密码" width="500" align-center>
     <template #footer>
-      <el-form-item  label="用户名" label-width="20%">
+      <el-form-item label="用户名" label-width="20%">
         <el-input disabled v-model="userAndpwd.username" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="输入密码" label-width="20%">
@@ -174,10 +176,29 @@
   </el-dialog>
   <!-- 修改密码窗口结束 -->
 
+  <!-- 修改头像窗口开始 -->
+  <el-dialog v-model="avatarUpdShowWin" top center   fullscreen="true" 
+    style="  background-color: rgba(0, 0, 0, 0.1); ">
+
+
+    <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
+      :show-file-list="false" :on-success="handleAvatarSuccessUpd" :before-upload="beforeAvatarUploadUpd" style="display: block; /* 使图片成为块级元素 */
+  margin-left: auto;
+  margin-right: auto;">
+      <img v-if="imageUrlUpd" :src="imageUrlUpd" class="avatar" />
+      <el-icon v-else class="avatar-uploader-icon">
+        <Plus />
+      </el-icon>
+    </el-upload>
+
+  </el-dialog>
+  <!-- 修改头像窗口结束 -->
+
+
 </template>
 <script setup>
 import router from '@/router';
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { ElMessage } from 'element-plus';
 import { RouterView, RouterLink } from 'vue-router'
 import infoApi from '@/api/infoApi';
@@ -189,21 +210,25 @@ const admin = ref({
   aid: 0,
   username: '',
   info: {
-    aid:'',
+    aid: '',
     name: '',
     gender: '',
     no: '',
     phone: '',
-    addr: ''
+    addr: '',
+    avatar: ''
   }
 
 })
 
+//修改头像窗口标识
+const avatarUpdShowWin = ref(false)
+//修改的头像
+const avatarUpd = ref("")
 
-  
 const userAndpwd = ref({
-  username:'',
-  password:''
+  username: '',
+  password: ''
 })
 const passwordTwo = ref('')
 
@@ -222,55 +247,117 @@ function selectUserInfo() {
     .then(resp => {
 
       admin.value = resp.data
-      userAndpwd.value.username=resp.data.username
+      userAndpwd.value.username = resp.data.username
 
     })
 }
+function avatarUpdShow() {
+  avatarUpdShowWin.value = true;
+  imageUrlUpd.value = `http://localhost:8080/upload/${admin.value.info.avatar}`
+}
 
-//修改密码
-function updPwd(){
+
+//新增上传头像的地址
+const imageUrlUpd = ref("")
+
+
+
+//修改上传头像的前的函数
+function beforeAvatarUploadUpd(rawFile) {
+  if (rawFile.type !== 'image/jpeg') {
+    ElMessage.error('图片仅支持jpg格式!')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('图片不能大于2MB!')
+    return false
+  }
+  return true
+}
+
+//修改上传之后的函数
+function handleAvatarSuccessUpd(resp, uploadFile) {
   const loading = ElLoading.service({
     lock: true,
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  if(userAndpwd.value.password == passwordTwo.value){
-    loginApi.updPwd(userAndpwd.value)
-    .then(resp => {
-      loading.close()
-      //判断是否成功
-      if (resp.code == 10000) {
-        //弹出消息
-        ElMessage({
-          message: resp.msg,
-          type: 'success',
-          duration: 1200
-        })
-        pwdUpdWin.value = false
-        router.push('/login')
-      } else {
-        ElMessage({
-          message: resp.msg,
-          type: 'error',
-          duration: 1200
-        });
-      }
+
+  loading.close()
+  if (resp.code == 10000) {
+    ElMessage.success({
+      message: resp.msg,
+      type: 'success',
+      duration: 1200
     })
-  }else{
+    imageUrlUpd.value = "http://localhost:8080/upload/" + resp.data;
+    admin.value.info.avatar = resp.data
+
+
+  } else {
+    ElMessage.error({
+      message: resp.msg,
+      type: 'success',
+      duration: 1200
+    })
+  }
+
+}
+
+const headers = computed(() => {
+  const tokenStore = useTokenStore()
+  let token = tokenStore.tokenStr
+  return {
+    token
+  }
+})
+
+
+
+
+//修改密码
+function updPwd() {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  if (userAndpwd.value.password == passwordTwo.value) {
+    loginApi.updPwd(userAndpwd.value)
+      .then(resp => {
+        loading.close()
+        //判断是否成功
+        if (resp.code == 10000) {
+          //弹出消息
+          ElMessage({
+            message: resp.msg,
+            type: 'success',
+            duration: 1200
+          })
+          pwdUpdWin.value = false
+          router.push('/login')
+        } else {
+          ElMessage({
+            message: resp.msg,
+            type: 'error',
+            duration: 1200
+          });
+        }
+      })
+  } else {
     loading.close()
     ElMessage({
-          message: "两次密码不一致",
-          type: 'error',
-          duration: 1200
-        });
+      message: "两次密码不一致",
+      type: 'error',
+      duration: 1200
+    });
   }
-  
+
 }
 
 
 selectUserInfo()
 
-function updateInfo(){
+function updateInfo() {
   const loading = ElLoading.service({
     lock: true,
     text: 'Loading',
@@ -288,7 +375,7 @@ function updateInfo(){
           type: 'success',
           duration: 1200
         })
-        updInfoShowInfo.value=false
+        updInfoShowInfo.value = false
       } else {
         ElMessage({
           message: resp.msg,
@@ -365,5 +452,22 @@ const centerDialogVisible = ref(false)
 .ml-2 {
   margin-left: 0.5rem;
   /* 8px */
+}
+
+.avatar-uploader,
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+  border: 1px dotted #dcdfe6;
+  border-radius: 5px;
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
 }
 </style>

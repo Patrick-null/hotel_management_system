@@ -20,12 +20,11 @@
                         <el-form-item prop="password">
                             <el-input v-model="admin.password" type="password" autocomplete="off" placeholder="请输入密码" />
                         </el-form-item>
-                        <el-form-item  prop="captcha">
-                            <el-input v-model="admin.captcha"  autocomplete="off" prop="captcha"
-                             placeholder="请输入验证码" />
+                        <el-form-item prop="captcha">
+                            <el-input v-model="admin.captcha" autocomplete="off" prop="captcha" placeholder="请输入验证码" />
                         </el-form-item>
                         <el-form-item>
-                            <el-image style="width: 120px; height: 38px" :src="captchaPhoto"  @click="getCaptcha"/>
+                            <el-image style="width: 120px; height: 38px" :src="captchaPhoto" @click="getCaptcha" />
                         </el-form-item>
                         <div style="display: flex; justify-content: center; max-width: 600px;">
                             <el-button style="width: 100px; margin-top: 10px;" round @click="login"
@@ -80,6 +79,7 @@
                 <el-form-item label="地址" label-width="20%" prop="addr">
                     <el-input v-model="info.addr" autocomplete="off" style="width: 300px;" />
                 </el-form-item>
+              
 
                 <div class="dialog-footer">
                     <el-button @click="enrollShowWin = false">取消</el-button>
@@ -94,7 +94,7 @@
 
 <script setup>
 import loginApi from '@/api/loginApi';
-import { ref, reactive } from 'vue';
+import { ref, reactive,computed } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import router from '@/router';
@@ -133,8 +133,8 @@ const enrollrules = reactive({
 const admin = ref({
     username: '',
     password: '',
-    captcha:'',
-    captchaId:''
+    captcha: '',
+    captchaId: ''
 })
 //验证码照片
 const captchaPhoto = ref("")
@@ -153,8 +153,7 @@ const info = ref({
     no: '',
     phone: '',
     addr: '',
-    aid: ''
-
+    aid: '',
 })
 
 //注册窗口标识
@@ -172,7 +171,7 @@ function enrollShow() {
             message: "用户名或密码不能为空",
             type: 'error',
             duration: 1200
-        });  
+        });
     } else if (enroll.value.password != enrollPwd.value) {
         loading.close()
         ElMessage({
@@ -180,16 +179,16 @@ function enrollShow() {
             type: 'error',
             duration: 1200
         });
-    } else if(info.value.name==""||info.value.no==""||info.value.phone==""||info.value.addr==""){
+    } else if (info.value.name == "" || info.value.no == "" || info.value.phone == "" || info.value.addr == "") {
         loading.close()
         ElMessage({
             message: "请填写完整信息",
             type: 'error',
             duration: 1200
         });
-    }else {
+    } else {
 
-        loginApi.enroll(enroll.value,info.value)
+        loginApi.enroll(enroll.value, info.value)
             .then(resp => {
                 loading.close()
                 //判断是否成功
@@ -201,7 +200,7 @@ function enrollShow() {
                         duration: 1200
                     })
                     enrollShowWin.value = false
-             
+
 
                     // info.value.aid = resp.data.aid
                     //吧信息添加到数据库
@@ -241,6 +240,8 @@ function enrollShow() {
 
 
 
+
+
 function login() {
     const loading = ElLoading.service({
         lock: true,
@@ -276,11 +277,11 @@ function login() {
 }
 
 //获取验证码
-function getCaptcha(){
+function getCaptcha() {
     loginApi.captcha()
         .then(resp => {
-            captchaPhoto.value=resp.data.captchaImageBase64Data;
-            admin.value.captchaId=resp.data.captchaId
+            captchaPhoto.value = resp.data.captchaImageBase64Data;
+            admin.value.captchaId = resp.data.captchaId
         })
 }
 
@@ -288,4 +289,5 @@ getCaptcha();
 
 
 </script>
-<style scoped></style>
+<style scoped>
+</style>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.patrick.mapper.InfoMapper">
     <insert id="insert">
-        insert into `info`(`name`,`gender`,`no`,`phone`,`addr`,`aid`) VALUES (#{name},#{gender},#{no},#{phone},#{addr},#{aid})
+        insert into `info`(`name`,`gender`,`no`,`phone`,`addr`,`aid`,`avatar`) VALUES (#{name},#{gender},#{no},#{phone},#{addr},#{aid},#{avatar})
     </insert>
     <update id="update">
         update `info` set `name`=#{name},`gender`=#{gender},`no`=#{no},`phone`=#{phone},`addr`=#{addr} where `aid`=#{aid}
