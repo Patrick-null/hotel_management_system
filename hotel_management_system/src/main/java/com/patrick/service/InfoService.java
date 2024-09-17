@@ -1,7 +1,10 @@
 package com.patrick.service;
 
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Admin;
 import com.patrick.bean.Info;
+
+import java.util.List;
 
 public interface InfoService {
     Boolean insert(Info info);
@@ -10,4 +13,6 @@ public interface InfoService {
     Info selectById(Integer aid);
 
     Admin selectByUsername(Integer id);
+
+    PageInfo<Info> selectAll(Integer pageNum, String flag);
 }

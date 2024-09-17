@@ -67,7 +67,6 @@ public class OrdersController {
     public RespBean delete(@PathVariable("oid") Integer oid) throws MyException {
         Integer ostate = ordersService.selectById(oid).getOstate();
         if (ostate == 1) {
-
             throw  new MyException("该订单已使用，不能重复使用");
         }
         if (ordersService.delete(oid)) {

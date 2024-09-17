@@ -28,9 +28,9 @@
     <select id="getAllRtype" resultType="java.lang.String">
         select rtype from `room` group by `rtype`
     </select>
-
-
-
+    <select id="selectByAid" resultType="com.patrick.bean.Admin">
+        select * from `admin`  where `aid`=#{aid}
+    </select>
 
 
     <insert id="insert" parameterType="admin" useGeneratedKeys="true" keyColumn="aid" keyProperty="aid">

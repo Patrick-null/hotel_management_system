@@ -2,8 +2,10 @@ package com.patrick.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Guest;
+import com.patrick.bean.Info;
 import com.patrick.bean.RespBean;
 import com.patrick.service.GuestService;
+import com.patrick.service.InfoService;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +21,9 @@ public class GuestController {
 
     @Autowired
     private GuestService guestService;
+
+    @Autowired
+    private InfoService infoService;
 
     @PostMapping
     public RespBean insert(@RequestBody @Validated Guest guest){
@@ -66,4 +71,9 @@ public class GuestController {
         return RespBean.ok("",guestList);
     }
 
+    @GetMapping("/selectAllInfo")
+    public RespBean selectAllInfo(Integer pageNum,String flag){
+        PageInfo<Info> infoList = infoService.selectAll(pageNum,flag);
+        return RespBean.ok("",infoList);
+    }
 }

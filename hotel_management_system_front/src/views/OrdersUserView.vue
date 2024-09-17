@@ -164,9 +164,6 @@ const ordersUpd = ref({
 })
 //所有空余客房信息
 const spareRoomList = ref([])
-
-
-
 //修改订单
 function update() {
   const loading = ElLoading.service({
@@ -178,7 +175,6 @@ function update() {
   ordersUpd.value.guest.gstart=ordersUpd.value.ostart
   ordersUpd.value.guest.gend=ordersUpd.value.oend
   ordersUpd.value.guests.push(ordersUpd.value.guest)
- 
   bookingApi.updateOrders(ordersUpd.value)
     .then(resp => {
       loading.close()

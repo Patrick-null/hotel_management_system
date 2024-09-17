@@ -23,4 +23,18 @@
         select * from `admin` where `aid`=#{id}
     </select>
 
+    <resultMap id="infoAdmin" type="info">
+        <id column="id" property="id"/>
+        <result column="aid" property="aid"/>
+        <association property="admin" column="aid" javaType="admin" select="com.patrick.mapper.AdminMapper.selectByAid"></association>
+    </resultMap>
+    <select id="selectAll" resultMap="infoAdmin">
+        select * from `info`
+        <where>
+            <if test="flag!=null">
+                `name` LIKE concat('%',#{flag},'%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

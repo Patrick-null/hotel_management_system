@@ -32,5 +32,7 @@ public class Info {
 
     private Integer aid;
 
+    private Admin admin;
+
     private List<String> oid;
 }

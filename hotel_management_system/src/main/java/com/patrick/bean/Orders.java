@@ -26,8 +26,6 @@ public class Orders {
     @ExcelProperty("订单id")
     private Integer oid;
 
-
-
     //订单编号
     @ExcelProperty("订单编号")
     @NotBlank(message = "订单号不能为空")

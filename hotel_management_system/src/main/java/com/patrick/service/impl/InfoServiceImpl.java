@@ -1,11 +1,16 @@
 package com.patrick.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Admin;
 import com.patrick.bean.Info;
+import com.patrick.bean.Room;
 import com.patrick.mapper.InfoMapper;
 import com.patrick.service.InfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class InfoServiceImpl implements InfoService {
@@ -34,5 +39,17 @@ public class InfoServiceImpl implements InfoService {
     @Override
     public Admin selectByUsername(Integer id) {
         return infoMapper.selectByUsername(id);
+    }
+
+    @Override
+    public PageInfo<Info> selectAll(Integer pageNum, String flag) {
+        //导包
+        //设置分页信息
+        PageHelper.startPage(pageNum,5);
+        //查询
+        List<Info> infoList = infoMapper.selectAll(flag);
+        //创建封装查询结果
+        PageInfo<Info> infoListPageInfo = new PageInfo<>(infoList);
+        return infoListPageInfo;
     }
 }

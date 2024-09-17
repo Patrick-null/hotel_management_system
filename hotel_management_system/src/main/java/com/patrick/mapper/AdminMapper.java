@@ -26,4 +26,6 @@ public interface AdminMapper {
 
     //注册
     int insert(Admin admin);
+
+    Admin selectByAid(Integer aid);
 }

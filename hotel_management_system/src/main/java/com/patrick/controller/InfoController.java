@@ -75,6 +75,4 @@ public class InfoController {
             return RespBean.error("");
         }
     }
-
-
 }

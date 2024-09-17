@@ -42,6 +42,11 @@ public class GuestTest {
 
 
     @Test
+    public void test15(){
+        infoMapper.selectAll(null).stream().forEach(System.out::println);
+    }
+
+    @Test
     public  void test14(){
         facilityMapper.selectAll("").stream().forEach(System.out::println);
     }
