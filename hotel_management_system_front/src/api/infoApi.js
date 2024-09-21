@@ -12,7 +12,9 @@ const infoApi={
         return service.get(`/info/${aid}`)
     },selectByUsername(){
         return service.get('/info/selectByUsername/')
-    }
+    },selectByID(id){
+        return service.get(`/info/selectByID/${id}`)
+    },
 }
 
 export default infoApi;

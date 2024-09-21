@@ -7,7 +7,7 @@
             <el-header style="height: 30px;">
               <el-form :inline="true" class="demo-form-inline">
                 <el-button type="success" style="margin-bottom: 10px;" @click="enrollShowWin = true"> 注册</el-button>
-                <el-button type="primary"  style="margin-bottom: 10px;" @click="">下载</el-button>
+               
                 <el-form-item label="搜索框" style="float: right;">
                   <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)" />
                 </el-form-item>
@@ -24,13 +24,8 @@
                 <el-table-column prop="admin.username" label="用户名" />
                 <el-table-column fixed="right" label="操作">
                   <template #default="scope">
-                    <el-button size="small" type="success" @click="">修改</el-button>
-                    <el-popconfirm confirm-button-text="使用" cancel-button-text="取消" title="你确认要删除吗?"
-                      @confirm="" width="200px">
-                      <template #reference>
-                        <el-button size="small" type="danger">删除</el-button>
-                      </template>
-                    </el-popconfirm>
+                    <el-button size="small" type="success" @click="updShow(scope.row.id)">修改</el-button>
+                    <el-button size="small" type="primary" @click="reset(scope.row.admin.username)">重置密码</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -52,7 +47,6 @@
 
 <template #footer>
     <el-form ref="adminXY" :model="enroll" :rules="adminrules">
-
         <el-form-item label="用户名" label-width="20%" prop="username">
             <el-input v-model="enroll.username" autocomplete="off" style="width: 300px;" />
         </el-form-item>
@@ -92,6 +86,40 @@
 
 </el-dialog>
   <!-- 添加用户窗口结束 -->
+
+    <!-- 修改用户窗口开始 -->
+  <el-dialog v-model="updShowWin" title="修改用户" width="500" center>
+
+<template #footer>
+    <el-form ref="enrollXY" :model="infoUpd" :rules="enrollrules">
+        <el-form-item label="姓名" label-width="20%" prop="name">
+            <el-input v-model="infoUpd.name" autocomplete="off" style="width: 300px;" />
+        </el-form-item>
+        <el-form-item label="性别" label-width="20%">
+            <el-radio-group v-model="infoUpd.gender">
+                <el-radio-button label="男" value="男" />
+                <el-radio-button label="女" value="女" />
+            </el-radio-group>
+        </el-form-item>
+        <el-form-item label="身份证号" label-width="20%" prop="no">
+            <el-input v-model="infoUpd.no" autocomplete="off" style="width: 300px;" />
+        </el-form-item>
+        <el-form-item label="联系方式" label-width="20%" prop="phone">
+            <el-input v-model="infoUpd.phone" autocomplete="off" style="width: 300px;" />
+        </el-form-item>
+        <el-form-item label="地址" label-width="20%" prop="addr">
+            <el-input v-model="infoUpd.addr" autocomplete="off" style="width: 300px;" />
+        </el-form-item>
+
+        <div class="dialog-footer">
+            <el-button @click="updShowWin = false">取消</el-button>
+            <el-button type="primary" @click="update">修改</el-button>
+        </div>
+    </el-form>
+</template>
+
+</el-dialog>
+  <!-- 修改用户窗口结束 -->
 </template>
 
 <script setup>
@@ -101,6 +129,7 @@ import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import { useTokenStore } from '@/stores/token';
+import infoApi from '@/api/infoApi';
 
 
 const infoList = ref({
@@ -142,8 +171,83 @@ const info = ref({
 
 })
 
+//修改实体
+const infoUpd = ref({
+  name: '',
+    gender: '',
+    no: '',
+    phone: '',
+    addr: '',
+    aid: ''
+})
+//修改窗口
+const updShowWin = ref(false)
 //注册窗口标识
 const enrollShowWin = ref(false)
+const userAndpwd = ref({
+  username: '',
+  password: '123456'
+})
+//重置密码
+function reset(username){
+
+userAndpwd.value.username=username
+  loginApi.updPwd(userAndpwd.value)
+    .then(resp => {
+                //判断是否成功
+                if (resp.code == 10000) {
+                    //弹出消息
+                    ElMessage({
+                        message: "重置成功",
+                        type: 'success',
+                        duration: 1200
+                    })
+                    selectAll(infoList.value.pageNum)
+                } else {
+                    ElMessage({
+                        message: resp.msg,
+                        type: 'error',
+                        duration: 1200
+                    });
+                }
+            })
+}
+
+//修改
+function updShow(id){
+  //回现数据
+  infoApi.selectByID(id)
+    .then(resp => {
+      console.log(resp.data);
+      
+      infoUpd.value=resp.data
+      //显示修改窗口
+      updShowWin.value=true
+    })
+}
+function update(){
+  infoApi.update(infoUpd.value)
+    .then(resp => {
+                //判断是否成功
+                if (resp.code == 10000) {
+                    //弹出消息
+                    ElMessage({
+                        message: resp.msg,
+                        type: 'success',
+                        duration: 1200
+                    })
+                    updShowWin.value=false
+                    selectAll(infoList.value.pageNum)
+                } else {
+                    ElMessage({
+                        message: resp.msg,
+                        type: 'error',
+                        duration: 1200
+                    });
+                }
+            })
+}
+
 //注册实体
 function enrollShow() {
     const loading = ElLoading.service({

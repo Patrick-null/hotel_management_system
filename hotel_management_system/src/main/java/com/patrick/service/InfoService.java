@@ -12,6 +12,7 @@ public interface InfoService {
     Boolean delete(Integer aid);
     Boolean update(Info info) throws MyException;
     Info selectById(Integer aid);
+    Info selectByID(Integer id);
 
     Admin selectByUsername(Integer id);
 

@@ -48,6 +48,13 @@ public class InfoServiceImpl implements InfoService {
     }
 
     @Override
+    public Info selectByID(Integer id) {
+        return infoMapper.selectByID(id);
+    }
+
+
+
+    @Override
     public Admin selectByUsername(Integer id) {
         return infoMapper.selectByUsername(id);
     }

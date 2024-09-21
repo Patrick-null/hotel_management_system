@@ -57,7 +57,17 @@ public class InfoController {
     public RespBean selectById(@PathVariable("aid") Integer aid){
         Info info = infoService.selectById(aid);
         if (info!=null) {
-            return RespBean.ok("");
+            return RespBean.ok("",info);
+        }else {
+            return RespBean.error("");
+        }
+    }
+
+    @GetMapping("/selectByID/{id}")
+    public RespBean selectByID(@PathVariable("id") Integer id){
+        Info info = infoService.selectByID(id);
+        if (info!=null) {
+            return RespBean.ok("",info);
         }else {
             return RespBean.error("");
         }
