@@ -5,6 +5,7 @@ import com.patrick.bean.Facility;
 import com.patrick.bean.Guest;
 import com.patrick.bean.Orders;
 import com.patrick.bean.RespBean;
+import com.patrick.excetion.MyException;
 import com.patrick.service.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,7 @@ public class FacilityController {
 
 
     @PostMapping
-    public RespBean insert(@RequestBody @Validated Facility facility){
+    public RespBean insert(@RequestBody @Validated Facility facility) throws MyException {
         if (facilityService.insert(facility)) {
             return RespBean.ok("添加成功");
         }else {
@@ -41,7 +42,7 @@ public class FacilityController {
     }
 
     @PutMapping
-    public RespBean update(@RequestBody @Validated Facility facility){
+    public RespBean update(@RequestBody @Validated Facility facility) throws MyException {
         if (facilityService.updata(facility)) {
             return RespBean.ok("修改成功");
         }else {

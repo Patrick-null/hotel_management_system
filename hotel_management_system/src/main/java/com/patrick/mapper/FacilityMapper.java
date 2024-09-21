@@ -30,5 +30,5 @@ public interface FacilityMapper {
     int deleteAllRoom(Integer rid);
 
 
-
+    Facility selectByFname(String fname);
 }

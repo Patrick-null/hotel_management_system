@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Facility;
 import com.patrick.bean.Guest;
 import com.patrick.bean.Room;
+import com.patrick.excetion.MyException;
 import com.patrick.mapper.FacilityMapper;
 import com.patrick.service.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,10 @@ public class FacilityServiceImpl implements FacilityService {
     @Autowired
     private FacilityMapper facilityMapper;
     @Override
-    public Boolean insert(Facility facility) {
+    public Boolean insert(Facility facility) throws MyException {
+        if(facilityMapper.selectByFname(facility.getFname())!=null){
+            throw new MyException("该设施已经存在，请勿重复添加");
+        }
         return facilityMapper.insert(facility)==1;
     }
 
@@ -28,7 +32,14 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public Boolean updata(Facility facility) {
+    public Boolean updata(Facility facility) throws MyException {
+        if(facilityMapper.selectById(facility.getFid())!=null){
+            throw new MyException("该设施不存在，无法修改");
+        }
+
+        if(facilityMapper.selectByFname(facility.getFname())!=null&&!facilityMapper.selectById(facility.getFid()).equals(facilityMapper.selectByFname(facility.getFname()))){
+            throw new MyException("该设施已经存在，不能重复添加");
+        }
         return facilityMapper.updata(facility)==1;
     }
 
@@ -56,6 +67,11 @@ public class FacilityServiceImpl implements FacilityService {
     @Override
     public Facility selectById(Integer fid) {
         return facilityMapper.selectById(fid);
+    }
+
+    @Override
+    public Facility selectByFname(String fname) {
+        return facilityMapper.selectByFname(fname);
     }
 
     @Override

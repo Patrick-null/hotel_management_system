@@ -45,6 +45,9 @@
                           right JOIN room r  on rf.rid=r.rid where rf.fid=#{fid}
 
     </select>
+    <select id="selectByFname" resultType="com.patrick.bean.Facility">
+        select * from `facility` where `fname`=#{fname}
+    </select>
     <!--<select id="selectFacilityByRooms" resultMap="facilityRoom">-->
     <!--    select * from facility f LEFT JOIN room_facility rf on  f.fid =rf.fid-->
     <!--                             LEFT JOIN room r on rf.rid=r.rid-->
