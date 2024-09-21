@@ -269,6 +269,7 @@ const ordersUpd = ref({
   ostart:'',
   oend:'',
   moneys: '',
+  ostate:'',
   guest: {
     gname:''
   },
@@ -337,7 +338,7 @@ function then(rid) {
 function insertOne() {
   guestOne.value.gstart = guestBuy.value.gstart
   guestOne.value.gend = guestBuy.value.gend
-  guestOne.value.rid = guestBuy.value.rid
+  guestOne.value.rid = guestBuy.value.rid 
 
 
   // guestListAdd.push(guestOne.value)
@@ -434,10 +435,20 @@ function ordersUpdShow(oid) {
       selectRoom(0)
       ordersUpd.value = resp.data
       ordersUpd.value.guest=ordersUpd.value.guests[0]
+
+      if (ordersUpd.value.ostate == 1) {
+        ElMessage.error({
+          message: "订单已完成 无法修改",
+          type: 'success',
+          duration: 1200
+        })
+      } else {
+        //显示窗口
+  ordersUpdShowWin.value = true
+      }
       
     })
-  //显示窗口
-  ordersUpdShowWin.value = true
+ 
 }
 
 //增加订单

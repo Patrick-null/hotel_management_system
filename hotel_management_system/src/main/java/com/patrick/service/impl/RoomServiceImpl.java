@@ -24,13 +24,25 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private OrdersMapper ordersMapper;
     @Override
-    public Boolean insert(Room room) {
+    public Boolean insert(Room room) throws MyException {
+        //判断添加的房间是否存在，如果存在不允许添加成功
+        Room room1 = roomMapper.selectByRno(room.getRno());
+        if(room1!=null){
+            throw new MyException("该房间已经存在，不能重复添加");
+        }
         return roomMapper.insert(room)==1;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean delete(Integer rid) throws MyException {
+
+        //判断房间是否存在，否则不能删除
+        Room room = roomMapper.selectById(rid);
+        if(room==null){
+            throw  new MyException("房间不存在，不能删除");
+        }
+
         Guest[] guests = guestMapper.selectByRid2(rid);
         if (guests != null && guests.length > 0) {
 
@@ -41,7 +53,17 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean update(Room room) {
+    public Boolean update(Room room) throws MyException {
+        //判断修改的房间是否存在
+        Room room1 = roomMapper.selectById(room.getRid());
+        if(room1==null){
+            throw  new MyException("房间不存在，不能修改");
+        }
+
+        //判断修改后的房间号是否存在
+        if(roomMapper.selectByRno(room.getRno())!=null&&!room.getRid().equals(room1.getRid())){
+            throw new MyException("修改后的房间号已经存在，无法修改");
+        }
 
         return roomMapper.update(room)==1;
     }

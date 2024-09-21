@@ -43,7 +43,11 @@ public class RoomController {
     public RespBean upload(MultipartFile file) throws IOException {
         EasyExcel.read(file.getInputStream(), Room.class, new PageReadListener<Room>(dataList -> {
             for (Room room : dataList) {
-                roomService.insert(room);
+                try {
+                    roomService.insert(room);
+                } catch (MyException e) {
+                    throw new RuntimeException(e);
+                }
             }
         })).sheet().doRead();
         return RespBean.ok("上传成功");
@@ -51,7 +55,7 @@ public class RoomController {
 
 
     @PostMapping
-    public RespBean insert(@RequestBody @Validated Room room){
+    public RespBean insert(@RequestBody @Validated Room room) throws MyException {
         if (roomService.insert(room)) {
             return RespBean.ok("添加成功");
         }else {
@@ -67,7 +71,7 @@ public class RoomController {
         }
     }
     @PutMapping
-    public RespBean update(@RequestBody @Validated Room room){
+    public RespBean update(@RequestBody @Validated Room room) throws MyException {
         if (roomService.update(room)) {
             return RespBean.ok("修改成功");
         }else {

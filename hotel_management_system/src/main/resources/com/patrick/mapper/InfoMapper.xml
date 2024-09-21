@@ -36,5 +36,11 @@
             </if>
         </where>
     </select>
+    <select id="selectByID" resultType="com.patrick.bean.Info">
+        select * from `info` where id=#{id}
+    </select>
+    <select id="selectByNo" resultType="com.patrick.bean.Info">
+        select * from `info` where no=#{no}
+    </select>
 
 </mapper>

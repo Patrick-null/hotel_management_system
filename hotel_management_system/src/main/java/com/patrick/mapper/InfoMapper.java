@@ -10,6 +10,8 @@ public interface InfoMapper {
     int delete(Integer id);
     int update(Info info);
     Info selectById(Integer aid);
+    Info selectByID(Integer id);
+    Info selectByNo(String no);
     Admin selectByUsername(Integer id);
 
     List<Info> selectAll(String flag);

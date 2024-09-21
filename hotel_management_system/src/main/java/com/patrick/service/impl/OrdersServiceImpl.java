@@ -93,7 +93,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean update(@Validated Orders orders) throws MyException {
+    public Boolean update( Orders orders) throws MyException {
         if(ordersMapper.selectById(orders.getOid()).getOstate()==1){
             throw new MyException("订单已完成，无法修改");
         }

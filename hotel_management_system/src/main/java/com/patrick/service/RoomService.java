@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface RoomService {
     //添加房间
-    Boolean insert(Room room);
+    Boolean insert(Room room) throws MyException;
 
     //删除房间
     Boolean delete(Integer rid) throws MyException;
 
     //修改房间
-    Boolean update(Room room);
+    Boolean update(Room room) throws MyException;
 
     //查询所有房间/根据房间类型
     PageInfo<Room> selectAll(Integer pageNum, String flag);

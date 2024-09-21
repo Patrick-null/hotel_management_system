@@ -472,7 +472,6 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
       duration: 1200
     })
   }
-
 }
 
 //删除客人信息

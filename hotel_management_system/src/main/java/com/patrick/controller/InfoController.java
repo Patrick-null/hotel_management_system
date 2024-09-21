@@ -5,6 +5,7 @@ import cn.hutool.core.lang.UUID;
 import com.patrick.bean.Admin;
 import com.patrick.bean.Info;
 import com.patrick.bean.RespBean;
+import com.patrick.excetion.MyException;
 import com.patrick.service.AdminService;
 import com.patrick.service.InfoService;
 import com.patrick.utils.JwtUtil;
@@ -29,7 +30,7 @@ public class InfoController {
 
 
     @PostMapping
-    public RespBean insert(@RequestBody @Validated Info info){
+    public RespBean insert(@RequestBody @Validated Info info) throws MyException {
         if (infoService.insert(info)) {
             return RespBean.ok("添加成功");
         }else {
@@ -45,7 +46,7 @@ public class InfoController {
         }
     }
     @PutMapping
-    public RespBean update(@RequestBody @Validated Info info){
+    public RespBean update(@RequestBody @Validated Info info) throws MyException {
         if (infoService.update(info)) {
             return RespBean.ok("修改成功");
         }else {

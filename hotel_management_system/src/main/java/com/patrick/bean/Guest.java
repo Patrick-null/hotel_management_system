@@ -41,12 +41,13 @@ public class Guest {
 
     //住客入住时间
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @Future(message = "start")
+    @NotNull(message = "start")
     private Date gstart;
 
     //住客离店时间
+
+    @NotNull(message = "end")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @Future(message = "end")
     private Date gend;
 
     //住客状态

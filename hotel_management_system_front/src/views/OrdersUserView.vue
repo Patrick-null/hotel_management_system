@@ -3,7 +3,7 @@
     <el-container>
       <el-header style="padding: 0; ">
         <el-card>
-          <el-input v-model="flag" style="width: 240px;float:right;" placeholder="搜索" @input="selectMyAll(1)"/>
+          <el-input v-model="flag" style="width: 240px;float:right;" placeholder="搜索" @input="selectMyAll(1)" />
         </el-card>
       </el-header>
       <el-main style=" padding: 0;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)">
@@ -20,7 +20,7 @@
                   <el-main width="250px">
                     <el-descriptions direction="horizontal">
                       <el-descriptions-item label="订单编号">{{ order.ono }}</el-descriptions-item>
-                      
+
                       <el-descriptions-item label="订单时间">{{ order.otime }}</el-descriptions-item>
                       <el-descriptions-item label="订单金额">{{ order.moneys }}</el-descriptions-item>
                       <el-descriptions-item label="房间类型">{{ order.room.rtype }}</el-descriptions-item>
@@ -52,9 +52,9 @@
                           <el-button size="small" type="success">使用</el-button>
                         </template>
                       </el-popconfirm>
-                      <el-button size="small" type="primary" @click="ordersUpdShow(order.ono,order.gno)" >修改</el-button>
+                      <el-button size="small" type="primary" @click="ordersUpdShow(order.ono, order.gno)">修改</el-button>
                     </el-checkbox-group>
-                    
+
 
                   </el-main>
                 </el-container>
@@ -91,13 +91,12 @@
         <el-date-picker v-model="ordersUpd.ostart" type="date" :placeholder="ordersUpd.ostart" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="离店时间" label-width="20%">
-        <el-date-picker v-model="ordersUpd.oend" type="date"  :placeholder="ordersUpd.oend" style="width: 300px;" />
+        <el-date-picker v-model="ordersUpd.oend" type="date" :placeholder="ordersUpd.oend" style="width: 300px;" />
       </el-form-item>
 
       <el-form-item label="订单人员" label-width="20%">
         <el-select :placeholder="ordersUpd.guests[0].gname" style="width: 300px">
-          <el-option v-for="item in ordersUpd.guests" :key="item.gname" :label="item.gname"
-            :value="item.gname" />
+          <el-option v-for="item in ordersUpd.guests" :key="item.gname" :label="item.gname" :value="item.gname" />
         </el-select>
       </el-form-item>
 
@@ -108,7 +107,7 @@
             :value="item.rid" />
         </el-select>
       </el-form-item>
-      
+
 
     </el-form>
     <template #footer>
@@ -128,6 +127,7 @@ import { ref, reactive } from 'vue';
 import { ElLoading } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ElNotification } from 'element-plus'
+
 
 const admin = ref({
   aid: 0,
@@ -152,13 +152,14 @@ const ordersUpd = ref({
   ono: '',
   gno: '',
   otime: '',
-  ostart:'',
-  oend:'',
+  ostart: '',
+  oend: '',
   moneys: '',
+  ostate: '',
   guest: {
-    gname:'',
-    gstart:'',
-    gend:''
+    gname: '',
+    gstart: '',
+    gend: ''
   },
   guests: [{}]
 })
@@ -172,8 +173,8 @@ function update() {
     background: 'rgba(0, 0, 0, 0.7)',
   })
   //ordersUpd.value.otime = nowDate(time)
-  ordersUpd.value.guest.gstart=ordersUpd.value.ostart
-  ordersUpd.value.guest.gend=ordersUpd.value.oend
+  ordersUpd.value.guest.gstart = ordersUpd.value.ostart
+  ordersUpd.value.guest.gend = ordersUpd.value.oend
   ordersUpd.value.guests.push(ordersUpd.value.guest)
   bookingApi.updateOrders(ordersUpd.value)
     .then(resp => {
@@ -191,7 +192,7 @@ function update() {
         ordersUpdShowWin.value = false
 
         //刷新表格
-        
+
         selectMyAll(myAllOrders.value.pageNum)
       } else {
         ElMessage({
@@ -206,19 +207,27 @@ function update() {
 
 
 //显示修改窗口并回显数据
-function ordersUpdShow(ono,gno) {
+function ordersUpdShow(ono, gno) {
   //回现数据
-  
-  
-  bookingApi.selectByOno(ono,gno)
+
+
+  bookingApi.selectByOno(ono, gno)
     .then(resp => {
       selectRoom(0)
 
       ordersUpd.value = resp.data
       //ordersUpd.value.guest=ordersUpd.value.guests[0]
+      if (ordersUpd.value.ostate == 1) {
+        ElMessage.error({
+          message: "订单已完成 无法修改",
+          type: 'success',
+          duration: 1200
+        })
+      } else {
+        //显示窗口
+        ordersUpdShowWin.value = true
+      }
     })
-  //显示窗口
-  ordersUpdShowWin.value = true
 }
 
 
@@ -294,7 +303,7 @@ selectUserInfo()
 const myAllOrders = ref({})
 
 function selectMyAll(pageNum) {
-  bookingApi.selectMyAll(pageNum, info.value.no,flag.value)
+  bookingApi.selectMyAll(pageNum, info.value.no, flag.value)
     .then(resp => {
       myAllOrders.value = resp.data
     })

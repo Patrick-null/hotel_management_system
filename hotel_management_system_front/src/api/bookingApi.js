@@ -33,6 +33,8 @@ const facilityApi={
     },
     //修改订单
     updateOrders(orders){
+        console.log(orders);
+        
         return service.put('/user/updateOrder',orders)
     },
     //根据ID查询
