@@ -274,7 +274,11 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
     })
     imageUrlUpd.value = "http://localhost:8080/upload/" + resp.data;
     admin.value.info.avatar = resp.data
-
+    infoApi.update(admin.value.info)
+      .then(resp => {
+        selectUserInfo()
+      })
+    
 
   } else {
     ElMessage.error({

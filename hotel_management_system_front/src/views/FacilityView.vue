@@ -44,7 +44,7 @@
                   <template #default="scope">
                     <el-button size="small" type="success" @click="facilityUpdShow(scope.row.fid)">修改</el-button>
                     <el-popconfirm confirm-button-text="删除" cancel-button-text="取消" title="你确认要删除吗?" width="200px"
-                      @confirm="">
+                      @confirm="deleteByFid(scope.row.fid)">
                       <template #reference>
                         <el-button size="small" type="danger">删除</el-button>
                       </template>
@@ -261,6 +261,19 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
     })
   }
 
+}
+
+//删除设施函数
+function deleteByFid(fid){
+  facilityApi.delete(fid)
+    .then(resp =>{
+      if(resp.code==10000){
+        ElMessage.success(resp.msg)
+        selectAll(facilityList.value.pageNum)
+      }else{
+        ElMessage.error(resp.msg)
+      }
+    })
 }
 
 //显示修改窗口并回现数据

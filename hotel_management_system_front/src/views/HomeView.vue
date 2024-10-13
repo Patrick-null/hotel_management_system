@@ -145,7 +145,7 @@
         <el-input v-model="admin.info.addr" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <div class="dialog-footer">
-        <el-button @click="updInfoShowInfo = false">取消</el-button>
+        <el-button @click="selectUserInfo();updInfoShowInfo = false">取消</el-button>
         <el-button type="primary" @click="updateInfo">
           保存
         </el-button>
@@ -291,7 +291,11 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
     })
     imageUrlUpd.value = "http://localhost:8080/upload/" + resp.data;
     admin.value.info.avatar = resp.data
-
+    infoApi.update(admin.value.info)
+      .then(resp => {
+        selectUserInfo()
+      })
+    
 
   } else {
     ElMessage.error({

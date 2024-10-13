@@ -191,10 +191,13 @@
       <el-form-item label="房间类型" label-width="20%">
         <el-input v-model="roomAdd.rtype" autocomplete="off" style="width: 300px;" />
       </el-form-item>
+      <el-form-item label="房间人数" label-width="20%">
+        <el-input v-model="roomAdd.rnum" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
       <el-form-item label="房间价格" label-width="20%">
         <el-input v-model="roomAdd.rprice" autocomplete="off" style="width: 300px;" />
       </el-form-item>
-      <el-form-item label="头像" label-width="20%">
+      <el-form-item label="照片" label-width="20%">
         <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
           :show-file-list="false" :on-success="handleAvatarSuccessAdd" :before-upload="beforeAvatarUploadAdd">
           <img v-if="imageUrlAdd" :src="imageUrlAdd" class="avatar" />
@@ -223,6 +226,9 @@
       </el-form-item>
       <el-form-item label="房间类型" label-width="20%">
         <el-input v-model="roomUpd.rtype" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      <el-form-item label="房间人数" label-width="20%">
+        <el-input v-model="roomUpd.rnum" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="房间价格" label-width="20%">
         <el-input v-model="roomUpd.rprice" autocomplete="off" style="width: 300px;" />
