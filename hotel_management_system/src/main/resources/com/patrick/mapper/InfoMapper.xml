@@ -5,7 +5,7 @@
         insert into `info`(`name`,`gender`,`no`,`phone`,`addr`,`aid`,`avatar`) VALUES (#{name},#{gender},#{no},#{phone},#{addr},#{aid},#{avatar})
     </insert>
     <update id="update">
-        update `info` set `name`=#{name},`gender`=#{gender},`no`=#{no},`phone`=#{phone},`addr`=#{addr} where `aid`=#{aid}
+        update `info` set `name`=#{name},`gender`=#{gender},`no`=#{no},`phone`=#{phone},`addr`=#{addr},`avatar`=#{avatar} where `aid`=#{aid}
     </update>
     <delete id="delete">
         delete from `info` where aid=#{aid}

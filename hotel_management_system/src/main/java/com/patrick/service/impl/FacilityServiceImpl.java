@@ -33,7 +33,7 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Boolean updata(Facility facility) throws MyException {
-        if(facilityMapper.selectById(facility.getFid())!=null){
+        if(facilityMapper.selectById(facility.getFid())==null){
             throw new MyException("该设施不存在，无法修改");
         }
 

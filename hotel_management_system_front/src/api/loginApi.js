@@ -20,6 +20,8 @@ const loginApi = {
     },
     //修改密码
     updPwd(userAndpwd){
+        console.log(userAndpwd);
+        
         return service.put('/admin/userAndpwd',userAndpwd)
     },
     //用户注册

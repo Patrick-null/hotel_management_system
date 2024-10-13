@@ -29,16 +29,16 @@ public class MainConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(adminInterceptor)
-                .excludePathPatterns("/user/**")
+                .excludePathPatterns("/user/**","/admin/upload/**")
                 .addPathPatterns("/admin/**");
 
         registry.addInterceptor(adminInterceptorTwo)
-                .excludePathPatterns("/admin/**")
+                .excludePathPatterns("/admin/**","/admin/upload/**")
                 .addPathPatterns("/user/**");
 
 
         registry.addInterceptor(adminInterceptorPublic)
-                .addPathPatterns("/info/**");
+                .addPathPatterns("/info/**","/admin/upload/**");
 
 
 
