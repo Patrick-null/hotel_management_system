@@ -2,37 +2,37 @@
   <el-row :gutter="24" style="margin-bottom: 20px;">
     <el-col :span="12">
       <el-card
-        style="max-width: 600px;height: 120px;border-radius: 15px;background-color: rgb(113, 157, 227); color: #fff;">
+        style="height: 150px;border-radius: 15px;background-color: rgb(113, 157, 227); color: #fff;">
 
         <el-row :gutter="20" style="margin-bottom: 10px;" align="bottom">
-          <el-col :span="6" style="font-size: 18px; font-weight: 600;">
+          <el-col :span="6" style="font-size: 28px; font-weight: 600;">
             订单量
           </el-col>
         </el-row>
         <el-row :gutter="24" align="bottom">
           <el-col :span="24" style="padding-bottom: 10px;">
-            <el-icon size="28" style="margin-top: 18px;">
+            <el-icon size="38" style="margin-top: 18px;">
               <Tickets />
             </el-icon>
-            <span style="float: right;font-size: 40px;">{{ OrderVolume }}</span>
+            <span style="float: right;font-size: 58px;">{{ OrderVolume }}</span>
           </el-col>
         </el-row>
       </el-card>
     </el-col>
     <el-col :span="12">
       <el-card
-        style="max-width: 600px;height: 120px;border-radius: 15px;background-color: rgb(81, 68, 180);color: #fff;">
+        style="height: 150px;border-radius: 15px;background-color: rgb(81, 68, 180);color: #fff;">
         <el-row :gutter="20" style="margin-bottom: 10px;" align="bottom">
-          <el-col :span="6" style="font-size: 18px; font-weight: 600;">
+          <el-col :span="6" style="font-size: 28px; font-weight: 600;">
             住房人数
           </el-col>
         </el-row>
         <el-row :gutter="24" align="bottom">
           <el-col :span="24" style="padding-bottom: 10px;">
-            <el-icon size="28" style="margin-top: 18px;">
+            <el-icon size="38" style="margin-top: 18px;">
               <User />
             </el-icon>
-            <span style="float: right;font-size: 40px;">{{ GuestVolume }}</span>
+            <span style="float: right;font-size: 58px;">{{ GuestVolume }}</span>
           </el-col>
         </el-row>
       </el-card>
@@ -42,13 +42,13 @@
 
   <el-row :gutter="24">
     <el-col :span="12">
-      <el-card>
-        <div id="RtypeByGender" style="width: 507px; height: 380px;"></div>
+      <el-card style="border-radius: 15px">
+        <div id="RtypeByGender" style="width: 507px; height: 480px;"></div>
       </el-card>
     </el-col>
     <el-col :span="12">
-      <el-card>
-        <div id="RtypeByGender1" style="width: 507px; height: 380px;"></div>
+      <el-card style="border-radius: 15px">
+        <div id="RtypeByGender1" style="width: 507px; height: 480px;"></div>
       </el-card>
     </el-col>
   </el-row>
@@ -171,7 +171,7 @@ function RtypeByGender() {
     trigger: 'item'
   },
   legend: {
-    top: '5%',
+    top: '10%',
     left: 'center'
   },
   series: [
