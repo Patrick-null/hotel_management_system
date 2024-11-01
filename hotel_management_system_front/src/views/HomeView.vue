@@ -13,25 +13,27 @@
             <template #title>首页</template>
           </el-menu-item>
           <el-menu-item index="/userInfo">
+            
+            <el-icon><Avatar /></el-icon>
+            <template #title>用户管理</template>
+          </el-menu-item>
+
+          <el-menu-item index="/guest">
             <el-icon>
               <List />
             </el-icon>
-            <template #title>用户管理</template>
+            <template #title>入住记录</template>
           </el-menu-item>
-          <el-sub-menu index="2">
-            <template #title>
-              <el-icon>
-                <UserFilled />
-              </el-icon>
-              <span>客房管理</span>
-            </template>
-            <el-menu-item-group>
-              <template #title><span>Group One</span></template>
-              <el-menu-item index="/guest">住客管理</el-menu-item>
-              <el-menu-item index="/room">房间管理</el-menu-item>
-              <el-menu-item index="/facility">设施管理</el-menu-item>
-            </el-menu-item-group>
-          </el-sub-menu>
+
+          <el-menu-item index="/room">
+            <el-icon><OfficeBuilding /></el-icon>
+            <template #title>房间管理</template>
+          </el-menu-item>
+
+          <el-menu-item index="/facility">
+            <el-icon><Monitor /></el-icon>
+            <template #title>设施管理</template>
+          </el-menu-item>
 
           <el-menu-item index="/orders">
             <el-icon>
@@ -46,10 +48,7 @@
         <el-header height="30" style=" box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1);">
           <div class="common-layout">
             <el-container>
-              <el-aside width="60px"><el-radio-group v-model="isCollapse" style="margin-top: 20px">
-                  <el-switch v-model="isCollapse" inline-prompt active-text="折叠" inactive-text="隐藏" />
-                </el-radio-group>
-              </el-aside>
+            
               <el-main>
                 <el-page-header :icon="null">
                   <template #content>
@@ -414,7 +413,7 @@ import {
 } from '@element-plus/icons-vue'
 import loginApi from '@/api/loginApi';
 
-const isCollapse = ref(true)
+const isCollapse = ref(false)
 
 const centerDialogVisible = ref(false)
 

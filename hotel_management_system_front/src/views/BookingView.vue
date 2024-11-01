@@ -8,8 +8,8 @@
         </el-card>
       </el-header>
       <el-main style=" padding: 0;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)">
-        <el-card style="height: 452px;">
-          <ul class="infinite-list" style="overflow: auto">
+        <el-card style="height: 752px;">
+          <ul class="infinite-list" style="overflow: auto;height: 700px;">
 
             <el-card v-for="room in roomList.list" :key="room.rid">
               <div class="common-layout">
@@ -239,20 +239,22 @@ function buyRoomShowWin(room) {
 //显示添加住客窗口
 function memberAddShow() {
   if ((thisOrdersList.value.length + 2) > thisRoom.value.rnum) {
-    ElMessage.error("该房间已经满了")
+    ElMessage.error("该房间已经满了");
+  }else{
+    memberAddShowWin.value = true
   }
-  memberAddShowWin.value = true
+  
 }
 
 //添加住客
 function insertMember() {
-  const biaoshi = ref(true)
+  let biaoshi = true
   for (let index = 0; index < thisOrdersList.value.length; index++) {
     if (guestOne.value.gno == thisOrdersList.value[index].gno) {
-      biaoshi.value = false
+      biaoshi = false;
     }
   }
-  if (biaoshi.value == true) {
+  if (biaoshi == true) {
     guestOne.value.gstart = orderGuest.value.gstart
     guestOne.value.gend = orderGuest.value.gend
     guestOne.value.rid = orderGuest.value.rid
@@ -365,8 +367,6 @@ function nowDate(time) {
   display: flex;
   align-items: center;
   justify-content: center;
-
-
 
 
 }

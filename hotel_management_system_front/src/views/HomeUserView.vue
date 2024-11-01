@@ -31,10 +31,7 @@
         <el-header height="30" style=" box-shadow:  0 2px 12px 0 rgba(0, 0, 0, 0.1);">
           <div class="common-layout">
             <el-container>
-              <el-aside width="60px"><el-radio-group v-model="isCollapse" style="margin-top: 20px">
-                  <el-switch v-model="isCollapse" inline-prompt active-text="折叠" inactive-text="隐藏" />
-                </el-radio-group>
-              </el-aside>
+             
               <el-main>
                 <el-page-header :icon="null">
                   <template #content>
@@ -401,7 +398,7 @@ function logout() {
 
 
 
-const isCollapse = ref(true)
+const isCollapse = ref(false)
 
 const centerDialogVisible = ref(false)
 

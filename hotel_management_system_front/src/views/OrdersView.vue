@@ -6,31 +6,12 @@
           <el-container>
             <el-header style="height: 30px;">
               <el-form :inline="true" class="demo-form-inline">
-                <el-button type="success" style="margin-bottom: 10px;" @click="ordersAddShow">添加</el-button>
                 <el-button type="primary" :icon="Download" style="margin-bottom: 10px;" @click="downloadOrder">下载</el-button>
                 <el-form-item label="搜索框" style="float: right;">
                   <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)" />
                 </el-form-item>
               </el-form>
-              <!-- <el-form :inline="true" class="demo-form-inline">
-                <el-form-item>
-                  
-                  <el-upload :on-success="uploadOrders" action="http://localhost:8080/admin/orders/upload"
-                    :headers="headers" method="post" name="file" list-type="none" :show-file-list="false">
-                    <el-button type="warning" :icon="UploadFilled" circle>
-                      <el-icon>
-                        <Upload />
-                      </el-icon>
-                    </el-button>
-                  </el-upload>
-                </el-form-item>
-                <el-form-item style="float: right;margin-right: 80px;">
-                  <el-input v-model="sname" placeholder="请输入姓名" clearable @input="selectByPage(1)"
-                    style="width: 250px;" />
-                  <el-input v-model="sage" placeholder="请输入年龄" clearable @input="selectByPage(1)"
-                    style="width: 250px;" />
-                </el-form-item>
-              </el-form> -->
+            
             </el-header>
             <el-main style="height: 430px;">
               <el-table :data="ordersList.list" border style="width: 100%">
@@ -187,9 +168,14 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="房间类型" label-width="20%">
+        <el-input disabled v-model="ordersUpd.room.rtype" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
+      
+
 
       <el-form-item label="订单房间" label-width="20%">
-        <el-select v-model="ordersUpd.rid" placeholder="" style="width: 300px">
+        <el-select v-model="ordersUpd.rid" placeholder=""  style="width: 300px">
           <el-option v-for="item in spareRoomList" :key="item.rid" :label="item.rno + '-' + item.rtype"
             :value="item.rid" />
         </el-select>
@@ -435,7 +421,8 @@ function ordersUpdShow(oid) {
       selectRoom(0)
       ordersUpd.value = resp.data
       ordersUpd.value.guest=ordersUpd.value.guests[0]
-
+      console.log(ordersUpd.value);
+      
       if (ordersUpd.value.ostate == 1) {
         ElMessage.error({
           message: "订单已完成 无法修改",

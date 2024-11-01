@@ -61,12 +61,16 @@ public class OrdersServiceImpl implements OrdersService {
         //获取时间
         Date gend = orders.getGuest().getGend();
         Date gstart = orders.getGuest().getGstart();
+
+        if (gend.before(gstart)){
+            throw new MyException("请正确选择离房时间");
+        }
+
         LocalDate start = gstart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate end = gend.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
 
         long day = ChronoUnit.DAYS.between(start, end);
-        System.out.println(new BigDecimal(day).multiply(moneys));
 
         orders.setMoneys(new BigDecimal(day).multiply(moneys));
         orders.setRid(room.getRid());
@@ -93,8 +97,8 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean update( Orders orders) throws MyException {
-        if(ordersMapper.selectById(orders.getOid()).getOstate()==1){
+    public Boolean update(Orders orders) throws MyException {
+        if(ordersMapper.selectById(orders.getOid()).getOstate().equals(1)){
             throw new MyException("订单已完成，无法修改");
         }
 
@@ -107,10 +111,6 @@ public class OrdersServiceImpl implements OrdersService {
 
         //Integer rnum = roomMapper.selectById(orders.getRid()).getRnum();
         Integer rnum = roomMapper.selectById(orders.getRid()).getRnum();
-        System.out.println("--------------------");
-        System.out.println(orders.getGuest().getRid());
-        System.out.println("房间人数"+rnum);
-        System.out.println("客人人数"+guests.length);
         if(guests.length>rnum){
             throw new MyException("订单人数大于房间人数，无法修改");
         }
@@ -149,8 +149,6 @@ public class OrdersServiceImpl implements OrdersService {
         //删除原来的订单
         ordersMapper.delete2(orders.getOid());
 
-        System.out.println("00000000000000000");
-        System.out.println(orders);
         //新增现在的订单
         return ordersMapper.insert(orders)==1;
     }
@@ -184,7 +182,9 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Orders selectByOno(String  ono) {
-        return ordersMapper.selectByOno(ono);
+        Orders orders = ordersMapper.selectByOno(ono);
+
+        return orders;
     }
 
     @Override
@@ -194,11 +194,14 @@ public class OrdersServiceImpl implements OrdersService {
         Guest[] guests = guestMapper.selectByOno(ono);
         orders.setGuest(guest);
         orders.setGuests(guests);
+        orders.setRoom(roomMapper.selectById(orders.getRid()));
         return orders;
     }
 
     @Override
     public Orders selectById(Integer oid) {
-        return ordersMapper.selectById(oid);
+        Orders orders = ordersMapper.selectById(oid);
+        orders.setRoom(roomMapper.selectById(orders.getRid()));
+        return orders;
     }
 }

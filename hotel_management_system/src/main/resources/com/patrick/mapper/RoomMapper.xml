@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.patrick.mapper.RoomMapper">
     <insert id="insert">
-        INSERT INTO `room`(`rno`,`ravatar`,`rtype`,`rprice`) VALUES (#{rno},#{ravatar},#{rtype},#{rprice})
+        INSERT INTO `room`(`rno`,`ravatar`,`rnum`,`rtype`,`rprice`) VALUES (#{rno},#{ravatar},#{rnum},#{rtype},#{rprice})
     </insert>
     <update id="update">
-        UPDATE `room` SET `rno`=#{rno},`ravatar`=#{ravatar},`rtype`=#{rtype},`rprice`=#{rprice},`rstate`=#{rstate} WHERE `rid`=#{rid}
+        UPDATE `room` SET `rno`=#{rno},`ravatar`=#{ravatar},`rtype`=#{rtype},`rprice`=#{rprice},`rnum`=#{rnum},`rstate`=#{rstate} WHERE `rid`=#{rid}
     </update>
     <update id="updateRstate">
         UPDATE `room` SET `rstate`= #{rstate} WHERE `rid`=#{rid}

@@ -99,6 +99,9 @@
           <el-option v-for="item in ordersUpd.guests" :key="item.gname" :label="item.gname" :value="item.gname" />
         </el-select>
       </el-form-item>
+      <el-form-item label="原房间" label-width="20%">
+        <el-input disabled v-model="ordersUpd.room.rtype" autocomplete="off" style="width: 300px;" />
+      </el-form-item>
 
 
       <el-form-item label="订单房间" label-width="20%">

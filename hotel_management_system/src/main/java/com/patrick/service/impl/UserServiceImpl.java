@@ -35,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private GuestMapper guestMapper;
     @Autowired
     private InfoMapper infoMapper;
+    @Autowired
+    private InfoService infoService;
     @Override
     public PageInfo<Room> selectAllRoom(Integer pageNum,String flag) {
         //导包
@@ -43,8 +45,6 @@ public class UserServiceImpl implements UserService {
         //查询
         List<Room> roomList = roomMapper.selectByState2(0,flag);
         roomList.stream().forEach(System.out::println);
-
-
         //创建封装查询结果
         PageInfo<Room> roomListPageInfo = new PageInfo<>(roomList);
         return roomListPageInfo;
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         adminMapper.insert(admin);
         Integer aid = admin.getAid();
         info.setAid(aid);
-        infoMapper.insert(info);
+        infoService.insert(info);
         return true;
     }
 

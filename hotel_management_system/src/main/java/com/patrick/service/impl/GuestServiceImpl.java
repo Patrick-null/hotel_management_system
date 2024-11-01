@@ -1,5 +1,6 @@
 package com.patrick.service.impl;
 
+import com.github.pagehelper.PageException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.patrick.bean.Guest;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,6 +35,17 @@ public class GuestServiceImpl implements GuestService {
     @Transactional(rollbackFor = Exception.class)
     public Boolean insert( Guest guest) {
         roomMapper.updateRstate(1,guest.getRid());
+
+        Date date = new Date();
+
+        if(guest.getGstart().before(date)){
+            throw new PageException("请正确入住时间");
+        }
+
+        if(guest.getGend().before(date)){
+            throw new PageException("请正确离店时间");
+        }
+
         return guestMapper.insert(guest)==1;
     }
 
@@ -40,6 +53,17 @@ public class GuestServiceImpl implements GuestService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean delete(Integer gid) {
+
+        //判断该住客存不存在
+        Guest guest = guestMapper.selectById(gid);
+        if(guest==null){
+            throw new PageException("该住客不存在");
+        }
+
+        if(guest.getGstart().equals(2)){
+            throw new PageException("该住客已经离店");
+        }
+
         //将房间设为空闲
         roomMapper.updateRstate(0,selectById(gid).getRid());
         return guestMapper.delete(gid)==1;
@@ -57,8 +81,6 @@ public class GuestServiceImpl implements GuestService {
 
         //删除该住户
         guestMapper.delete2(guest.getGid());
-        System.out.println(guestMapper.selectByRid(guest.getGid()));
-        System.out.println(123123);
         //添加该住户
         guestMapper.insert(guest);
         //将新房间设为已预订
@@ -74,7 +96,6 @@ public class GuestServiceImpl implements GuestService {
         }
         return true;
     }
-
 
     //查询所有住客
     @Override

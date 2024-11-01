@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,7 +29,10 @@ public class RoomServiceImpl implements RoomService {
         //判断添加的房间是否存在，如果存在不允许添加成功
         Room room1 = roomMapper.selectByRno(room.getRno());
         if(room1!=null){
-            throw new MyException("该房间已经存在，不能重复添加");
+            //修改该房间状态为0  空闲
+            room.setRstate(0);
+            room.setRid(room1.getRid());
+            return roomMapper.update(room)==1;
         }
         return roomMapper.insert(room)==1;
     }
@@ -47,6 +51,10 @@ public class RoomServiceImpl implements RoomService {
         if (guests != null && guests.length > 0) {
 
             throw new MyException("该房间还有住客，不能设为异常");
+        }
+
+        if(room.getRstate().equals(3)){
+            throw  new MyException("房间已经设为异常，不能重复设置");
         }
         return roomMapper.delete(rid)==1;
     }

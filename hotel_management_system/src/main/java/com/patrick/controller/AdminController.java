@@ -97,9 +97,7 @@ public class AdminController {
     @GetMapping("/admin/getUsername")
     public RespBean getUsername(String username, String password) throws MyException {
 
-
         //Admin admin = adminService.login(username, password);
-
 
         return RespBean.ok("登录成功",username);
     }

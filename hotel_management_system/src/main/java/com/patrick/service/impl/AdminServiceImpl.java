@@ -18,6 +18,17 @@ public class AdminServiceImpl implements AdminService {
     private AdminMapper adminMapper;
     @Override
     public Admin login(String username,String password,Integer role) throws MyException {
+
+
+        if (username==null||username.length()==0){
+            throw new MyException("用户名不能为空");
+        }
+
+        if (password==null||username.length()==0){
+            throw new MyException("密码不能为空");
+        }
+
+
         Admin admin = adminMapper.login(username);
 
 

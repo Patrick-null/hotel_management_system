@@ -43,6 +43,8 @@
                 or  `ggender` LIKE concat('%',#{flag},'%')
             </if>
         </where>
+
+        order by `gstate` asc,`gid` asc
     </select>
     <select id="selectByName" resultType="guest">
         SELECT * FROM `guest` WHERE `gname`=#{gname}

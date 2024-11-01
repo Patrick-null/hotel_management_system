@@ -30,6 +30,7 @@
                 or  `ono` LIKE concat('%',#{flag},'%')
             </if>
         </where>
+        order by `otime` desc,`ostate` desc
     </select>
     <select id="selectByOno" resultType="orders">
         select * from `orders` where ono = #{ono}
