@@ -1,48 +1,49 @@
 <template>
-    <div style="height: 100%; width: 100%;  margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;">
-        <el-row>
-            <el-col :span="24">
-                <el-card style="max-width: 600px;border-radius: 20px; width: 300px; text-align: center; 
+    
+        <el-row style="height: 100%;">
+            <el-col :span="10">
+                <div style="width: 100%;height: 100%; background-color: #e0e0e0;">
+
+                </div>
+                </el-col>
+            <el-col :span="14" style="padding-top: 230px;padding-left: 170px;">
+                <el-card style="max-width: 600px;border-radius: 20px; width: 600px; text-align: center; 
                 background: rgba(255, 255, 255, 0.5); /* 半透明白色背景 */">
                     <template #header>
                         <div class="card-header">
-                            <span>用户登录</span>
+                            <span style="font-size: 28px;">用户登录</span>
                         </div>
                     </template>
-                    <el-form ref="loginXY" :model="admin" style="max-width: 240px; " status-icon label-width="auto"
+                    <div style="padding: 0 130px;">
+                        <el-form ref="loginXY" :model="admin" style="max-width: 340px; " status-icon label-width="auto"
                         class="demo-ruleForm" :rules="rules">
                         <el-form-item prop="username">
-                            <el-input v-model="admin.username" autocomplete="off" placeholder="请输入用户名" />
+                            <el-input v-model="admin.username" autocomplete="off" placeholder="请输入用户名" style="height: 40px;line-height: 40px;font-size: 20px"/>
                         </el-form-item>
                         <el-form-item prop="password">
-                            <el-input v-model="admin.password" type="password" autocomplete="off" placeholder="请输入密码" />
+                            <el-input v-model="admin.password" type="password" autocomplete="off" placeholder="请输入密码" style="height: 40px;line-height: 40px;font-size: 20px"/>
                         </el-form-item>
                         <el-form-item prop="captcha">
-                            <el-input v-model="admin.captcha" autocomplete="off" prop="captcha" placeholder="请输入验证码" />
-                        </el-form-item>
-                        <el-form-item>
-                            <el-image style="width: 120px; height: 38px" :src="captchaPhoto" @click="getCaptcha" />
+                            <el-input v-model="admin.captcha" autocomplete="off" prop="captcha" placeholder="请输入验证码" style="height: 40px;line-height: 40px;font-size: 20px;width: 170px;"/>
+                            <el-image style="width: 120px; height: 38px;margin-left: 10px;" :src="captchaPhoto" @click="getCaptcha" />
                         </el-form-item>
                         <div style="display: flex; justify-content: center; max-width: 600px;">
-                            <el-button style="width: 100px; margin-top: 10px;" round @click="login"
+                            <el-button style="width: 100px;height: 40px;" round @click="login"
                                 color="#626aef">登录</el-button>
-                            <el-button style="width: 100px; margin-top: 10px; border: 1px #909399 solid;" round
+                            <el-button style="width: 100px;  border: 1px #909399 solid;height: 40px;" round
                                 @click="enrollShowWin = true" color="#fff">注册</el-button>
                         </div>
 
                     </el-form>
+                    </div>
                     <el-divider>
                         <span style="font-weight: 200; font-size: 12px;">其他登录方式</span>
                     </el-divider>
-                    <el-button color="#626aef" @click="router.push('/login')">管理员登录</el-button>
+                    <el-button color="#626aef" @click="router.push('/login')" style="height: 40px;">管理员登录</el-button>
                 </el-card>
             </el-col>
 
         </el-row>
-    </div>
 
     <!-- 注册窗口开始 -->
     <el-dialog v-model="enrollShowWin" title="注册" width="500" center>
