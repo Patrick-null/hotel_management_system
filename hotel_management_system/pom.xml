@@ -7,6 +7,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>hotel_management_system</name>
     <description>hotel_management_system</description>
+    <packaging>jar</packaging>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -117,7 +118,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.patrick.Application</mainClass>
-                    <skip>true</skip>
+                    <!--<skip>true</skip>-->
                 </configuration>
                 <executions>
                     <execution>

@@ -15,7 +15,7 @@
                 <el-container>
                   <el-aside width="100px">
                     <el-image style="width: 100px; height: 100px"
-                      :src="'http://localhost:8080/upload/' + order.room.ravatar" fit />
+                      :src="`${SERVER_ADDR}/upload/` + order.room.ravatar" fit />
                   </el-aside>
                   <el-main width="250px">
                     <el-descriptions direction="horizontal">
@@ -130,6 +130,9 @@ import { ref, reactive } from 'vue';
 import { ElLoading } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ElNotification } from 'element-plus'
+
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
 
 
 const admin = ref({

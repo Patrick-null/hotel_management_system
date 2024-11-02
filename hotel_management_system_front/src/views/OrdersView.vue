@@ -6,7 +6,7 @@
           <el-container>
             <el-header style="height: 30px;">
               <el-form :inline="true" class="demo-form-inline">
-                <el-button type="primary" :icon="Download" style="margin-bottom: 10px;" @click="downloadOrder">下载</el-button>
+                <el-button type="primary" :icon="Download" style="margin-bottom: 10px; " @click="downloadOrder">下载</el-button>
                 <el-form-item label="搜索框" style="float: right;">
                   <el-input v-model="flag" placeholder="请输入需要搜索的姓名" clearable @input="selectAll(1)" />
                 </el-form-item>
@@ -14,13 +14,12 @@
             
             </el-header>
             <el-main style="height: 430px;">
-              <el-table :data="ordersList.list" border style="width: 100%">
-                <el-table-column prop="oid" label="ID" width="40px" />
-                <el-table-column prop="ono" label="订单编号" />
+              <el-table :data="ordersList.list" border >
+                <el-table-column prop="ono" label="订单编号"/>
                 <el-table-column prop="guests[0].gname" label="下单人" />
                 <el-table-column prop="moneys" label="订单金额" />
-                <el-table-column prop="otime" label="下单时间" show-overflow-tooltip />
-                <el-table-column prop="ostart" label="入住时间" show-overflow-tooltip />
+                <el-table-column prop="otime" label="下单时间"  />
+                <el-table-column prop="ostart" label="入住时间" />
                 <el-table-column prop="oend" label="离房时间" show-overflow-tooltip />
                 <el-table-column label="状态">
                   <template #default="scope">
@@ -201,6 +200,9 @@ import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import roomApi from '@/api/roomApi';
 import { useTokenStore } from '@/stores/token';
+
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
 
 //订单编号
 const orderNumber = ref()

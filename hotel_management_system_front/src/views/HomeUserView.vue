@@ -36,7 +36,7 @@
                 <el-page-header :icon="null">
                   <template #content>
                     <div class="flex items-center">
-                      <el-avatar :size="32" class="mr-3" :src="'http://localhost:8080/upload/' + admin.info.avatar"
+                      <el-avatar :size="32" class="mr-3" :src="`${SERVER_ADDR}/upload/` + admin.info.avatar"
                         @click="avatarUpdShow" />
                       <span class="text-sm mr-2" style="color: var(--el-text-color-regular)">
                         {{ admin.username }}
@@ -163,7 +163,7 @@
   <el-dialog v-model="avatarUpdShowWin" top center fullscreen="true" style="  background-color: rgba(0, 0, 0, 0.1); ">
 
 
-    <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
+    <el-upload class="avatar-uploader" :action="`${SERVER_ADDR}/admin/upload`" name="pic" :headers="headers"
       :show-file-list="false" :on-success="handleAvatarSuccessUpd" :before-upload="beforeAvatarUploadUpd" style="display: block; /* 使图片成为块级元素 */
   margin-left: auto;
   margin-right: auto;">
@@ -183,6 +183,9 @@ import { ElMessage } from 'element-plus';
 import { RouterView, RouterLink } from 'vue-router'
 import { ElLoading } from 'element-plus'
 import { useTokenStore } from '@/stores/token';
+
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
 
 import {
   Document,
@@ -233,7 +236,7 @@ const pwdUpdWin = ref(false);
 
 function avatarUpdShow() {
   avatarUpdShowWin.value = true;
-  imageUrlUpd.value = `http://localhost:8080/upload/${admin.value.info.avatar}`
+  imageUrlUpd.value = `${SERVER_ADDR.value}/upload/${admin.value.info.avatar}`
 }
 
 
@@ -269,7 +272,7 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
       type: 'success',
       duration: 1200
     })
-    imageUrlUpd.value = "http://localhost:8080/upload/" + resp.data;
+    imageUrlUpd.value = `${SERVER_ADDR.value}/upload/${resp.data}`;
     admin.value.info.avatar = resp.data
     infoApi.update(admin.value.info)
       .then(resp => {

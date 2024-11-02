@@ -8,7 +8,8 @@ import com.patrick.bean.RespBean;
 import com.patrick.bean.Room;
 import com.patrick.excetion.MyException;
 import com.patrick.service.OrdersService;
-import com.sun.deploy.net.URLEncoder;
+
+
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 

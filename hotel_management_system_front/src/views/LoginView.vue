@@ -54,6 +54,9 @@ import { ElNotification } from 'element-plus'
 import service from '@/api';
 import { useTokenStore } from '@/stores/token.js';
 
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
+
 const tokenStore = useTokenStore();
 const loginXY = ref(null) 
 

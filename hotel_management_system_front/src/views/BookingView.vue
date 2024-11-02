@@ -16,7 +16,7 @@
 
                 <el-container>
                   <el-aside width="100px">
-                    <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + room.ravatar"
+                    <el-image style="width: 100px; height: 100px" :src="`${SERVER_ADDR}/upload/` + room.ravatar"
                       fit />
                   </el-aside>
                   <el-main width="250px">
@@ -57,7 +57,7 @@
       <div class="common-layout">
         <el-container>
           <el-aside width="100px" style="padding-top: 18px;">
-            <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + thisRoom.ravatar"
+            <el-image style="width: 100px; height: 100px" :src="`${SERVER_ADDR}/upload/` + thisRoom.ravatar"
               fit />
           </el-aside>
           <el-main>
@@ -157,6 +157,8 @@ import facilityApi from '@/api/facilityApi'
 import infoApi from '@/api/infoApi';
 
 
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
 
 
 //个人信息实体

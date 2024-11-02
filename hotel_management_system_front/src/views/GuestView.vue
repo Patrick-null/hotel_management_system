@@ -155,6 +155,9 @@ import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
+
 //所有住客信息
 const guestList = ref([])
 

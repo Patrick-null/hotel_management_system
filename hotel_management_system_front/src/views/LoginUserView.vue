@@ -104,6 +104,9 @@ import service from '@/api';
 import infoApi from '@/api/infoApi';
 import { useTokenStore } from '@/stores/token';
 
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
+
 const loginXY = ref(null)
 const rules = reactive({
     username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
