@@ -12,7 +12,7 @@
 
 
 
-                <el-upload :on-success="uploadRoom" action="http://localhost:8080/admin/room/upload" style="float: left;"
+                <el-upload :on-success="uploadRoom" :action="`${SERVER_ADDR}/admin/room/upload`" style="float: left;"
                   :headers="headers" method="post" name="file" list-type="none" :show-file-list="false">
                   <el-button  :icon="UploadFilled" style="margin-bottom: 10px; margin-left: 15px;">上传</el-button>
                 </el-upload>
@@ -33,7 +33,7 @@
                   <template #default="scope">
 
                     <el-image style="width: 60px; height: 43px"
-                      :src="'http://localhost:8080/upload/' + scope.row.ravatar" contain />
+                      :src="`${SERVER_ADDR}/upload/` + scope.row.ravatar" contain />
                   </template>
                 </el-table-column>
                 <el-table-column prop="rtype" label="房间类型" width="100px" />
@@ -108,7 +108,7 @@
           <div class="common-layout">
             <el-container>
               <el-aside width="100px">
-                <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + facility.favatar"
+                <el-image style="width: 100px; height: 100px" :src="`${SERVER_ADDR}/upload/` + facility.favatar"
                   fit />
               </el-aside>
               <el-main width="250px">
@@ -151,7 +151,7 @@
           <div class="common-layout">
             <el-container>
               <el-aside width="100px" style="padding-top: 18px;">
-                <el-image style="width: 100px; height: 100px" :src="'http://localhost:8080/upload/' + facility.favatar"
+                <el-image style="width: 100px; height: 100px" :src="`${SERVER_ADDR}/upload/` + facility.favatar"
                   fit />
               </el-aside>
               <el-main>
@@ -198,7 +198,7 @@
         <el-input v-model="roomAdd.rprice" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="照片" label-width="20%">
-        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
+        <el-upload class="avatar-uploader" :action="`${SERVER_ADDR}/admin/upload`" name="pic" :headers="headers"
           :show-file-list="false" :on-success="handleAvatarSuccessAdd" :before-upload="beforeAvatarUploadAdd">
           <img v-if="imageUrlAdd" :src="imageUrlAdd" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
@@ -234,7 +234,7 @@
         <el-input v-model="roomUpd.rprice" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="房间照片" label-width="20%">
-        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
+        <el-upload class="avatar-uploader" :action="`${SERVER_ADDR}/admin/upload`" name="pic" :headers="headers"
           :show-file-list="false" :on-success="handleAvatarSuccessUpd" :before-upload="beforeAvatarUploadUpd">
           <img v-if="imageUrlUpd" :src="imageUrlUpd" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
@@ -265,6 +265,9 @@ import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import facilityApi from '@/api/facilityApi';
 import { useTokenStore } from '@/stores/token';
+
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
 
 
 
@@ -425,7 +428,7 @@ function handleAvatarSuccessAdd(resp, uploadFile) {
       type: 'success',
       duration: 1200
     })
-    imageUrlAdd.value = "http://localhost:8080/upload/" + resp.data;
+    imageUrlAdd.value = `${SERVER_ADDR.value}/upload/${resp.data}`;
     roomAdd.value.ravatar = resp.data
 
 
@@ -467,7 +470,7 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
       type: 'success',
       duration: 1200
     })
-    imageUrlUpd.value = "http://localhost:8080/upload/" + resp.data;
+    imageUrlUpd.value = `${SERVER_ADDR.value}/upload/${resp.data}`;
     roomUpd.value.ravatar = resp.data
 
 
@@ -519,7 +522,7 @@ function roomUpdShow(rid) {
     .then(resp => {
       roomUpd.value = resp.data;
 
-      imageUrlUpd.value = `http://localhost:8080/upload/${roomUpd.value.ravatar}`
+      imageUrlUpd.value = `${SERVER_ADDR.value}/upload/${roomUpd.value.ravatar}`
 
     })
 

@@ -131,6 +131,9 @@ import { ElLoading } from 'element-plus'
 import { useTokenStore } from '@/stores/token';
 import infoApi from '@/api/infoApi';
 
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
+
 
 const infoList = ref({
   total:0,

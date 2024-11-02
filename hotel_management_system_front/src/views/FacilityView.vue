@@ -20,7 +20,7 @@
                 <el-table-column prop="favatar" label="设施照片" width="90px">
                   <template #default="scope">
                     <el-image style="width: 60px; height: 43px"
-                      :src="'http://localhost:8080/upload/' + scope.row.favatar" contain />
+                      :src="`${SERVER_ADDR}/upload/` + scope.row.favatar" contain />
                   </template>
                 </el-table-column>
                 <el-table-column prop="roomList.length" label="数量" width="100px" />
@@ -85,7 +85,7 @@
         <el-input v-model="facilityAdd.fvalue" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="设施照片" label-width="20%">
-        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
+        <el-upload class="avatar-uploader" :action="`${SERVER_ADDR}/admin/upload`" name="pic" :headers="headers"
           :show-file-list="false" :on-success="handleAvatarSuccessAdd" :before-upload="beforeAvatarUploadAdd">
           <img v-if="imageUrlAdd" :src="imageUrlAdd" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
@@ -117,7 +117,7 @@
         <el-input v-model="facilityUpd.fvalue" autocomplete="off" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="设施照片" label-width="20%">
-        <el-upload class="avatar-uploader" action="http://localhost:8080/admin/upload" name="pic" :headers="headers"
+        <el-upload class="avatar-uploader" :action="`${SERVER_ADDR}/admin/upload`" name="pic" :headers="headers"
           :show-file-list="false" :on-success="handleAvatarSuccessUpd" :before-upload="beforeAvatarUploadUpd">
           <img v-if="imageUrlUpd" :src="imageUrlUpd" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
@@ -146,6 +146,9 @@ import { ref, reactive, computed } from 'vue';
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus'
 import { useTokenStore } from '@/stores/token';
+
+//服务器路径
+const SERVER_ADDR = ref(import.meta.env.VITE_SERVER_ADDR)
 
 
 const headers = computed(() => {
@@ -208,10 +211,8 @@ function handleAvatarSuccessAdd(resp, uploadFile) {
       type: 'success',
       duration: 1200
     })
-    imageUrlAdd.value = "http://localhost:8080/upload/" + resp.data;
+    imageUrlAdd.value = `${SERVER_ADDR.value}/upload/${resp.data}`;
     facilityAdd.value.favatar = resp.data
-
-
   } else {
     ElMessage.error({
       message: resp.msg,
@@ -249,7 +250,7 @@ function handleAvatarSuccessUpd(resp, uploadFile) {
       type: 'success',
       duration: 1200
     })
-    imageUrlUpd.value = "http://localhost:8080/upload/" + resp.data;
+    imageUrlUpd.value = `${SERVER_ADDR.value}/upload/${resp.data}`;
     facilityUpd.value.favatar = resp.data
 
 
@@ -282,10 +283,9 @@ function facilityUpdShow(fid) {
   facilityApi.selectById(fid)
     .then(resp => {
       facilityUpd.value = resp.data
-      imageUrlUpd.value = `http://localhost:8080/upload/${facilityUpd.value.favatar}`
-
-
-
+      imageUrlUpd.value = `${SERVER_ADDR.value}/upload/${facilityUpd.value.favatar}`
+      console.log(imageUrlUpd.value);
+      
     })
   //显示窗口
   facilityUpdShowWin.value = true
